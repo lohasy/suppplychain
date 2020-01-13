@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Supplier_userDao">
+	
+	<sql id="columns">
+  		a.supplier_enterprise_id AS "supplierEnterpriseId.id",
+		a.user_id AS "userId.id",
+		
+		b.name AS "supplierEnterpriseId.name",
+		b.org_code AS "supplierEnterpriseId.orgCode",
+		b.business_period_to AS "supplierEnterpriseId.businessPeriodTo",
+		b.registered_capital AS "supplierEnterpriseId.registeredCapital",
+		b.type AS "supplierEnterpriseId.type",
+		b.PROVINCE_ID as "supplierEnterpriseId.provinceArea.id",
+		b.CITY_ID as "supplierEnterpriseId.cityArea.id",
+		b.business_address AS "supplierEnterpriseId.businessAddress",
+		b.business_license AS "supplierEnterpriseId.businessLicense",
+		b.legal_card_positive AS "supplierEnterpriseId.legalCardPositive",
+		b.legal_card_back AS "supplierEnterpriseId.legalCardBack",
+		b.legal_card_validity AS "supplierEnterpriseId.legalCardValidity",
+		b.legal_card_office AS "supplierEnterpriseId.legalCardOffice",
+		b.legal_name AS "supplierEnterpriseId.legalName",
+		b.legal_id_card AS "supplierEnterpriseId.legalIdCard",
+		b.legal_sex AS "supplierEnterpriseId.legalSex",
+		b.legal_nation AS "supplierEnterpriseId.legalNation",
+		b.legal_address AS "supplierEnterpriseId.legalAddress",
+		b.agency_card_positive AS "supplierEnterpriseId.agencyCardPositive",
+		b.agency_card_back AS "supplierEnterpriseId.agencyCardBack",
+		b.agency_card_validity AS "supplierEnterpriseId.agencyCardValidity",
+		b.agency_card_office AS "supplierEnterpriseId.agencyCardOffice",
+		b.agency_name AS "supplierEnterpriseId.agencyName",
+		b.agency_id_card AS "supplierEnterpriseId.agencyIdCard",
+		b.agency_sex AS "supplierEnterpriseId.agencySex",
+		b.agency_nation AS "supplierEnterpriseId.agencyNation",
+		b.agency_phone AS "supplierEnterpriseId.agencyPhone",
+		b.agency_email AS "supplierEnterpriseId.agencyEmail",
+		b.agency_address AS "supplierEnterpriseId.agencyAddress",
+		b.operator_card_positive AS "supplierEnterpriseId.operatorCardPositive",
+		b.operator_card_back AS "supplierEnterpriseId.operatorCardBack",
+		b.operator_card_validity AS "supplierEnterpriseId.operatorCardValidity",
+		b.operator_card_office AS "supplierEnterpriseId.operatorCardOffice",
+		b.operator_name AS "supplierEnterpriseId.operatorName",
+		b.operator_id_card AS "supplierEnterpriseId.operatorIdCard",
+		b.operator_sex AS "supplierEnterpriseId.operatorSex",
+		b.operator_nation AS "supplierEnterpriseId.operatorNation",
+		b.operator_address AS "supplierEnterpriseId.operatorAddress",
+		b.hold_card_url AS "supplierEnterpriseId.holdCardUrl",
+		b.platform_operate_author AS "supplierEnterpriseId.platformOperateAuthor",
+		b.opening_permit_letter AS "supplierEnterpriseId.openingPermitLetter",
+		b.office_credit_letter AS "supplierEnterpriseId.officeCreditLetter",
+		b.company_constitution AS "supplierEnterpriseId.companyConstitution",
+		b.state AS "supplierEnterpriseId.state",
+		b.is_yqgys AS "supplierEnterpriseId.isYqgys",
+		b.OFFICE_ID AS "supplierEnterpriseId.officeId.id",
+		b.PARAMS_ID AS "supplierEnterpriseId.paramsId.id",
+		
+		c.province_id AS "userId.provinceId.id",
+    	c.city_id AS "userId.cityId.id",
+		c.company_id AS "userId.company.id",
+    	c.office_id AS "userId.office.id",
+    	c.login_name AS "userId.loginName",
+    	c.no AS "userId.no",
+		c.name AS "userId.name",
+		c.email AS "userId.email",
+		c.phone AS "userId.phone",
+		c.mobile AS "userId.mobile",
+		c.user_type AS "userId.userType",
+		c.login_ip AS "userId.loginIp",
+		c.login_date AS "userId.loginDate",
+		c.remarks AS "userId.remarks",
+		c.login_flag AS "userId.loginFlag",
+		c.photo AS "userId.photo",
+		c.qrcode AS "userId.qrcode",
+		c.create_date AS "userId.createDate",
+		c.update_date AS "userId.updateDate"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN supplier_enterprise b on a.supplier_enterprise_id = b.id
+		LEFT JOIN sys_user c on a.user_id = c.id
+	</sql>
+    
+	<select id="get" resultType="Supplier_user">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_user a
+			<include refid="joins"/>
+		WHERE a.supplier_enterprise_id = #{supplierEnterpriseId.id} and a.user_id = #{userId.id}
+	</select>
+	
+	<select id="findList" resultType="Supplier_user">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_user a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="userId != null and userId.id != null and userId.id != ''">
+			AND a.user_id = #{userId.id}
+		</if>
+		<if test="userId != null and userId.name != null and userId.name != ''">
+			AND c.name like 
+					<if test="dbName == 'oracle'">'%'||#{userId.name}||'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{userId.name}, '%')</if>
+		</if>
+		<if test="userId != null and userId.mobile != null and userId.mobile != ''">
+			AND c.mobile = #{userId.mobile}
+		</if>
+	</select>
+	
+	<select id="findAllList" resultType="Supplier_user">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_user a
+			<include refid="joins"/>
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM supplier_user a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="userId != null and userId.id != null and userId.id != ''">
+			AND a.user_id = #{userId.id}
+		</if>
+		<if test="userId != null and userId.name != null and userId.name != ''">
+			AND c.name like 
+					<if test="dbName == 'oracle'">'%'||#{userId.name}||'%'</if>
+					<if test="dbName == 'mysql'">CONCAT('%', #{userId.name}, '%')</if>
+		</if>
+		<if test="userId != null and userId.mobile != null and userId.mobile != ''">
+			AND c.mobile = #{userId.mobile}
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO supplier_user(
+			supplier_enterprise_id,
+			user_id
+		) VALUES (
+			#{supplierEnterpriseId.id},
+			#{userId.id}
+		)
+	</insert>
+	
+	<update id="delete">
+		DELETE FROM supplier_user
+		WHERE supplier_enterprise_id = #{supplierEnterpriseId.id} and user_id = #{userId.id}
+	</update>
+	
+	<update id="deleteBySupplier">
+		DELETE FROM supplier_user
+		WHERE supplier_enterprise_id = #{supplier_id}
+	</update>
+	
+	<update id="deleteByUser">
+		DELETE FROM supplier_user
+		WHERE user_id = #{user_id}
+	</update>
+</mapper>

@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Supplier_childDao">
+	<sql id="columns">
+  		a.supplier_child_id AS "supplierChildId.id",
+		a.supplier_enterprise_id AS "supplierEnterpriseId.id",
+		a.export_time,
+		a.invitation_time,
+		a.register_time,
+		a.state,
+		a.invitation_code,
+		
+		b.name AS "supplierChildId.name",
+		b.org_code AS "supplierChildId.orgCode",
+		b.business_period_to AS "supplierChildId.businessPeriodTo",
+		b.registered_capital AS "supplierChildId.registeredCapital",
+		b.type AS "supplierChildId.type",
+		b.PROVINCE_ID as "supplierChildId.provinceArea.id",
+		b.CITY_ID as "supplierChildId.cityArea.id",
+		b.business_address AS "supplierChildId.businessAddress",
+		b.business_license AS "supplierChildId.businessLicense",
+		b.legal_card_positive AS "supplierChildId.legalCardPositive",
+		b.legal_card_back AS "supplierChildId.legalCardBack",
+		b.legal_card_validity AS "supplierChildId.legalCardValidity",
+		b.legal_card_office AS "supplierChildId.legalCardOffice",
+		b.legal_name AS "supplierChildId.legalName",
+		b.legal_id_card AS "supplierChildId.legalIdCard",
+		b.legal_sex AS "supplierChildId.legalSex",
+		b.legal_nation AS "supplierChildId.legalNation",
+		b.legal_address AS "supplierChildId.legalAddress",
+		b.agency_card_positive AS "supplierChildId.agencyCardPositive",
+		b.agency_card_back AS "supplierChildId.agencyCardBack",
+		b.agency_card_validity AS "supplierChildId.agencyCardValidity",
+		b.agency_card_office AS "supplierChildId.agencyCardOffice",
+		b.agency_name AS "supplierChildId.agencyName",
+		b.agency_id_card AS "supplierChildId.agencyIdCard",
+		b.agency_sex AS "supplierChildId.agencySex",
+		b.agency_nation AS "supplierChildId.agencyNation",
+		b.agency_phone AS "supplierChildId.agencyPhone",
+		b.agency_email AS "supplierChildId.agencyEmail",
+		b.agency_address AS "supplierChildId.agencyAddress",
+		b.operator_card_positive AS "supplierChildId.operatorCardPositive",
+		b.operator_card_back AS "supplierChildId.operatorCardBack",
+		b.operator_card_validity AS "supplierChildId.operatorCardValidity",
+		b.operator_card_office AS "supplierChildId.operatorCardOffice",
+		b.operator_name AS "supplierChildId.operatorName",
+		b.operator_id_card AS "supplierChildId.operatorIdCard",
+		b.operator_sex AS "supplierChildId.operatorSex",
+		b.operator_nation AS "supplierChildId.operatorNation",
+		b.operator_address AS "supplierChildId.operatorAddress",
+		b.hold_card_url AS "supplierChildId.holdCardUrl",
+		b.platform_operate_author AS "supplierChildId.platformOperateAuthor",
+		b.opening_permit_letter AS "supplierChildId.openingPermitLetter",
+		b.office_credit_letter AS "supplierChildId.officeCreditLetter",
+		b.company_constitution AS "supplierChildId.companyConstitution",
+		b.state AS "supplierChildId.state",
+		b.is_yqgys AS "supplierChildId.isYqgys",
+		b.OFFICE_ID AS "supplierChildId.officeId.id",
+		b.PARAMS_ID AS "supplierChildId.paramsId.id",
+		
+		d.all_quota as "supplierChildId.paramsId.allQuota",
+		d.available_quota as "supplierChildId.paramsId.availableQuota",
+		d.interest_rate as "supplierChildId.paramsId.interestRate",
+		d.financing_ratio as "supplierChildId.paramsId.financingRatio",
+		d.loan_name as "supplierChildId.paramsId.loanName",
+		d.loan_account as "supplierChildId.paramsId.loanAccount",
+		d.loan_open_bank as "supplierChildId.paramsId.loanOpenBank",
+		d.loan_balance as "supplierChildId.paramsId.loanBalance",
+		d.return_name as "supplierChildId.paramsId.returnName",
+		d.return_account as "supplierChildId.paramsId.returnAccount",
+		d.return_open_bank as "supplierChildId.paramsId.returnOpenBank",
+		d.return_balance as "supplierChildId.paramsId.returnBalance",
+		d.remind_repayment as "supplierChildId.paramsId.remindRepayment",
+		
+		c.name AS "supplierEnterpriseId.name",
+		c.org_code AS "supplierEnterpriseId.orgCode",
+		c.business_period_to AS "supplierEnterpriseId.businessPeriodTo",
+		c.registered_capital AS "supplierEnterpriseId.registeredCapital",
+		c.type AS "supplierEnterpriseId.type",
+		c.PROVINCE_ID as "supplierEnterpriseId.provinceArea.id",
+		c.CITY_ID as "supplierEnterpriseId.cityArea.id",
+		c.business_address AS "supplierEnterpriseId.businessAddress",
+		c.business_license AS "supplierEnterpriseId.businessLicense",
+		c.legal_card_positive AS "supplierEnterpriseId.legalCardPositive",
+		c.legal_card_back AS "supplierEnterpriseId.legalCardBack",
+		c.legal_card_validity AS "supplierEnterpriseId.legalCardValidity",
+		c.legal_card_office AS "supplierEnterpriseId.legalCardOffice",
+		c.legal_name AS "supplierEnterpriseId.legalName",
+		c.legal_id_card AS "supplierEnterpriseId.legalIdCard",
+		c.legal_sex AS "supplierEnterpriseId.legalSex",
+		c.legal_nation AS "supplierEnterpriseId.legalNation",
+		c.legal_address AS "supplierEnterpriseId.legalAddress",
+		c.agency_card_positive AS "supplierEnterpriseId.agencyCardPositive",
+		c.agency_card_back AS "supplierEnterpriseId.agencyCardBack",
+		c.agency_card_validity AS "supplierEnterpriseId.agencyCardValidity",
+		c.agency_card_office AS "supplierEnterpriseId.agencyCardOffice",
+		c.agency_name AS "supplierEnterpriseId.agencyName",
+		c.agency_id_card AS "supplierEnterpriseId.agencyIdCard",
+		c.agency_sex AS "supplierEnterpriseId.agencySex",
+		c.agency_nation AS "supplierEnterpriseId.agencyNation",
+		c.agency_phone AS "supplierEnterpriseId.agencyPhone",
+		c.agency_email AS "supplierEnterpriseId.agencyEmail",
+		c.agency_address AS "supplierEnterpriseId.agencyAddress",
+		c.operator_card_positive AS "supplierEnterpriseId.operatorCardPositive",
+		c.operator_card_back AS "supplierEnterpriseId.operatorCardBack",
+		c.operator_card_validity AS "supplierEnterpriseId.operatorCardValidity",
+		c.operator_card_office AS "supplierEnterpriseId.operatorCardOffice",
+		c.operator_name AS "supplierEnterpriseId.operatorName",
+		c.operator_id_card AS "supplierEnterpriseId.operatorIdCard",
+		c.operator_sex AS "supplierEnterpriseId.operatorSex",
+		c.operator_nation AS "supplierEnterpriseId.operatorNation",
+		c.operator_address AS "supplierEnterpriseId.operatorAddress",
+		c.hold_card_url AS "supplierEnterpriseId.holdCardUrl",
+		c.platform_operate_author AS "supplierEnterpriseId.platformOperateAuthor",
+		c.opening_permit_letter AS "supplierEnterpriseId.openingPermitLetter",
+		c.office_credit_letter AS "supplierEnterpriseId.officeCreditLetter",
+		c.company_constitution AS "supplierEnterpriseId.companyConstitution",
+		c.state AS "supplierEnterpriseId.state",
+		c.is_yqgys AS "supplierEnterpriseId.isYqgys",
+		c.OFFICE_ID AS "supplierEnterpriseId.officeId.id",
+		c.PARAMS_ID AS "supplierEnterpriseId.paramsId.id",
+		
+		e.all_quota as "supplierEnterpriseId.paramsId.allQuota",
+		e.available_quota as "supplierEnterpriseId.paramsId.availableQuota",
+		e.interest_rate as "supplierEnterpriseId.paramsId.interestRate",
+		e.financing_ratio as "supplierEnterpriseId.paramsId.financingRatio",
+		e.loan_name as "supplierEnterpriseId.paramsId.loanName",
+		e.loan_account as "supplierEnterpriseId.paramsId.loanAccount",
+		e.loan_open_bank as "supplierEnterpriseId.paramsId.loanOpenBank",
+		e.loan_balance as "supplierEnterpriseId.paramsId.loanBalance",
+		e.return_name as "supplierEnterpriseId.paramsId.returnName",
+		e.return_account as "supplierEnterpriseId.paramsId.returnAccount",
+		e.return_open_bank as "supplierEnterpriseId.paramsId.returnOpenBank",
+		e.return_balance as "supplierEnterpriseId.paramsId.returnBalance",
+		e.remind_repayment as "supplierEnterpriseId.paramsId.remindRepayment"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN supplier_enterprise b on a.supplier_child_id = b.id
+		LEFT JOIN supplier_enterprise c on a.supplier_enterprise_id = c.id
+		LEFT JOIN enterprise_params d on d.id = b.params_id
+		LEFT JOIN enterprise_params e on e.id = c.params_id
+	</sql>
+    
+	<select id="get" resultType="Supplier_child">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_child a
+			<include refid="joins"/>
+		WHERE supplier_child_id = #{supplierChildId.id} and supplier_enterprise_id = #{supplierEnterpriseId.id}
+	</select>
+	
+	<select id="findList" resultType="Supplier_child">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_child a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.id != null and supplierChildId.id != ''">
+			AND a.supplier_child_id = #{supplierChildId.id}
+		</if>
+		<if test="state != null and state != ''">
+			AND a.state = #{state}
+		</if>
+		<if test="invitationCode != null and invitationCode != ''">
+			AND a.invitation_code = #{invitationCode}
+		</if>
+		
+		<if test="supplierChildId != null and supplierChildId.name != null and supplierChildId.name != ''">
+			AND b.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.name}, '%')</if>
+		</if>
+		<if test="supplierChildId != null and supplierChildId.orgCode != null and supplierChildId.orgCode != ''">
+			AND b.org_code = #{supplierChildId.orgCode}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.type != null and supplierChildId.type != ''">
+			AND b.type = #{supplierChildId.type}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.state != null and supplierChildId.state != ''">
+			AND b.state = #{supplierChildId.state}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.provinceArea != null and supplierChildId.provinceArea.id != null and supplierChildId.provinceArea.id != ''">
+			AND b.province_id = #{supplierChildId.provinceArea.id}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.cityArea != null and supplierChildId.cityArea.id != null and supplierChildId.cityArea.id != ''">
+			AND b.city_id = #{supplierChildId.cityArea.id}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.agencyName != null and supplierChildId.agencyName != ''">
+			AND b.agency_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.agencyName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.agencyName}, '%')</if>
+		</if>
+		<if test="supplierChildId != null and supplierChildId.agencyPhone != null and supplierChildId.agencyPhone != ''">
+			AND b.agency_phone LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.agencyPhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.agencyPhone}, '%')</if>
+		</if>
+		<if test="supplierChildId != null and supplierChildId.agencyEmail != null and supplierChildId.agencyEmail != ''">
+			AND b.agency_email LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.agencyEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.agencyEmail}, '%')</if>
+		</if>
+		
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.name != null and supplierEnterpriseId.name != ''">
+			AND c.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.name}, '%')</if>
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.orgCode != null and supplierEnterpriseId.orgCode != ''">
+			AND c.org_code = #{supplierEnterpriseId.orgCode}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.type != null and supplierEnterpriseId.type != ''">
+			AND c.type = #{supplierEnterpriseId.type}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.state != null and supplierEnterpriseId.state != ''">
+			AND c.state = #{supplierEnterpriseId.state}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.provinceArea != null and supplierEnterpriseId.provinceArea.id != null and supplierEnterpriseId.provinceArea.id != ''">
+			AND c.province_id = #{supplierEnterpriseId.provinceArea.id}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.cityArea != null and supplierEnterpriseId.cityArea.id != null and supplierEnterpriseId.cityArea.id != ''">
+			AND c.city_id = #{supplierEnterpriseId.cityArea.id}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.agencyName != null and supplierEnterpriseId.agencyName != ''">
+			AND c.agency_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.agencyName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.agencyName}, '%')</if>
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.agencyPhone != null and supplierEnterpriseId.agencyPhone != ''">
+			AND c.agency_phone LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.agencyPhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.agencyPhone}, '%')</if>
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.agencyEmail != null and supplierEnterpriseId.agencyEmail != ''">
+			AND c.agency_email LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.agencyEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.agencyEmail}, '%')</if>
+		</if>
+	</select>
+	
+	<select id="findAllList" resultType="Supplier_child">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_child a
+			<include refid="joins"/>
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM supplier_child a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.id != null and supplierChildId.id != ''">
+			AND a.supplier_child_id = #{supplierChildId.id}
+		</if>
+		<if test="state != null and state != ''">
+			AND a.state = #{state}
+		</if>
+		<if test="invitationCode != null and invitationCode != ''">
+			AND a.invitation_code = #{invitationCode}
+		</if>
+		
+		<if test="supplierChildId != null and supplierChildId.name != null and supplierChildId.name != ''">
+			AND b.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.name}, '%')</if>
+		</if>
+		<if test="supplierChildId != null and supplierChildId.orgCode != null and supplierChildId.orgCode != ''">
+			AND b.org_code = #{supplierChildId.orgCode}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.type != null and supplierChildId.type != ''">
+			AND b.type = #{supplierChildId.type}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.state != null and supplierChildId.state != ''">
+			AND b.state = #{supplierChildId.state}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.provinceArea != null and supplierChildId.provinceArea.id != null and supplierChildId.provinceArea.id != ''">
+			AND b.province_id = #{supplierChildId.provinceArea.id}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.cityArea != null and supplierChildId.cityArea.id != null and supplierChildId.cityArea.id != ''">
+			AND b.city_id = #{supplierChildId.cityArea.id}
+		</if>
+		<if test="supplierChildId != null and supplierChildId.agencyName != null and supplierChildId.agencyName != ''">
+			AND b.agency_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.agencyName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.agencyName}, '%')</if>
+		</if>
+		<if test="supplierChildId != null and supplierChildId.agencyPhone != null and supplierChildId.agencyPhone != ''">
+			AND b.agency_phone LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.agencyPhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.agencyPhone}, '%')</if>
+		</if>
+		<if test="supplierChildId != null and supplierChildId.agencyEmail != null and supplierChildId.agencyEmail != ''">
+			AND b.agency_email LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierChildId.agencyEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierChildId.agencyEmail}, '%')</if>
+		</if>
+		
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.name != null and supplierEnterpriseId.name != ''">
+			AND c.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.name}, '%')</if>
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.orgCode != null and supplierEnterpriseId.orgCode != ''">
+			AND c.org_code = #{supplierEnterpriseId.orgCode}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.type != null and supplierEnterpriseId.type != ''">
+			AND c.type = #{supplierEnterpriseId.type}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.state != null and supplierEnterpriseId.state != ''">
+			AND c.state = #{supplierEnterpriseId.state}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.provinceArea != null and supplierEnterpriseId.provinceArea.id != null and supplierEnterpriseId.provinceArea.id != ''">
+			AND c.province_id = #{supplierEnterpriseId.provinceArea.id}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.cityArea != null and supplierEnterpriseId.cityArea.id != null and supplierEnterpriseId.cityArea.id != ''">
+			AND c.city_id = #{supplierEnterpriseId.cityArea.id}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.agencyName != null and supplierEnterpriseId.agencyName != ''">
+			AND c.agency_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.agencyName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.agencyName}, '%')</if>
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.agencyPhone != null and supplierEnterpriseId.agencyPhone != ''">
+			AND c.agency_phone LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.agencyPhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.agencyPhone}, '%')</if>
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.agencyEmail != null and supplierEnterpriseId.agencyEmail != ''">
+			AND c.agency_email LIKE 
+			<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.agencyEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.agencyEmail}, '%')</if>
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO supplier_child(
+			supplier_child_id,
+			supplier_enterprise_id,
+			export_time,
+			invitation_time,
+			register_time,
+			invitation_code,
+			state
+		) VALUES (
+			#{supplierChildId.id},
+			#{supplierEnterpriseId.id},
+			#{exportTime},
+			#{invitationTime},
+			#{registerTime},
+			#{invitationCode},
+			#{state}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE supplier_child SET
+			export_time = #{exportTime},
+			invitation_time = #{invitationTime},
+			register_time = #{registerTime},
+			invitation_code = #{invitationCode},
+			state = #{state}
+		WHERE supplier_child_id = #{supplierChildId.id} and supplier_enterprise_id = #{supplierEnterpriseId.id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM supplier_child
+		WHERE supplier_child_id = #{supplierChildId.id} and supplier_enterprise_id = #{supplierEnterpriseId.id}
+	</update>
+	
+	<update id="deleteByCore">
+		DELETE FROM supplier_child
+		WHERE supplier_child_id = #{core_id}
+	</update>
+	
+	<update id="deleteBySupplier">
+		DELETE FROM supplier_child
+		WHERE supplier_enterprise_id = #{supplier_id}
+	</update>
+</mapper>

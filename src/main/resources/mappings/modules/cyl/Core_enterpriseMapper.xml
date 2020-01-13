@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Core_enterpriseDao">
+  
+  <sql id="columns">
+		a.id,
+		a.name,
+		a.org_code,
+		a.business_period_to,
+		a.registered_capital,
+		a.type,
+		a.province_id as "provinceArea.id",
+		a.city_id as "cityArea.id",
+		a.business_address,
+		a.business_license,
+		a.legal_card_positive,
+		a.legal_card_back,
+		a.legal_card_validity,
+		a.legal_card_office,
+		a.legal_name,
+		a.legal_id_card,
+		a.legal_sex,
+		a.legal_nation,
+		a.legal_address,
+		a.charge_card_positive,
+		a.charge_card_back,
+		a.charge_card_validity,
+		a.charge_card_office,
+		a.charge_name,
+		a.charge_id_card,
+		a.charge_sex,
+		a.charge_nation,
+		a.charge_phone,
+		a.charge_email,
+		a.charge_address,
+		a.OFFICE_ID AS "officeId.id",
+		a.PARAMS_ID AS "paramsId.id",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+		
+		b.name as "provinceArea.name",
+		b.code as "provinceArea.code",
+		
+		c.name as "cityArea.name",
+		c.code as "cityArea.code",
+		
+		d.all_quota as "paramsId.allQuota",
+		d.available_quota as "paramsId.availableQuota",
+		d.interest_rate as "paramsId.interestRate",
+		d.financing_ratio as "paramsId.financingRatio",
+		d.loan_name as "paramsId.loanName",
+		d.loan_account as "paramsId.loanAccount",
+		d.loan_open_bank as "paramsId.loanOpenBank",
+		d.loan_balance as "paramsId.loanBalance",
+		d.return_name as "paramsId.returnName",
+		d.return_account as "paramsId.returnAccount",
+		d.return_open_bank as "paramsId.returnOpenBank",
+		d.return_balance as "paramsId.returnBalance",
+		d.remind_repayment as "paramsId.remindRepayment"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN sys_area b on a.province_id = b.id
+		LEFT JOIN sys_area c on a.city_id = c.id
+		LEFT JOIN enterprise_params d on a.params_id = d.id
+	</sql>
+    
+	<select id="get" resultType="Core_enterprise">
+		SELECT 
+			<include refid="columns"/>
+		FROM core_enterprise a
+		<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Core_enterprise">
+		SELECT 
+			<include refid="columns"/>
+		FROM core_enterprise a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="orgCode != null and orgCode != ''">
+			AND a.org_code = #{orgCode}
+		</if>
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="provinceArea != null and provinceArea.id != null and provinceArea.id != ''">
+			AND a.province_id = #{provinceArea.id}
+		</if>
+		<if test="cityArea != null and cityArea.id != null and cityArea.id != ''">
+			AND a.city_id = #{cityArea.id}
+		</if>
+		<if test="chargeName != null and chargeName != ''">
+			AND a.charge_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{chargeName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{chargeName}, '%')</if>
+		</if>
+		<if test="chargePhone != null and chargePhone != ''">
+			AND a.charge_phone LIKE 
+			<if test="dbName == 'oracle'">'%'||#{chargePhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{chargePhone}, '%')</if>
+		</if>
+		<if test="chargeEmail != null and chargeEmail != ''">
+			AND a.charge_email LIKE
+			<if test="dbName == 'oracle'">'%'||#{chargeEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{chargeEmail}, '%')</if>
+		</if>
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="Core_enterprise">
+		SELECT 
+			<include refid="columns"/>
+		FROM core_enterprise a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM core_enterprise a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="orgCode != null and orgCode != ''">
+			AND a.org_code = #{orgCode}
+		</if>
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="provinceArea != null and provinceArea.id != null and provinceArea.id != ''">
+			AND a.province_id = #{provinceArea.id}
+		</if>
+		<if test="cityArea != null and cityArea.id != null and cityArea.id != ''">
+			AND a.city_id = #{cityArea.id}
+		</if>
+		<if test="chargeName != null and chargeName != ''">
+			AND a.charge_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{chargeName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{chargeName}, '%')</if>
+		</if>
+		<if test="chargePhone != null and chargePhone != ''">
+			AND a.charge_phone LIKE 
+			<if test="dbName == 'oracle'">'%'||#{chargePhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{chargePhone}, '%')</if>
+		</if>
+		<if test="chargeEmail != null and chargeEmail != ''">
+			AND a.charge_email LIKE
+			<if test="dbName == 'oracle'">'%'||#{chargeEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{chargeEmail}, '%')</if>
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO core_enterprise(
+			id,
+			name,
+			org_code,
+			business_period_to,
+			registered_capital,
+			type,
+			province_id,
+			city_id,
+			business_address,
+			business_license,
+			legal_card_positive,
+			legal_card_back,
+			legal_card_validity,
+			legal_card_office,
+			legal_name,
+			legal_id_card,
+			legal_sex,
+			legal_nation,
+			legal_address,
+			charge_card_positive,
+			charge_card_back,
+			charge_card_validity,
+			charge_card_office,
+			charge_name,
+			charge_id_card,
+			charge_sex,
+			charge_nation,
+			charge_phone,
+			charge_email,
+			charge_address,
+			office_id,
+			params_id,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG
+		) VALUES (
+			#{id},
+			#{name},
+			#{orgCode},
+			#{businessPeriodTo},
+			#{registeredCapital},
+			#{type},
+			#{provinceArea.id},
+			#{cityArea.id},
+			#{businessAddress},
+			#{businessLicense},
+			#{legalCardPositive},
+			#{legalCardBack},
+			#{legalCardValidity},
+			#{legalCardOffice},
+			#{legalName},
+			#{legalIdCard},
+			#{legalSex},
+			#{legalNation},
+			#{legalAddress},
+			#{chargeCardPositive},
+			#{chargeCardBack},
+			#{chargeCardValidity},
+			#{chargeCardOffice},
+			#{chargeName},
+			#{chargeIdCard},
+			#{chargeSex},
+			#{chargeNation},
+			#{chargePhone},
+			#{chargeEmail},
+			#{chargeAddress},
+			#{officeId.id},
+			#{paramsId.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE core_enterprise SET
+			name = #{name},
+			org_code = #{orgCode},
+			business_period_to = #{businessPeriodTo},
+			registered_capital = #{registeredCapital},
+			type = #{type},
+			province_id = #{provinceArea.id},
+			city_id = #{cityArea.id},
+			business_address = #{businessAddress},
+			business_license = #{businessLicense},
+			legal_card_positive = #{legalCardPositive},
+			legal_card_back = #{legalCardBack},
+			legal_card_validity = #{legalCardValidity},
+			legal_card_office = #{legalCardOffice},
+			legal_name = #{legalName},
+			legal_id_card = #{legalIdCard},
+			legal_sex = #{legalSex},
+			legal_nation = #{legalNation},
+			legal_address = #{legalAddress},
+			charge_card_positive = #{chargeCardPositive},
+			charge_card_back = #{chargeCardBack},
+			charge_card_validity = #{chargeCardValidity},
+			charge_card_office = #{chargeCardOffice},
+			charge_name = #{chargeName},
+			charge_id_card = #{chargeIdCard},
+			charge_sex = #{chargeSex},
+			charge_nation = #{chargeNation},
+			charge_phone = #{chargePhone},
+			charge_email = #{chargeEmail},
+			charge_address = #{chargeAddress},
+			office_id = #{officeId.id},
+			params_id = #{paramsId.id},
+			CREATE_BY = #{createBy.id},
+			CREATE_DATE = #{createDate},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks},
+			DEL_FLAG = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM core_enterprise
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE core_enterprise SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>

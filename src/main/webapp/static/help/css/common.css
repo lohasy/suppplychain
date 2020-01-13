@@ -1,0 +1,131 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 通用 */
+html{ height:100%; word-break:break-all;}
+a,input,textarea{ outline:none;}
+a{ text-decoration:none;}
+a:hover{ text-decoration:underline;}
+body{ height:100%; background:#fff; color:#5d5b5b; font-size:16px; font-family:'Microsoft Yahei';}
+.bg1{ background:#f9f9f9;}
+.bg2{ background:#f5f5f5;}
+.wrap{ position:relative; min-width:1200px; min-height:100%; _height:100%;}
+/*.centerWrap{ padding-bottom:266px;}*/
+.top,.header,.center,.footer{ width:1200px; margin-left:auto; margin-right:auto;}
+
+/* 公告 */
+.noticeWrap{ position:relative; padding:10px 60px; background:#fef6df url(../images/ico/icon01.png) 30px -423px no-repeat;}
+.noticeWrap p{ max-height:40px; font:bold 14px/20px 宋体; color:#f00; overflow:hidden;}
+.noticeWrap .close{ position:absolute; right:30px; top:10px; width:20px; height:20px; background:url(../images/ico/icon01.png) left -403px no-repeat;}
+
+/* 顶部 */
+.topWrap{ border-bottom:1px solid #ebebeb; background:#fafafa;}
+.top{ height:29px; color:#666; font-size:12px; line-height:29px;}
+.top .nav a{ position:relative; margin-right:20px; display:inline-block; color:#666;}
+.top .nav a:hover{ color:#45c868; text-decoration:none;}
+.top .nav a.logo{ padding-left:37px;}
+.top .nav a.logo .ico{ position:absolute; left:12px; top:4px; width:20px; height:20px; background:url(../images/ico/icon01.png) left -694px no-repeat;}
+.top .phone{ padding-left:20px; background:url(../images/ico/icon01.png) left -100px no-repeat;}
+
+/* 页头 */
+.headerWrap{}
+.header{ height:80px;}
+.header .logo{ float:left; height:54px; margin-top:13px;}
+.header .nav{ float:left; height:30px; padding-left:30px; margin-top:25px;}
+.header .nav a{ float:left; margin-left:40px; color:#333; line-height:30px;}
+.header .nav a:hover,.header .nav a.active{ color:#45c868; text-decoration:none;}
+.header .lR{ float:right; margin-top:25px;}
+.header .lR a{ margin-left:20px;}
+.header .admin{ float:right; position:relative; margin-top:19px;}
+.header .admin .name{ position:relative; display:inline-block; max-width:150px; height:42px; padding-right:34px; background:url(../images/ico/icon01.png) right top no-repeat; font-size:12px; color:#8f8f8f; line-height:42px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;}
+.header .admin .name img{ float:left; margin-right:23px; border:1px solid #e7e7e7; border-radius:50%;}
+.header .admin .name i{ position:absolute; top:8px; right:30px; width:8px; height:8px; background:url(../images/ico/icon01.png) left -131px no-repeat;}
+.header .admin:hover .name{ background:url(../images/ico/icon01.png) right -42px no-repeat; color:#45c868; text-decoration:none;}
+.header .admin ul{ display:none; position:absolute; top:42px; right:0; padding:10px 0; border:1px solid #f2f2f2; background:#fff; z-index:1;}
+.header .admin:hover ul{ display:block;}
+.header .admin ul a{ position:relative; display:block; height:30px; padding:0 20px; line-height:30px; font-size:12px; color:#7b7b7b;}
+.header .admin ul a:hover{ color:#68d082; text-decoration:none;}
+.header .admin ul i{ position:absolute; right:20px; top:9px; display:inline-block; min-width:6px; height:12px; padding:0 3px; border-radius:6px; background:#f53737; line-height:11px; color:#fff; font-size:9px; font-style:normal; text-align:center;}
+
+/* 页脚 */
+.footerWrap{ position:absolute; bottom:0; width:100%; background:#404040;}
+.footerWrap .part1{ width:1200px; height:140px; padding:24px 0 30px 0; margin:0 auto;}
+.footerWrap .part1 .list{ float:left; width:240px;}
+.footerWrap .part1 .list dt{ line-height:50px; color:#fff;}
+.footerWrap .part1 .list dd{ line-height:30px; font-size:12px; color:#b8b8b8;}
+.footerWrap .part1 .list a{ display:block; color:#b8b8b8;}
+.footerWrap .part1 .list a:hover{ color:#fff; text-decoration:none;}
+.footerWrap .part2{ padding:12px 0; border-top:1px solid #4a4a4a; text-align:center; color:#b9b9b9; line-height:24px; font-size:12px;}
+.footerWrap .part2 a{ color:#b9b9b9;}
+
+/* 置顶 二维码 */
+.backTop,.ewm{ position:fixed; right:50px; width:55px; height:55px; border-radius:5px; z-index:1;}
+.backTop{ display:none; bottom:163px; background:#88c799 url(../images/ico/icon01.png) left -293px no-repeat;}
+.ewm{ bottom:238px; background:#88c799 url(../images/ico/icon01.png) left -348px no-repeat;}
+.backTop:hover,.ewm:hover{ background-color:#45c868;}
+
+.code02{ display:none; position:fixed; right:27px; bottom:298px; z-index:999;}
+
+/* tab切换 */
+.tabMenu01{ border-bottom:1px solid #8e8e8e;}
+.tabMenu01_ul li{ float:left;}
+.tabMenu01_ul a{ display:inline-block; height:48px; padding: 0 20px; font:20px/48px 微软雅黑; color:#000; outline:0;}
+.tabMenu01_ul a:hover{ text-decoration:none;}
+.tabMenu01_ul li.active a{ color:#51A440;}
+
+.tabMenu02{ float:right; width:672px;}
+.tabMenu02_ul li{ float:left; width:80px; height:117px; margin:64px 0 0 88px; padding-bottom:23px;}
+.tabMenu02_ul a{ display:block; line-height:37px; color:#444; outline:0; text-align:center;}
+.tabMenu02_ul a i{ display:block; height:80px; background:url(../images/ico/icon02.png) no-repeat;}
+.tabMenu02_ul a i.ico1{ background-position:0 0;}
+.tabMenu02_ul a i.ico2{ background-position:-80px 0;}
+.tabMenu02_ul a i.ico3{ background-position:-160px 0;}
+.tabMenu02_ul a i.ico4{ background-position:-240px 0;}
+.tabMenu02_ul a i.ico5{ background-position:-320px 0;}
+.tabMenu02_ul a i.ico6{ background-position:-400px 0;}
+.tabMenu02_ul a i.ico7{ background-position:-480px 0;}
+.tabMenu02_ul a i.ico8{ background-position:-560px 0;}
+.tabMenu02_ul a:hover{ text-decoration:none;}
+.tabMenu02_ul li.active a{ color:#45c868;}
+.tabMenu02_ul li.active a i.ico1{ background-position:0 -80px;}
+.tabMenu02_ul li.active a i.ico2{ background-position:-80px -80px;}
+.tabMenu02_ul li.active a i.ico3{ background-position:-160px -80px;}
+.tabMenu02_ul li.active a i.ico4{ background-position:-240px -80px;}
+.tabMenu02_ul li.active a i.ico5{ background-position:-320px -80px;}
+.tabMenu02_ul li.active a i.ico6{ background-position:-400px -80px;}
+.tabMenu02_ul li.active a i.ico7{ background-position:-480px -80px;}
+.tabMenu02_ul li.active a i.ico8{ background-position:-560px -80px;}
+.tabBox02{ float:left; width:494px; height:486px;}
+
+.tabMenu03{ width:1200px; margin:0 auto;}
+.tabMenu03_ul li{ float:left; margin-top:10px;}
+.tabMenu03_ul a{ display:inline-block; width:140px; height:44px; border-top-left-radius:4px; border-top-right-radius:4px; text-align:center; line-height:44px; color:#323232; outline:0;}
+.tabMenu03_ul a:hover{ text-decoration:none;}
+.tabMenu03_ul li.active a{ background:#f9f9f9; color:#44ca69;}
+
+/* 弹出层 */
+.reveal-modal-bg{ display:none; position:fixed; left:0; top:0; width:100%; height:100%; background:#545454; opacity:0.3; -moz-opacity:0.3; filter:alpha(opacity=30); z-index:1000;}
+.close-reveal-modal{ position:absolute; right:12px; top:2px; color:#7e7e7e; font-size:22px; cursor:pointer;}
+.close-reveal-modal:hover{ text-decoration:none;}
+.reveal-modal{ display:none; position:absolute; left:50%; border-radius:2px; background:#fff; z-index:1001;}
+.reveal-modal .hd{ height:60px;}
+
+.modal1{ width:586px; margin-left:-293px;}
+
+.myModal1 .appLoad{ margin:0 50px 50px 50px;}
+.myModal1 .ios-android{ height:200px; padding-left:50px; margin-left:50px; border-left:1px solid #f2f2f2;}
+.myModal1 .ios-android a{ display:block; width:128px; height:52px; padding-left:100px; border:1px solid #45c868; border-radius:26px; background:url(../images/ico/icon05.png) no-repeat; line-height:52px; color:#45c868;}
+.myModal1 .ios-android a:hover{ border-color:#50d473; color:#50d473; text-decoration:none;}
+.myModal1 .ios-android .ios{ margin-top:36px; background-position:50px 0;}
+.myModal1 .ios-android .android{ margin-top:25px; background-position:50px -52px;}
+
+.myModal2 .tip{ border-bottom:1px solid #eee; line-height:65px; text-align:center; color:#333; font-size:12px;}
+.myModal2 .tip a{ line-height:55px;}
+.myModal2 .role{ height:240px; overflow:auto;}
+.myModal2 .role a{ display:block; height:80px; padding:0 20px; line-height:80px; color:#333; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;}
+.myModal2 .role a:hover{ background:#f8f8f8; text-decoration:none;}
+.myModal2 .role img{ float:left; width:45px; height:45px; margin:18px 20px 0 0; border-radius:50%;}
+
+.myModal3 .tip{background: #f8f8f8; line-height:65px; text-align:center; color:#333; font-size:16px;}
+.myModal3 .tip a{ line-height:55px;}
+.myModal3 .validation-code{width: 360px;margin: 30px auto;}

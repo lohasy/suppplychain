@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Supplier_shareholderDao">
+  
+  <sql id="columns">
+		a.id,
+		a.name,
+		a.id_num,
+		a.ratio,
+		a.supplier_enterprise_id AS "supplierEnterpriseId.id",
+		
+		c.name AS "supplierEnterpriseId.name",
+		c.org_code AS "supplierEnterpriseId.orgCode",
+		c.business_period_to AS "supplierEnterpriseId.businessPeriodTo",
+		c.registered_capital AS "supplierEnterpriseId.registeredCapital",
+		c.type AS "supplierEnterpriseId.type",
+		c.PROVINCE_ID as "supplierEnterpriseId.provinceArea.id",
+		c.CITY_ID as "supplierEnterpriseId.cityArea.id",
+		c.business_address AS "supplierEnterpriseId.businessAddress",
+		c.business_license AS "supplierEnterpriseId.businessLicense",
+		c.legal_card_positive AS "supplierEnterpriseId.legalCardPositive",
+		c.legal_card_back AS "supplierEnterpriseId.legalCardBack",
+		c.legal_card_validity AS "supplierEnterpriseId.legalCardValidity",
+		c.legal_card_office AS "supplierEnterpriseId.legalCardOffice",
+		c.legal_name AS "supplierEnterpriseId.legalName",
+		c.legal_id_card AS "supplierEnterpriseId.legalIdCard",
+		c.legal_sex AS "supplierEnterpriseId.legalSex",
+		c.legal_nation AS "supplierEnterpriseId.legalNation",
+		c.legal_address AS "supplierEnterpriseId.legalAddress",
+		c.agency_card_positive AS "supplierEnterpriseId.agencyCardPositive",
+		c.agency_card_back AS "supplierEnterpriseId.agencyCardBack",
+		c.agency_card_validity AS "supplierEnterpriseId.agencyCardValidity",
+		c.agency_card_office AS "supplierEnterpriseId.agencyCardOffice",
+		c.agency_name AS "supplierEnterpriseId.agencyName",
+		c.agency_id_card AS "supplierEnterpriseId.agencyIdCard",
+		c.agency_sex AS "supplierEnterpriseId.agencySex",
+		c.agency_nation AS "supplierEnterpriseId.agencyNation",
+		c.agency_phone AS "supplierEnterpriseId.agencyPhone",
+		c.agency_email AS "supplierEnterpriseId.agencyEmail",
+		c.agency_address AS "supplierEnterpriseId.agencyAddress",
+		c.operator_card_positive AS "supplierEnterpriseId.operatorCardPositive",
+		c.operator_card_back AS "supplierEnterpriseId.operatorCardBack",
+		c.operator_card_validity AS "supplierEnterpriseId.operatorCardValidity",
+		c.operator_card_office AS "supplierEnterpriseId.operatorCardOffice",
+		c.operator_name AS "supplierEnterpriseId.operatorName",
+		c.operator_id_card AS "supplierEnterpriseId.operatorIdCard",
+		c.operator_sex AS "supplierEnterpriseId.operatorSex",
+		c.operator_nation AS "supplierEnterpriseId.operatorNation",
+		c.operator_address AS "supplierEnterpriseId.operatorAddress",
+		c.hold_card_url AS "supplierEnterpriseId.holdCardUrl",
+		c.platform_operate_author AS "supplierEnterpriseId.platformOperateAuthor",
+		c.opening_permit_letter AS "supplierEnterpriseId.openingPermitLetter",
+		c.office_credit_letter AS "supplierEnterpriseId.officeCreditLetter",
+		c.company_constitution AS "supplierEnterpriseId.companyConstitution",
+		c.state AS "supplierEnterpriseId.state",
+		c.is_yqgys AS "supplierEnterpriseId.isYqgys",
+		c.OFFICE_ID AS "supplierEnterpriseId.officeId.id",
+		c.PARAMS_ID AS "supplierEnterpriseId.paramsId.id"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN supplier_enterprise c on a.supplier_enterprise_id = c.id
+	</sql>
+    
+	<select id="get" resultType="Supplier_shareholder">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_shareholder a
+			<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Supplier_shareholder">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_shareholder a
+			<include refid="joins"/>
+		WHERE 1 = 1 
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+	</select>
+	
+	<select id="findAllList" resultType="Supplier_shareholder">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_shareholder a
+			<include refid="joins"/>
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM supplier_shareholder a
+			<include refid="joins"/>
+		WHERE 1 = 1 
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO supplier_shareholder(
+			id,
+			name,
+			id_num,
+			ratio,
+			supplier_enterprise_id
+		) VALUES (
+			#{id},
+			#{name},
+			#{idNum},
+			#{ratio},
+			#{supplierEnterpriseId.id}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE supplier_shareholder SET
+			name = #{name},
+			id_num = #{idNum},
+			ratio = #{ratio},
+			supplier_enterprise_id = #{supplierEnterpriseId.id} 
+		WHERE id = #{id}
+	</update>
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM supplier_shareholder 
+		WHERE id = #{id}
+	</update>
+	
+	<!--根据供应商删除股东-->
+	<update id="deleteBySupplier">
+		DELETE FROM supplier_shareholder 
+		WHERE supplier_enterprise_id = #{supplier_id}
+	</update>
+</mapper>

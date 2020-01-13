@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Credit_detailedDao">
+  
+	<sql id="columns">
+		a.id,
+		a.all_quota,
+		a.available_quota,
+		a.interest_rate,
+		a.financing_ratio,
+		a.user_id AS "userId.id",
+		a.time,
+		a.params_id AS "paramsId.id",
+		
+		b.login_name AS "userId.loginName",
+		b.name AS "userId.name",
+		b.mobile AS "userId.mobile",
+		
+		c.all_quota AS "paramsId.allQuota",
+		c.available_quota AS "paramsId.availableQuota",
+		c.interest_rate AS "paramsId.interestRate",
+		c.financing_ratio AS "paramsId.financingRatio",
+		c.loan_name AS "paramsId.loanName",
+		c.loan_account AS "paramsId.loanAccount",
+		c.loan_open_bank AS "paramsId.loanOpenBank",
+		c.loan_balance AS "paramsId.loanBalance",
+		c.return_name AS "paramsId.returnName",
+		c.return_account AS "paramsId.returnAccount",
+		c.return_open_bank AS "paramsId.returnOpenBank",
+		c.return_balance AS "paramsId.returnBalance",
+		c.remind_repayment AS "paramsId.remindRepayment"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN sys_user b ON a.user_id = b.id
+		LEFT JOIN enterprise_params c ON a.params_id = c.id
+	</sql>
+    
+	<select id="get" resultType="Credit_detailed">
+		SELECT 
+			<include refid="columns"/>
+		FROM credit_detailed a
+			<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Credit_detailed">
+		SELECT 
+			<include refid="columns"/>
+		FROM credit_detailed a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="userId != null and userId.id != null and userId.id != ''">
+			AND a.user_id = #{userId.id}
+		</if>
+		<if test="paramsId != null and paramsId.id != null and paramsId.id != ''">
+			AND a.params_id = #{paramsId.id}
+		</if>
+		<if test="beginDate != null and beginDate != ''">AND a.time <![CDATA[>=]]> #{beginDate}</if>
+	 	<if test="endDate != null and endDate != ''">AND a.time <![CDATA[<=]]> #{endDate}</if>
+		ORDER BY a.time DESC
+	</select>
+	
+	<select id="findAllList" resultType="Credit_detailed">
+		SELECT 
+			<include refid="columns"/>
+		FROM credit_detailed a
+			<include refid="joins"/>
+		ORDER BY a.time DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM credit_detailed a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="userId != null and userId.id != null and userId.id != ''">
+			AND a.user_id = #{userId.id}
+		</if>
+		<if test="paramsId != null and paramsId.id != null and paramsId.id != ''">
+			AND a.params_id = #{paramsId.id}
+		</if>
+		<if test="beginDate != null and beginDate != ''">AND a.time <![CDATA[>=]]> #{beginDate}</if>
+	 	<if test="endDate != null and endDate != ''">AND a.time <![CDATA[<=]]> #{endDate}</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO credit_detailed(
+			id,
+			all_quota,
+			available_quota,
+			interest_rate,
+			financing_ratio,
+			user_id,
+			time,
+			params_id
+		) VALUES (
+			#{id},
+			#{allQuota},
+			#{availableQuota},
+			#{interestRate},
+			#{financingRatio},
+			#{userId.id},
+			#{time},
+			#{paramsId.id}
+		)
+	</insert>
+	
+	<update id="delete">
+		DELETE FROM credit_detailed
+		WHERE id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Bill_infoDao">
+  
+  <sql id="columns">
+		a.id,
+		a.num,
+		a.contract_num,
+		a.amount,
+		a.content,
+		a.start_date,
+		a.end_date,
+		a.financing_amount,
+		a.plan_financing_cost,
+		a.state,
+		a.supplier_enterprise_id AS "supplierEnterpriseId.id",
+		a.supplier_parent_id AS "supplierParentId.id",
+		a.core_enterprise_id AS "coreEnterpriseId.id",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+		
+		b.name AS "supplierEnterpriseId.name",
+		b.org_code AS "supplierEnterpriseId.orgCode",
+		b.business_period_to AS "supplierEnterpriseId.businessPeriodTo",
+		b.registered_capital AS "supplierEnterpriseId.registeredCapital",
+		b.type AS "supplierEnterpriseId.type",
+		b.PROVINCE_ID as "supplierEnterpriseId.provinceArea.id",
+		b.CITY_ID as "supplierEnterpriseId.cityArea.id",
+		b.business_address AS "supplierEnterpriseId.businessAddress",
+		b.business_license AS "supplierEnterpriseId.businessLicense",
+		b.legal_card_positive AS "supplierEnterpriseId.legalCardPositive",
+		b.legal_card_back AS "supplierEnterpriseId.legalCardBack",
+		b.legal_card_validity AS "supplierEnterpriseId.legalCardValidity",
+		b.legal_card_office AS "supplierEnterpriseId.legalCardOffice",
+		b.legal_name AS "supplierEnterpriseId.legalName",
+		b.legal_id_card AS "supplierEnterpriseId.legalIdCard",
+		b.legal_sex AS "supplierEnterpriseId.legalSex",
+		b.legal_nation AS "supplierEnterpriseId.legalNation",
+		b.legal_address AS "supplierEnterpriseId.legalAddress",
+		b.agency_card_positive AS "supplierEnterpriseId.agencyCardPositive",
+		b.agency_card_back AS "supplierEnterpriseId.agencyCardBack",
+		b.agency_card_validity AS "supplierEnterpriseId.agencyCardValidity",
+		b.agency_card_office AS "supplierEnterpriseId.agencyCardOffice",
+		b.agency_name AS "supplierEnterpriseId.agencyName",
+		b.agency_id_card AS "supplierEnterpriseId.agencyIdCard",
+		b.agency_sex AS "supplierEnterpriseId.agencySex",
+		b.agency_nation AS "supplierEnterpriseId.agencyNation",
+		b.agency_phone AS "supplierEnterpriseId.agencyPhone",
+		b.agency_email AS "supplierEnterpriseId.agencyEmail",
+		b.agency_address AS "supplierEnterpriseId.agencyAddress",
+		b.operator_card_positive AS "supplierEnterpriseId.operatorCardPositive",
+		b.operator_card_back AS "supplierEnterpriseId.operatorCardBack",
+		b.operator_card_validity AS "supplierEnterpriseId.operatorCardValidity",
+		b.operator_card_office AS "supplierEnterpriseId.operatorCardOffice",
+		b.operator_name AS "supplierEnterpriseId.operatorName",
+		b.operator_id_card AS "supplierEnterpriseId.operatorIdCard",
+		b.operator_sex AS "supplierEnterpriseId.operatorSex",
+		b.operator_nation AS "supplierEnterpriseId.operatorNation",
+		b.operator_address AS "supplierEnterpriseId.operatorAddress",
+		b.hold_card_url AS "supplierEnterpriseId.holdCardUrl",
+		b.platform_operate_author AS "supplierEnterpriseId.platformOperateAuthor",
+		b.opening_permit_letter AS "supplierEnterpriseId.openingPermitLetter",
+		b.office_credit_letter AS "supplierEnterpriseId.officeCreditLetter",
+		b.company_constitution AS "supplierEnterpriseId.companyConstitution",
+		b.state AS "supplierEnterpriseId.state",
+		b.is_yqgys AS "supplierEnterpriseId.isYqgys",
+		b.OFFICE_ID AS "supplierEnterpriseId.officeId.id",
+		b.PARAMS_ID AS "supplierEnterpriseId.paramsId.id",
+		
+		d.all_quota as "supplierEnterpriseId.paramsId.allQuota",
+		d.available_quota as "supplierEnterpriseId.paramsId.availableQuota",
+		d.interest_rate as "supplierEnterpriseId.paramsId.interestRate",
+		d.financing_ratio as "supplierEnterpriseId.paramsId.financingRatio",
+		d.loan_name as "supplierEnterpriseId.paramsId.loanName",
+		d.loan_account as "supplierEnterpriseId.paramsId.loanAccount",
+		d.loan_open_bank as "supplierEnterpriseId.paramsId.loanOpenBank",
+		d.loan_balance as "supplierEnterpriseId.paramsId.loanBalance",
+		d.return_name as "supplierEnterpriseId.paramsId.returnName",
+		d.return_account as "supplierEnterpriseId.paramsId.returnAccount",
+		d.return_open_bank as "supplierEnterpriseId.paramsId.returnOpenBank",
+		d.return_balance as "supplierEnterpriseId.paramsId.returnBalance",
+		d.remind_repayment as "supplierEnterpriseId.paramsId.remindRepayment",
+		
+		c.name AS "coreEnterpriseId.name",
+		c.org_code AS "coreEnterpriseId.orgCode",
+		c.business_period_to AS "coreEnterpriseId.businessPeriodTo",
+		c.registered_capital AS "coreEnterpriseId.registeredCapital",
+		c.type AS "coreEnterpriseId.type",
+		c.PROVINCE_ID as "coreEnterpriseId.provinceArea.id",
+		c.CITY_ID as "coreEnterpriseId.cityArea.id",
+		c.business_address AS "coreEnterpriseId.businessAddress",
+		c.business_license AS "coreEnterpriseId.businessLicense",
+		c.legal_card_positive AS "coreEnterpriseId.legalCardPositive",
+		c.legal_card_back AS "coreEnterpriseId.legalCardBack",
+		c.legal_card_validity AS "coreEnterpriseId.legalCardValidity",
+		c.legal_card_office AS "coreEnterpriseId.legalCardOffice",
+		c.legal_name AS "coreEnterpriseId.legalName",
+		c.legal_id_card AS "coreEnterpriseId.legalIdCard",
+		c.legal_sex AS "coreEnterpriseId.legalSex",
+		c.legal_nation AS "coreEnterpriseId.legalNation",
+		c.legal_address AS "coreEnterpriseId.legalAddress",
+		c.charge_card_positive AS "coreEnterpriseId.chargeCardPositive",
+		c.charge_card_back AS "coreEnterpriseId.chargeCardBack",
+		c.charge_card_validity AS "coreEnterpriseId.chargeCardValidity",
+		c.charge_card_office AS "coreEnterpriseId.chargeCardOffice",
+		c.charge_name AS "coreEnterpriseId.chargeName",
+		c.charge_id_card AS "coreEnterpriseId.chargeIdCard",
+		c.charge_sex AS "coreEnterpriseId.chargeSex",
+		c.charge_nation AS "coreEnterpriseId.chargeNation",
+		c.charge_phone AS "coreEnterpriseId.chargePhone",
+		c.charge_email AS "coreEnterpriseId.chargeEmail",
+		c.charge_address AS "coreEnterpriseId.chargeAddress",
+		c.OFFICE_ID AS "coreEnterpriseId.officeId.id",
+		c.PARAMS_ID AS "coreEnterpriseId.paramsId.id",
+		
+		e.all_quota as "coreEnterpriseId.paramsId.allQuota",
+		e.available_quota as "coreEnterpriseId.paramsId.availableQuota",
+		e.interest_rate as "coreEnterpriseId.paramsId.interestRate",
+		e.financing_ratio as "coreEnterpriseId.paramsId.financingRatio",
+		e.loan_name as "coreEnterpriseId.paramsId.loanName",
+		e.loan_account as "coreEnterpriseId.paramsId.loanAccount",
+		e.loan_open_bank as "coreEnterpriseId.paramsId.loanOpenBank",
+		e.loan_balance as "coreEnterpriseId.paramsId.loanBalance",
+		e.return_name as "coreEnterpriseId.paramsId.returnName",
+		e.return_account as "coreEnterpriseId.paramsId.returnAccount",
+		e.return_open_bank as "coreEnterpriseId.paramsId.returnOpenBank",
+		e.return_balance as "coreEnterpriseId.paramsId.returnBalance",
+		e.remind_repayment as "coreEnterpriseId.paramsId.remindRepayment",
+		
+		f.name AS "supplierParentId.name",
+		f.org_code AS "supplierParentId.orgCode",
+		f.business_period_to AS "supplierParentId.businessPeriodTo",
+		f.registered_capital AS "supplierParentId.registeredCapital",
+		f.type AS "supplierParentId.type",
+		f.PROVINCE_ID as "supplierParentId.provinceArea.id",
+		f.CITY_ID as "supplierParentId.cityArea.id",
+		f.business_address AS "supplierParentId.businessAddress",
+		f.business_license AS "supplierParentId.businessLicense",
+		f.legal_card_positive AS "supplierParentId.legalCardPositive",
+		f.legal_card_back AS "supplierParentId.legalCardBack",
+		f.legal_card_validity AS "supplierParentId.legalCardValidity",
+		f.legal_card_office AS "supplierParentId.legalCardOffice",
+		f.legal_name AS "supplierParentId.legalName",
+		f.legal_id_card AS "supplierParentId.legalIdCard",
+		f.legal_sex AS "supplierParentId.legalSex",
+		f.legal_nation AS "supplierParentId.legalNation",
+		f.legal_address AS "supplierParentId.legalAddress",
+		f.agency_card_positive AS "supplierParentId.agencyCardPositive",
+		f.agency_card_back AS "supplierParentId.agencyCardBack",
+		f.agency_card_validity AS "supplierParentId.agencyCardValidity",
+		f.agency_card_office AS "supplierParentId.agencyCardOffice",
+		f.agency_name AS "supplierParentId.agencyName",
+		f.agency_id_card AS "supplierParentId.agencyIdCard",
+		f.agency_sex AS "supplierParentId.agencySex",
+		f.agency_nation AS "supplierParentId.agencyNation",
+		f.agency_phone AS "supplierParentId.agencyPhone",
+		f.agency_email AS "supplierParentId.agencyEmail",
+		f.agency_address AS "supplierParentId.agencyAddress",
+		f.operator_card_positive AS "supplierParentId.operatorCardPositive",
+		f.operator_card_back AS "supplierParentId.operatorCardBack",
+		f.operator_card_validity AS "supplierParentId.operatorCardValidity",
+		f.operator_card_office AS "supplierParentId.operatorCardOffice",
+		f.operator_name AS "supplierParentId.operatorName",
+		f.operator_id_card AS "supplierParentId.operatorIdCard",
+		f.operator_sex AS "supplierParentId.operatorSex",
+		f.operator_nation AS "supplierParentId.operatorNation",
+		f.operator_address AS "supplierParentId.operatorAddress",
+		f.hold_card_url AS "supplierParentId.holdCardUrl",
+		f.platform_operate_author AS "supplierParentId.platformOperateAuthor",
+		f.opening_permit_letter AS "supplierParentId.openingPermitLetter",
+		f.office_credit_letter AS "supplierParentId.officeCreditLetter",
+		f.company_constitution AS "supplierParentId.companyConstitution",
+		f.state AS "supplierParentId.state",
+		f.is_yqgys AS "supplierParentId.isYqgys",
+		f.OFFICE_ID AS "supplierParentId.officeId.id",
+		f.PARAMS_ID AS "supplierParentId.paramsId.id",
+		
+		g.all_quota as "supplierParentId.paramsId.allQuota",
+		g.available_quota as "supplierParentId.paramsId.availableQuota",
+		g.interest_rate as "supplierParentId.paramsId.interestRate",
+		g.financing_ratio as "supplierParentId.paramsId.financingRatio",
+		g.loan_name as "supplierParentId.paramsId.loanName",
+		g.loan_account as "supplierParentId.paramsId.loanAccount",
+		g.loan_open_bank as "supplierParentId.paramsId.loanOpenBank",
+		g.loan_balance as "supplierParentId.paramsId.loanBalance",
+		g.return_name as "supplierParentId.paramsId.returnName",
+		g.return_account as "supplierParentId.paramsId.returnAccount",
+		g.return_open_bank as "supplierParentId.paramsId.returnOpenBank",
+		g.return_balance as "supplierParentId.paramsId.returnBalance",
+		g.remind_repayment as "supplierParentId.paramsId.remindRepayment",
+		
+		(select count(v.id) from voucher_info v where v.bill_id = a.id and type = 0) AS "hxqyVoucherCount",
+		(select count(v.id) from voucher_info v where v.bill_id = a.id and type = 1) AS "gysVoucherCount"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN supplier_enterprise b on a.supplier_enterprise_id = b.id
+		LEFT JOIN core_enterprise c on a.core_enterprise_id = c.id
+		
+		LEFT JOIN enterprise_params d on d.id = b.params_id
+		LEFT JOIN enterprise_params e on e.id = c.params_id
+		
+		LEFT JOIN supplier_enterprise f on a.supplier_parent_id = f.id
+		LEFT JOIN enterprise_params g on g.id = f.params_id
+	</sql>
+    
+	<select id="get" resultType="Bill_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM bill_info a
+			<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getnum" resultType="Bill_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM bill_info a
+			<include refid="joins"/>
+		WHERE a.num = #{num}
+	</select>
+	
+	<update id="updateBillState" >
+		update bill_info set state='12' where id=#{bill_id}
+	</update>
+	
+	<select id="findList" resultType="Bill_info">
+		SELECT * FROM (
+			SELECT 
+				<include refid="columns"/>
+			FROM bill_info a
+				<include refid="joins"/>
+			WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+			
+			<if test="num != null and num != ''">
+				AND a.num LIKE 
+				<if test="dbName == 'oracle'">'%'||#{num}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{num}, '%')</if>
+			</if>
+			<if test="contractNum != null and contractNum != ''">
+				AND a.contract_num LIKE 
+				<if test="dbName == 'oracle'">'%'||#{contractNum}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{contractNum}, '%')</if>
+			</if>
+			<if test="content != null and content != ''">
+				AND a.content LIKE  
+				<if test="dbName == 'oracle'">'%'||#{content}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{content}, '%')</if>
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+				AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+			</if>
+			<if test="supplierParentId != null and supplierParentId.id != null and supplierParentId.id != ''">
+				AND a.supplier_parent_id = #{supplierParentId.id}
+			</if>
+			<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+				AND a.core_enterprise_id = #{coreEnterpriseId.id}
+			</if>
+			<if test="supplierEnterpriseId != null and supplierEnterpriseId.name != null and supplierEnterpriseId.name != ''">
+				AND b.name LIKE  
+				<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.name}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.name}, '%')</if>
+			</if>
+			<if test="searchStartDate != null and searchStartDate != ''">AND a.start_date <![CDATA[=]]> #{searchStartDate}</if>
+	 		<if test="searchEndDate != null and searchEndDate != ''">AND a.end_date <![CDATA[=]]> #{searchEndDate}</if>
+			ORDER BY a.start_date DESC
+		) t WHERE 1=1
+		<if test='hxqyIsUploadVoucher == "0"'>
+			AND t.hxqyVoucherCount = 0
+		</if>
+		<if test='hxqyIsUploadVoucher == "1"'>
+			AND t.hxqyVoucherCount <![CDATA[>]]> 0
+		</if>
+		<if test='gysIsUploadVoucher == "0"'>
+			AND t.gysVoucherCount = 0
+		</if>
+		<if test='gysIsUploadVoucher == "1"'>
+			AND t.gysVoucherCount <![CDATA[>]]> 0
+		</if>
+	</select>
+	
+	<select id="findAllList" resultType="Bill_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM bill_info a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.start_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT COUNT(*) FROM (
+			SELECT 
+				<include refid="columns"/>
+			FROM bill_info a
+				<include refid="joins"/>
+			WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+			
+			<if test="num != null and num != ''">
+				AND a.num = #{num}
+			</if>
+			<if test="contractNum != null and contractNum != ''">
+				AND a.contract_num LIKE 
+				<if test="dbName == 'oracle'">'%'||#{contractNum}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{contractNum}, '%')</if>
+			</if>
+			<if test="content != null and content != ''">
+				AND a.content LIKE  
+				<if test="dbName == 'oracle'">'%'||#{content}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{content}, '%')</if>
+			</if>
+			<if test="state != null and state != ''">
+				AND a.state = #{state}
+			</if>
+			<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+				AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+			</if>
+			<if test="supplierParentId != null and supplierParentId.id != null and supplierParentId.id != ''">
+				AND a.supplier_parent_id = #{supplierParentId.id}
+			</if>
+			<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+				AND a.core_enterprise_id = #{coreEnterpriseId.id}
+			</if>
+			<if test="supplierEnterpriseId != null and supplierEnterpriseId.name != null and supplierEnterpriseId.name != ''">
+				AND b.name LIKE  
+				<if test="dbName == 'oracle'">'%'||#{supplierEnterpriseId.name}||'%'</if>
+				<if test="dbName == 'mysql'">CONCAT('%', #{supplierEnterpriseId.name}, '%')</if>
+			</if>
+			<if test="searchStartDate != null and searchStartDate != ''">AND a.start_date <![CDATA[>=]]> #{searchStartDate}</if>
+	 		<if test="searchEndDate != null and searchEndDate != ''">AND a.start_date <![CDATA[<=]]> #{searchEndDate}</if>
+		) t WHERE 1=1
+		<if test='hxqyIsUploadVoucher == "0"'>
+			AND t.hxqyVoucherCount = 0
+		</if>
+		<if test='hxqyIsUploadVoucher == "1"'>
+			AND t.hxqyVoucherCount <![CDATA[>]]> 0
+		</if>
+		<if test='gysIsUploadVoucher == "0"'>
+			AND t.gysVoucherCount = 0
+		</if>
+		<if test='gysIsUploadVoucher == "1"'>
+			AND t.gysVoucherCount <![CDATA[>]]> 0
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bill_info(
+			id,
+			num,
+			contract_num,
+			amount,
+			content,
+			start_date,
+			end_date,
+			financing_amount,
+			plan_financing_cost,
+			state,
+			supplier_enterprise_id,
+			supplier_parent_id,
+			core_enterprise_id,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG
+		) VALUES (
+			#{id},
+			#{num},
+			#{contractNum},
+			#{amount},
+			#{content},
+			#{startDate},
+			#{endDate},
+			#{financingAmount},
+			#{planFinancingCost},
+			#{state},
+			#{supplierEnterpriseId.id},
+			#{supplierParentId.id},
+			#{coreEnterpriseId.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bill_info SET
+			num = #{num},
+			contract_num = #{contractNum},
+			amount = #{amount},
+			content = #{content},
+			start_date = #{startDate},
+			end_date = #{endDate},
+			financing_amount = #{financingAmount},
+			plan_financing_cost = #{planFinancingCost},
+			state = #{state},
+			core_enterprise_id = #{coreEnterpriseId.id},
+			supplier_parent_id = #{supplierParentId.id},
+			supplier_enterprise_id = #{supplierEnterpriseId.id},
+			create_by = #{createBy.id},
+			CREATE_DATE = #{createDate},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks},
+			DEL_FLAG = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM bill_info
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE bill_info SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Enterprise_paramsDao">
+	<sql id="columns">
+		a.id,
+		a.all_quota,
+		a.available_quota,
+		a.interest_rate,
+		a.financing_ratio,
+		a.loan_name,
+		a.loan_account,
+		a.loan_open_bank,
+		a.loan_balance,
+		a.return_name,
+		a.return_account,
+		a.return_open_bank,
+		a.return_balance,
+		a.remind_repayment
+	</sql>
+	
+	<sql id="joins">
+		
+	</sql>
+    
+	<select id="get" resultType="Enterprise_params">
+		SELECT 
+			<include refid="columns"/>
+		FROM enterprise_params a
+			<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Enterprise_params">
+		SELECT 
+			<include refid="columns"/>
+		FROM enterprise_params a
+			<include refid="joins"/>
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM enterprise_params a
+			<include refid="joins"/>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO enterprise_params(
+			id,
+			all_quota,
+			available_quota,
+			interest_rate,
+			financing_ratio,
+			loan_name,
+			loan_account,
+			loan_open_bank,
+			loan_balance,
+			return_name,
+			return_account,
+			return_open_bank,
+			return_balance,
+			remind_repayment
+		) VALUES (
+			#{id},
+			#{allQuota},
+			#{availableQuota},
+			#{interestRate},
+			#{financingRatio},
+			#{loanName},
+			#{loanAccount},
+			#{loanOpenBank},
+			#{loanBalance},
+			#{returnName},
+			#{returnAccount},
+			#{returnOpenBank},
+			#{returnBalance},
+			#{remindRepayment}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE enterprise_params SET 
+			all_quota = #{allQuota},
+			available_quota = #{availableQuota},
+			interest_rate = #{interestRate},
+			financing_ratio = #{financingRatio},
+			loan_name = #{loanName},
+			loan_account = #{loanAccount},
+			loan_open_bank = #{loanOpenBank},
+			loan_balance = #{loanBalance},
+			return_name = #{returnName},
+			return_account = #{returnAccount},
+			return_open_bank = #{returnOpenBank},
+			return_balance = #{returnBalance},
+			remind_repayment = #{remindRepayment}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM enterprise_params
+		WHERE id = #{id}
+	</update>
+</mapper>

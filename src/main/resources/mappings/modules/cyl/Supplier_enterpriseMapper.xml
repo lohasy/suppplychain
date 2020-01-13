@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Supplier_enterpriseDao">
+	<sql id="columns">
+		a.id,
+		a.name,
+		a.org_code,
+		a.business_period_to,
+		a.registered_capital,
+		a.type,
+		a.province_id as "provinceArea.id",
+		a.city_id as "cityArea.id",
+		a.business_address,
+		a.business_license,
+		a.legal_card_positive,
+		a.legal_card_back,
+		a.legal_card_validity,
+		a.legal_card_office,
+		a.legal_name,
+		a.legal_id_card,
+		a.legal_sex,
+		a.legal_nation,
+		a.legal_address,
+		a.agency_card_positive,
+		a.agency_card_back,
+		a.agency_card_validity,
+		a.agency_card_office,
+		a.agency_name,
+		a.agency_id_card,
+		a.agency_sex,
+		a.agency_nation,
+		a.agency_phone,
+		a.agency_email,
+		a.agency_address,
+		a.operator_card_positive,
+		a.operator_card_back,
+		a.operator_card_validity,
+		a.operator_card_office,
+		a.operator_name,
+		a.operator_id_card,
+		a.operator_sex,
+		a.operator_nation,
+		a.operator_address,
+		a.hold_card_url,
+		a.platform_operate_author,
+		a.opening_permit_letter,
+		a.office_credit_letter,
+		a.company_constitution,
+		a.state,
+		a.is_yqgys,
+		a.OFFICE_ID AS "officeId.id",
+		a.PARAMS_ID AS "paramsId.id",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+		
+		b.name as "provinceArea.name",
+		b.code as "provinceArea.code",
+		
+		c.name as "cityArea.name",
+		c.code as "cityArea.code",
+		
+		d.all_quota as "paramsId.allQuota",
+		d.available_quota as "paramsId.availableQuota",
+		d.interest_rate as "paramsId.interestRate",
+		d.financing_ratio as "paramsId.financingRatio",
+		d.loan_name as "paramsId.loanName",
+		d.loan_account as "paramsId.loanAccount",
+		d.loan_open_bank as "paramsId.loanOpenBank",
+		d.loan_balance as "paramsId.loanBalance",
+		d.return_name as "paramsId.returnName",
+		d.return_account as "paramsId.returnAccount",
+		d.return_open_bank as "paramsId.returnOpenBank",
+		d.return_balance as "paramsId.returnBalance",
+		d.remind_repayment as "paramsId.remindRepayment"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN sys_area b on a.province_id = b.id
+		LEFT JOIN sys_area c on a.city_id = c.id
+		LEFT JOIN enterprise_params d on a.params_id = d.id
+		LEFT JOIN core_supplier h on a.id = h.supplier_enterprise_id
+	</sql>
+    
+	<select id="get" resultType="Supplier_enterprise">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_enterprise a
+			<include refid="joins"/>
+		WHERE a.id = #{id} group by a.id
+	</select>
+	
+	<select id="getName" resultType="Supplier_enterprise">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_enterprise a
+			<include refid="joins"/>
+		WHERE a.name = #{name} group by a.id limit 1
+	</select>
+	
+	<select id="findList" resultType="Supplier_enterprise">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_enterprise a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="orgCode != null and orgCode != ''">
+			AND a.org_code = #{orgCode}
+		</if>
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="state != null and state != ''">
+			AND a.state = #{state}
+		</if>
+		<if test="provinceArea != null and provinceArea.id != null and provinceArea.id != ''">
+			AND a.province_id = #{provinceArea.id}
+		</if>
+		<if test="cityArea != null and cityArea.id != null and cityArea.id != ''">
+			AND a.city_id = #{cityArea.id}
+		</if>
+		<if test="coresupplier!=null and coresupplier.coreEnterpriseId != null and coresupplier.coreEnterpriseId.id != ''">
+			AND h.Core_enterprise_id = #{coresupplier.coreEnterpriseId.id}
+		</if>
+		<if test="agencyName != null and agencyName != ''">
+			AND a.agency_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{agencyName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{agencyName}, '%')</if>
+		</if>
+		<if test="agencyPhone != null and agencyPhone != ''">
+			AND a.agency_phone LIKE
+			 <if test="dbName == 'oracle'">'%'||#{agencyPhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{agencyPhone}, '%')</if>
+		</if>
+		<if test="agencyEmail != null and agencyEmail != ''">
+			AND a.agency_email LIKE 
+			<if test="dbName == 'oracle'">'%'||#{agencyEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{agencyEmail}, '%')</if>
+		</if>
+		<if test="beginDate != null and beginDate != ''">AND a.create_date <![CDATA[>=]]> #{beginDate}</if>
+	 	<if test="endDate != null and endDate != ''">AND a.create_date <![CDATA[<=]]>#{endDate}</if>
+	 	group by a.id ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="Supplier_enterprise">
+		SELECT 
+			<include refid="columns"/>
+		FROM supplier_enterprise a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		group by a.id ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM supplier_enterprise a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="orgCode != null and orgCode != ''">
+			AND a.org_code = #{orgCode}
+		</if>
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="state != null and state != ''">
+			AND a.state = #{state}
+		</if>
+		<if test="provinceArea != null and provinceArea.id != null and provinceArea.id != ''">
+			AND a.province_id = #{provinceArea.id}
+		</if>
+		<if test="cityArea != null and cityArea.id != null and cityArea.id != ''">
+			AND a.city_id = #{cityArea.id}
+		</if>
+		<if test="coresupplier!=null and coresupplier.coreEnterpriseId != null and coresupplier.coreEnterpriseId.id != ''">
+			AND h.Core_enterprise_id = #{coresupplier.coreEnterpriseId.id}
+		</if>
+		<if test="agencyName != null and agencyName != ''">
+			AND a.agency_name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{agencyName}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{agencyName}, '%')</if>
+		</if>
+		<if test="agencyPhone != null and agencyPhone != ''">
+			AND a.agency_phone LIKE
+			 <if test="dbName == 'oracle'">'%'||#{agencyPhone}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{agencyPhone}, '%')</if>
+		</if>
+		<if test="agencyEmail != null and agencyEmail != ''">
+			AND a.agency_email LIKE 
+			<if test="dbName == 'oracle'">'%'||#{agencyEmail}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{agencyEmail}, '%')</if>
+		</if>
+		<if test="beginDate != null and beginDate != ''">AND a.create_date <![CDATA[>=]]> #{beginDate}</if>
+	 	<if test="endDate != null and endDate != ''">AND a.create_date <![CDATA[<=]]>#{endDate}</if>
+	 	group by a.id
+	</select>
+	
+	<select id="selectState"  resultType="java.util.HashMap">
+		SELECT COUNT(*) count FROM Supplier_enterprise WHERE state = 0
+		UNION ALL
+		SELECT COUNT(*) FROM Supplier_enterprise WHERE state = 1
+		UNION ALL
+		SELECT COUNT(*) FROM Supplier_enterprise WHERE state = 3
+		UNION ALL
+		SELECT COUNT(*) FROM Supplier_enterprise WHERE state = 4
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO supplier_enterprise(
+			id,
+			name,
+			org_code,
+			business_period_to,
+			registered_capital,
+			type,
+			province_id,
+			city_id,
+			business_address,
+			business_license,
+			legal_card_positive,
+			legal_card_back,
+			legal_card_validity,
+			legal_card_office,
+			legal_name,
+			legal_id_card,
+			legal_sex,
+			legal_nation,
+			legal_address,
+			agency_card_positive,
+			agency_card_back,
+			agency_card_validity,
+			agency_card_office,
+			agency_name,
+			agency_id_card,
+			agency_sex,
+			agency_nation,
+			agency_phone,
+			agency_email,
+			agency_address,
+			operator_card_positive,
+			operator_card_back,
+			operator_card_validity,
+			operator_card_office,
+			operator_name,
+			operator_id_card,
+			operator_sex,
+			operator_nation,
+			operator_address,
+			hold_card_url,
+			platform_operate_author,
+			opening_permit_letter,
+			office_credit_letter,
+			company_constitution,
+			state,
+			is_yqgys,
+			office_id,
+			params_id,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG
+		) VALUES (
+			#{id}, 
+			#{name}, 
+			#{orgCode}, 
+			#{businessPeriodTo}, 
+			#{registeredCapital},
+			#{type}, 
+			#{provinceArea.id}, 
+			#{cityArea.id}, 
+			#{businessAddress}, 
+			#{businessLicense}, 
+			#{legalCardPositive}, 
+			#{legalCardBack}, 
+			#{legalCardValidity}, 
+			#{legalCardOffice}, 
+			#{legalName}, 
+			#{legalIdCard}, 
+			#{legalSex}, 
+			#{legalNation}, 
+			#{legalAddress}, 
+			#{agencyCardPositive}, 
+			#{agencyCardBack}, 
+			#{agencyCardValidity}, 
+			#{agencyCardOffice}, 
+			#{agencyName}, 
+			#{agencyIdCard}, 
+			#{agencySex}, 
+			#{agencyNation}, 
+			#{agencyPhone}, 
+			#{agencyEmail}, 
+			#{agencyAddress}, 
+			#{operatorCardPositive}, 
+			#{operatorCardBack}, 
+			#{operatorCardValidity}, 
+			#{operatorCardOffice}, 
+			#{operatorName}, 
+			#{operatorIdCard}, 
+			#{operatorSex}, 
+			#{operatorNation}, 
+			#{operatorAddress},
+			#{holdCardUrl}, 
+			#{platformOperateAuthor}, 
+			#{openingPermitLetter}, 
+			#{officeCreditLetter}, 
+			#{companyConstitution}, 
+			#{state},
+			#{isYqgys},
+			#{officeId.id},
+			#{paramsId.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id}, 
+			#{updateDate}, 
+			#{remarks}, 
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE supplier_enterprise SET
+			name = #{name},
+			org_code = #{orgCode},
+			business_period_to = #{businessPeriodTo},
+			registered_capital = #{registeredCapital},
+			type = #{type},
+			province_id = #{provinceArea.id},
+			city_id = #{cityArea.id},
+			business_address = #{businessAddress},
+			business_license = #{businessLicense},
+			legal_card_positive = #{legalCardPositive}, 
+			legal_card_back = #{legalCardBack}, 
+			legal_card_validity = #{legalCardValidity}, 
+			legal_card_office = #{legalCardOffice}, 
+			legal_name = #{legalName}, 
+			legal_id_card = #{legalIdCard}, 
+			legal_sex = #{legalSex}, 
+			legal_nation = #{legalNation}, 
+			legal_address = #{legalAddress}, 
+			agency_card_positive = #{agencyCardPositive}, 
+			agency_card_back = #{agencyCardBack}, 
+			agency_card_validity = #{agencyCardValidity}, 
+			agency_card_office = #{agencyCardOffice}, 
+			agency_name = #{agencyName}, 
+			agency_id_card = #{agencyIdCard}, 
+			agency_sex = #{agencySex}, 
+			agency_nation = #{agencyNation}, 
+			agency_phone = #{agencyPhone}, 
+			agency_email = #{agencyEmail}, 
+			agency_address = #{agencyAddress}, 
+			operator_card_positive = #{operatorCardPositive}, 
+			operator_card_back = #{operatorCardBack}, 
+			operator_card_validity = #{operatorCardValidity}, 
+			operator_card_office = #{operatorCardOffice}, 
+			operator_name = #{operatorName}, 
+			operator_id_card = #{operatorIdCard}, 
+			operator_sex = #{operatorSex}, 
+			operator_nation = #{operatorNation}, 
+			operator_address = #{operatorAddress},
+			hold_card_url = #{holdCardUrl},
+			platform_operate_author = #{platformOperateAuthor},
+			opening_permit_letter = #{openingPermitLetter},
+			office_credit_letter = #{officeCreditLetter},
+			company_constitution = #{companyConstitution},
+			state = #{state},
+			is_yqgys = #{isYqgys},
+			office_id = #{officeId.id},
+			params_id = #{paramsId.id},
+			CREATE_BY = #{createBy.id},
+			CREATE_DATE = #{createDate},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks},
+			DEL_FLAG = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM supplier_enterprise
+		WHERE id = #{id}
+	</update>
+	
+	<update id="deleteByLogic">
+		UPDATE supplier_enterprise SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>

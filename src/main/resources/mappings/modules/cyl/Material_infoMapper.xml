@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Material_infoDao">
+  
+  <sql id="columns">
+		a.id,
+		a.name,
+		a.url,
+		a.template,
+		a.financing_id AS "financingId.id",
+		a.supplier_enterprise_id AS "supplierEnterpriseId.id",
+		a.supplier_parent_id AS "supplierParentId.id",
+		a.core_enterprise_id AS "coreEnterpriseId.id",
+		a.type,
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+		
+		b.num AS "financingId.num",
+		b.total_amount AS "financingId.totalAmount",
+		b.loan_amount AS "financingId.loanAmount",
+		b.loan_url AS "financingId.loanUrl",
+		b.generation_date AS "financingId.generationDate",
+		b.expiry_date AS "financingId.expiryDate",
+		b.month_rate AS "financingId.monthRate",
+		b.month_financing AS "financingId.monthFinancing",
+		b.state AS "financingId.state",
+		b.state_explain AS "financingId.stateExplain",
+		b.bill_id AS "financingId.billId.id",
+		
+		c.name AS "supplierEnterpriseId.name",
+		c.org_code AS "supplierEnterpriseId.orgCode",
+		c.business_period_to AS "supplierEnterpriseId.businessPeriodTo",
+		c.registered_capital AS "supplierEnterpriseId.registeredCapital",
+		c.type AS "supplierEnterpriseId.type",
+		c.PROVINCE_ID as "supplierEnterpriseId.provinceArea.id",
+		c.CITY_ID as "supplierEnterpriseId.cityArea.id",
+		c.business_address AS "supplierEnterpriseId.businessAddress",
+		c.business_license AS "supplierEnterpriseId.businessLicense",
+		c.legal_card_positive AS "supplierEnterpriseId.legalCardPositive",
+		c.legal_card_back AS "supplierEnterpriseId.legalCardBack",
+		c.legal_card_validity AS "supplierEnterpriseId.legalCardValidity",
+		c.legal_card_office AS "supplierEnterpriseId.legalCardOffice",
+		c.legal_name AS "supplierEnterpriseId.legalName",
+		c.legal_id_card AS "supplierEnterpriseId.legalIdCard",
+		c.legal_sex AS "supplierEnterpriseId.legalSex",
+		c.legal_nation AS "supplierEnterpriseId.legalNation",
+		c.legal_address AS "supplierEnterpriseId.legalAddress",
+		c.agency_card_positive AS "supplierEnterpriseId.agencyCardPositive",
+		c.agency_card_back AS "supplierEnterpriseId.agencyCardBack",
+		c.agency_card_validity AS "supplierEnterpriseId.agencyCardValidity",
+		c.agency_card_office AS "supplierEnterpriseId.agencyCardOffice",
+		c.agency_name AS "supplierEnterpriseId.agencyName",
+		c.agency_id_card AS "supplierEnterpriseId.agencyIdCard",
+		c.agency_sex AS "supplierEnterpriseId.agencySex",
+		c.agency_nation AS "supplierEnterpriseId.agencyNation",
+		c.agency_phone AS "supplierEnterpriseId.agencyPhone",
+		c.agency_email AS "supplierEnterpriseId.agencyEmail",
+		c.agency_address AS "supplierEnterpriseId.agencyAddress",
+		c.operator_card_positive AS "supplierEnterpriseId.operatorCardPositive",
+		c.operator_card_back AS "supplierEnterpriseId.operatorCardBack",
+		c.operator_card_validity AS "supplierEnterpriseId.operatorCardValidity",
+		c.operator_card_office AS "supplierEnterpriseId.operatorCardOffice",
+		c.operator_name AS "supplierEnterpriseId.operatorName",
+		c.operator_id_card AS "supplierEnterpriseId.operatorIdCard",
+		c.operator_sex AS "supplierEnterpriseId.operatorSex",
+		c.operator_nation AS "supplierEnterpriseId.operatorNation",
+		c.operator_address AS "supplierEnterpriseId.operatorAddress",
+		c.hold_card_url AS "supplierEnterpriseId.holdCardUrl",
+		c.platform_operate_author AS "supplierEnterpriseId.platformOperateAuthor",
+		c.opening_permit_letter AS "supplierEnterpriseId.openingPermitLetter",
+		c.office_credit_letter AS "supplierEnterpriseId.officeCreditLetter",
+		c.company_constitution AS "supplierEnterpriseId.companyConstitution",
+		c.state AS "supplierEnterpriseId.state",
+		c.is_yqgys AS "supplierEnterpriseId.isYqgys",
+		c.OFFICE_ID AS "supplierEnterpriseId.officeId.id",
+		c.PARAMS_ID AS "supplierEnterpriseId.paramsId.id",
+		
+		d.name AS "coreEnterpriseId.name",
+		d.org_code AS "coreEnterpriseId.orgCode",
+		d.business_period_to AS "coreEnterpriseId.businessPeriodTo",
+		d.registered_capital AS "coreEnterpriseId.registeredCapital",
+		d.type AS "coreEnterpriseId.type",
+		d.PROVINCE_ID as "coreEnterpriseId.provinceArea.id",
+		d.CITY_ID as "coreEnterpriseId.cityArea.id",
+		d.business_address AS "coreEnterpriseId.businessAddress",
+		d.business_license AS "coreEnterpriseId.businessLicense",
+		d.legal_card_positive AS "coreEnterpriseId.legalCardPositive",
+		d.legal_card_back AS "coreEnterpriseId.legalCardBack",
+		d.legal_card_validity AS "coreEnterpriseId.legalCardValidity",
+		d.legal_card_office AS "coreEnterpriseId.legalCardOffice",
+		d.legal_name AS "coreEnterpriseId.legalName",
+		d.legal_id_card AS "coreEnterpriseId.legalIdCard",
+		d.legal_sex AS "coreEnterpriseId.legalSex",
+		d.legal_nation AS "coreEnterpriseId.legalNation",
+		d.legal_address AS "coreEnterpriseId.legalAddress",
+		d.charge_card_positive AS "coreEnterpriseId.chargeCardPositive",
+		d.charge_card_back AS "coreEnterpriseId.chargeCardBack",
+		d.charge_card_validity AS "coreEnterpriseId.chargeCardValidity",
+		d.charge_card_office AS "coreEnterpriseId.chargeCardOffice",
+		d.charge_name AS "coreEnterpriseId.chargeName",
+		d.charge_id_card AS "coreEnterpriseId.chargeIdCard",
+		d.charge_sex AS "coreEnterpriseId.chargeSex",
+		d.charge_nation AS "coreEnterpriseId.chargeNation",
+		d.charge_phone AS "coreEnterpriseId.chargePhone",
+		d.charge_email AS "coreEnterpriseId.chargeEmail",
+		d.charge_address AS "coreEnterpriseId.chargeAddress",
+		d.OFFICE_ID AS "coreEnterpriseId.officeId.id",
+		d.PARAMS_ID AS "coreEnterpriseId.paramsId.id",
+		
+		e.num AS "financingId.billId.num",
+		e.contract_num AS "financingId.billId.contractNum",
+		e.amount AS "financingId.billId.amount",
+		e.content AS "financingId.billId.content",
+		e.start_date AS "financingId.billId.startDate",
+		e.end_date AS "financingId.billId.endDate",
+		e.financing_amount AS "financingId.billId.financingAmount",
+		e.plan_financing_cost AS "financingId.billId.planFinancingCost",
+		e.state AS "financingId.billId.state",
+		e.supplier_enterprise_id AS "financingId.billId.supplierEnterpriseId.id",
+		e.core_enterprise_id AS "financingId.billId.coreEnterpriseId.id",
+		
+		f.name AS "supplierParentId.name",
+		f.org_code AS "supplierParentId.orgCode",
+		f.business_period_to AS "supplierParentId.businessPeriodTo",
+		f.registered_capital AS "supplierParentId.registeredCapital",
+		f.type AS "supplierParentId.type",
+		f.PROVINCE_ID as "supplierParentId.provinceArea.id",
+		f.CITY_ID as "supplierParentId.cityArea.id",
+		f.business_address AS "supplierParentId.businessAddress",
+		f.business_license AS "supplierParentId.businessLicense",
+		f.legal_card_positive AS "supplierParentId.legalCardPositive",
+		f.legal_card_back AS "supplierParentId.legalCardBack",
+		f.legal_card_validity AS "supplierParentId.legalCardValidity",
+		f.legal_card_office AS "supplierParentId.legalCardOffice",
+		f.legal_name AS "supplierParentId.legalName",
+		f.legal_id_card AS "supplierParentId.legalIdCard",
+		f.legal_sex AS "supplierParentId.legalSex",
+		f.legal_nation AS "supplierParentId.legalNation",
+		f.legal_address AS "supplierParentId.legalAddress",
+		f.agency_card_positive AS "supplierParentId.agencyCardPositive",
+		f.agency_card_back AS "supplierParentId.agencyCardBack",
+		f.agency_card_validity AS "supplierParentId.agencyCardValidity",
+		f.agency_card_office AS "supplierParentId.agencyCardOffice",
+		f.agency_name AS "supplierParentId.agencyName",
+		f.agency_id_card AS "supplierParentId.agencyIdCard",
+		f.agency_sex AS "supplierParentId.agencySex",
+		f.agency_nation AS "supplierParentId.agencyNation",
+		f.agency_phone AS "supplierParentId.agencyPhone",
+		f.agency_email AS "supplierParentId.agencyEmail",
+		f.agency_address AS "supplierParentId.agencyAddress",
+		f.operator_card_positive AS "supplierParentId.operatorCardPositive",
+		f.operator_card_back AS "supplierParentId.operatorCardBack",
+		f.operator_card_validity AS "supplierParentId.operatorCardValidity",
+		f.operator_card_office AS "supplierParentId.operatorCardOffice",
+		f.operator_name AS "supplierParentId.operatorName",
+		f.operator_id_card AS "supplierParentId.operatorIdCard",
+		f.operator_sex AS "supplierParentId.operatorSex",
+		f.operator_nation AS "supplierParentId.operatorNation",
+		f.operator_address AS "supplierParentId.operatorAddress",
+		f.hold_card_url AS "supplierParentId.holdCardUrl",
+		f.platform_operate_author AS "supplierParentId.platformOperateAuthor",
+		f.opening_permit_letter AS "supplierParentId.openingPermitLetter",
+		f.office_credit_letter AS "supplierParentId.officeCreditLetter",
+		f.company_constitution AS "supplierParentId.companyConstitution",
+		f.state AS "supplierParentId.state",
+		f.is_yqgys AS "supplierParentId.isYqgys",
+		f.OFFICE_ID AS "supplierParentId.officeId.id",
+		f.PARAMS_ID AS "supplierParentId.paramsId.id"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN financing_info b on a.financing_id = b.id
+		LEFT JOIN supplier_enterprise c on a.supplier_enterprise_id = c.id
+		LEFT JOIN core_enterprise d on a.core_enterprise_id = d.id
+		
+		LEFT JOIN bill_info e on e.id = b.bill_id
+		LEFT JOIN supplier_enterprise f on a.supplier_parent_id = f.id
+	</sql>
+    
+	<select id="get" resultType="Material_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM material_info a
+			<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Material_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM material_info a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="financingId != null and financingId.id != null and financingId.id != ''">
+			AND a.financing_id = #{financingId.id}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="supplierParentId != null and supplierParentId.id != null and supplierParentId.id != ''">
+			AND a.supplier_parent_id = #{supplierParentId.id}
+		</if>
+		<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+			AND a.core_enterprise_id = #{coreEnterpriseId.id}
+		</if>
+		<if test="financingId != null and financingId.billId != null and financingId.billId.num != null and financingId.billId.num != ''">
+			AND e.num = #{financingId.billId.num}
+		</if>
+		<if test="financingId != null and financingId.billId != null and financingId.billId.contractNum != null and financingId.billId.contractNum != ''">
+			AND e.contract_num = #{financingId.billId.contractNum}
+		</if>
+		<if test="remarks != null and remarks != ''">
+			AND a.remarks LIKE 
+			<if test="dbName == 'oracle'">'%'||#{remarks}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{remarks}, '%')</if>
+		</if>
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="Material_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM material_info a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM material_info a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="financingId != null and financingId.id != null and financingId.id != ''">
+			AND a.financing_id = #{financingId.id}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="supplierParentId != null and supplierParentId.id != null and supplierParentId.id != ''">
+			AND a.supplier_parent_id = #{supplierParentId.id}
+		</if>
+		<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+			AND a.core_enterprise_id = #{coreEnterpriseId.id}
+		</if>
+		<if test="financingId != null and financingId.billId != null and financingId.billId.num != null and financingId.billId.num != ''">
+			AND e.num = #{financingId.billId.num}
+		</if>
+		<if test="financingId != null and financingId.billId != null and financingId.billId.contractNum != null and financingId.billId.contractNum != ''">
+			AND e.contract_num = #{financingId.billId.contractNum}
+		</if>
+		<if test="remarks != null and remarks != ''">
+			AND a.remarks LIKE 
+			<if test="dbName == 'oracle'">'%'||#{remarks}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{remarks}, '%')</if>
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO material_info(
+			id,
+			name,
+			url,
+			template,
+			financing_id,
+			supplier_enterprise_id,
+			supplier_parent_id,
+			core_enterprise_id,
+			type,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG
+		) VALUES (
+			#{id},
+			#{name},
+			#{url},
+			#{template},
+			#{financingId.id},
+			#{supplierEnterpriseId.id},
+			#{supplierParentId.id},
+			#{coreEnterpriseId.id},
+			#{type},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE material_info SET 
+			name = #{name},
+			url = #{url},
+			template = #{template},
+			financing_id = #{financingId.id},
+			supplier_enterprise_id = #{supplierEnterpriseId.id},
+			supplier_parent_id = #{supplierParentId.id},
+			core_enterprise_id = #{coreEnterpriseId.id},
+			type = #{type},
+			create_by = #{createBy.id},
+			CREATE_DATE = #{createDate},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks},
+			DEL_FLAG = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM material_info
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE material_info SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>

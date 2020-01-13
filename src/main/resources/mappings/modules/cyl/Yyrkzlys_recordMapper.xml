@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Yyrkzlys_recordDao">
+  
+  <sql id="columns">
+		a.id,
+		a.project_name,
+		a.specifications,
+		a.unit,
+		a.count,
+		a.produce_company,
+		a.produce_num,
+		a.device_num,
+		a.validity_time,
+		a.quality_condition,
+		a.accept_conclusion,
+		a.time,
+		a.inspector,
+		a.unit_price,
+		a.all_price,
+		a.core_enterprise_id AS "coreEnterpriseId.id",
+		a.supplier_parent_id AS "supplierParentId.id",
+		a.supplier_enterprise_id AS "supplierEnterpriseId.id",
+		a.bill_id AS "billId.id",
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag",
+		
+		b.num AS "billId.num",
+		b.contract_num AS "billId.contractNum",
+		b.amount AS "billId.amount",
+		b.content AS "billId.content",
+		b.start_date AS "billId.startDate",
+		b.end_date AS "billId.endDate",
+		b.financing_amount AS "billId.financingAmount",
+		b.plan_financing_cost AS "billId.planFinancingCost",
+		b.state AS "billId.state",
+		b.supplier_enterprise_id AS "billId.supplierEnterpriseId.id",
+		b.core_enterprise_id AS "billId.coreEnterpriseId.id",
+		
+		c.name AS "supplierEnterpriseId.name",
+		c.org_code AS "supplierEnterpriseId.orgCode",
+		c.business_period_to AS "supplierEnterpriseId.businessPeriodTo",
+		c.registered_capital AS "supplierEnterpriseId.registeredCapital",
+		c.type AS "supplierEnterpriseId.type",
+		c.PROVINCE_ID as "supplierEnterpriseId.provinceArea.id",
+		c.CITY_ID as "supplierEnterpriseId.cityArea.id",
+		c.business_address AS "supplierEnterpriseId.businessAddress",
+		c.business_license AS "supplierEnterpriseId.businessLicense",
+		c.legal_card_positive AS "supplierEnterpriseId.legalCardPositive",
+		c.legal_card_back AS "supplierEnterpriseId.legalCardBack",
+		c.legal_card_validity AS "supplierEnterpriseId.legalCardValidity",
+		c.legal_card_office AS "supplierEnterpriseId.legalCardOffice",
+		c.legal_name AS "supplierEnterpriseId.legalName",
+		c.legal_id_card AS "supplierEnterpriseId.legalIdCard",
+		c.legal_sex AS "supplierEnterpriseId.legalSex",
+		c.legal_nation AS "supplierEnterpriseId.legalNation",
+		c.legal_address AS "supplierEnterpriseId.legalAddress",
+		c.agency_card_positive AS "supplierEnterpriseId.agencyCardPositive",
+		c.agency_card_back AS "supplierEnterpriseId.agencyCardBack",
+		c.agency_card_validity AS "supplierEnterpriseId.agencyCardValidity",
+		c.agency_card_office AS "supplierEnterpriseId.agencyCardOffice",
+		c.agency_name AS "supplierEnterpriseId.agencyName",
+		c.agency_id_card AS "supplierEnterpriseId.agencyIdCard",
+		c.agency_sex AS "supplierEnterpriseId.agencySex",
+		c.agency_nation AS "supplierEnterpriseId.agencyNation",
+		c.agency_phone AS "supplierEnterpriseId.agencyPhone",
+		c.agency_email AS "supplierEnterpriseId.agencyEmail",
+		c.agency_address AS "supplierEnterpriseId.agencyAddress",
+		c.operator_card_positive AS "supplierEnterpriseId.operatorCardPositive",
+		c.operator_card_back AS "supplierEnterpriseId.operatorCardBack",
+		c.operator_card_validity AS "supplierEnterpriseId.operatorCardValidity",
+		c.operator_card_office AS "supplierEnterpriseId.operatorCardOffice",
+		c.operator_name AS "supplierEnterpriseId.operatorName",
+		c.operator_id_card AS "supplierEnterpriseId.operatorIdCard",
+		c.operator_sex AS "supplierEnterpriseId.operatorSex",
+		c.operator_nation AS "supplierEnterpriseId.operatorNation",
+		c.operator_address AS "supplierEnterpriseId.operatorAddress",
+		c.hold_card_url AS "supplierEnterpriseId.holdCardUrl",
+		c.platform_operate_author AS "supplierEnterpriseId.platformOperateAuthor",
+		c.opening_permit_letter AS "supplierEnterpriseId.openingPermitLetter",
+		c.office_credit_letter AS "supplierEnterpriseId.officeCreditLetter",
+		c.company_constitution AS "supplierEnterpriseId.companyConstitution",
+		c.state AS "supplierEnterpriseId.state",
+		c.is_yqgys AS "supplierEnterpriseId.isYqgys",
+		c.OFFICE_ID AS "supplierEnterpriseId.officeId.id",
+		c.PARAMS_ID AS "supplierEnterpriseId.paramsId.id",
+		
+		d.name AS "coreEnterpriseId.name",
+		d.org_code AS "coreEnterpriseId.orgCode",
+		d.business_period_to AS "coreEnterpriseId.businessPeriodTo",
+		d.registered_capital AS "coreEnterpriseId.registeredCapital",
+		d.type AS "coreEnterpriseId.type",
+		d.PROVINCE_ID as "coreEnterpriseId.provinceArea.id",
+		d.CITY_ID as "coreEnterpriseId.cityArea.id",
+		d.business_address AS "coreEnterpriseId.businessAddress",
+		d.business_license AS "coreEnterpriseId.businessLicense",
+		d.legal_card_positive AS "coreEnterpriseId.legalCardPositive",
+		d.legal_card_back AS "coreEnterpriseId.legalCardBack",
+		d.legal_card_validity AS "coreEnterpriseId.legalCardValidity",
+		d.legal_card_office AS "coreEnterpriseId.legalCardOffice",
+		d.legal_name AS "coreEnterpriseId.legalName",
+		d.legal_id_card AS "coreEnterpriseId.legalIdCard",
+		d.legal_sex AS "coreEnterpriseId.legalSex",
+		d.legal_nation AS "coreEnterpriseId.legalNation",
+		d.legal_address AS "coreEnterpriseId.legalAddress",
+		d.charge_card_positive AS "coreEnterpriseId.chargeCardPositive",
+		d.charge_card_back AS "coreEnterpriseId.chargeCardBack",
+		d.charge_card_validity AS "coreEnterpriseId.chargeCardValidity",
+		d.charge_card_office AS "coreEnterpriseId.chargeCardOffice",
+		d.charge_name AS "coreEnterpriseId.chargeName",
+		d.charge_id_card AS "coreEnterpriseId.chargeIdCard",
+		d.charge_sex AS "coreEnterpriseId.chargeSex",
+		d.charge_nation AS "coreEnterpriseId.chargeNation",
+		d.charge_phone AS "coreEnterpriseId.chargePhone",
+		d.charge_email AS "coreEnterpriseId.chargeEmail",
+		d.charge_address AS "coreEnterpriseId.chargeAddress",
+		d.OFFICE_ID AS "coreEnterpriseId.officeId.id",
+		d.PARAMS_ID AS "coreEnterpriseId.paramsId.id",
+		
+		e.name AS "supplierParentId.name",
+		e.org_code AS "supplierParentId.orgCode",
+		e.business_period_to AS "supplierParentId.businessPeriodTo",
+		e.registered_capital AS "supplierParentId.registeredCapital",
+		e.type AS "supplierParentId.type",
+		e.PROVINCE_ID as "supplierParentId.provinceArea.id",
+		e.CITY_ID as "supplierParentId.cityArea.id",
+		e.business_address AS "supplierParentId.businessAddress",
+		e.business_license AS "supplierParentId.businessLicense",
+		e.legal_card_positive AS "supplierParentId.legalCardPositive",
+		e.legal_card_back AS "supplierParentId.legalCardBack",
+		e.legal_card_validity AS "supplierParentId.legalCardValidity",
+		e.legal_card_office AS "supplierParentId.legalCardOffice",
+		e.legal_name AS "supplierParentId.legalName",
+		e.legal_id_card AS "supplierParentId.legalIdCard",
+		e.legal_sex AS "supplierParentId.legalSex",
+		e.legal_nation AS "supplierParentId.legalNation",
+		e.legal_address AS "supplierParentId.legalAddress",
+		e.agency_card_positive AS "supplierParentId.agencyCardPositive",
+		e.agency_card_back AS "supplierParentId.agencyCardBack",
+		e.agency_card_validity AS "supplierParentId.agencyCardValidity",
+		e.agency_card_office AS "supplierParentId.agencyCardOffice",
+		e.agency_name AS "supplierParentId.agencyName",
+		e.agency_id_card AS "supplierParentId.agencyIdCard",
+		e.agency_sex AS "supplierParentId.agencySex",
+		e.agency_nation AS "supplierParentId.agencyNation",
+		e.agency_phone AS "supplierParentId.agencyPhone",
+		e.agency_email AS "supplierParentId.agencyEmail",
+		e.agency_address AS "supplierParentId.agencyAddress",
+		e.operator_card_positive AS "supplierParentId.operatorCardPositive",
+		e.operator_card_back AS "supplierParentId.operatorCardBack",
+		e.operator_card_validity AS "supplierParentId.operatorCardValidity",
+		e.operator_card_office AS "supplierParentId.operatorCardOffice",
+		e.operator_name AS "supplierParentId.operatorName",
+		e.operator_id_card AS "supplierParentId.operatorIdCard",
+		e.operator_sex AS "supplierParentId.operatorSex",
+		e.operator_nation AS "supplierParentId.operatorNation",
+		e.operator_address AS "supplierParentId.operatorAddress",
+		e.hold_card_url AS "supplierParentId.holdCardUrl",
+		e.platform_operate_author AS "supplierParentId.platformOperateAuthor",
+		e.opening_permit_letter AS "supplierParentId.openingPermitLetter",
+		e.office_credit_letter AS "supplierParentId.officeCreditLetter",
+		e.company_constitution AS "supplierParentId.companyConstitution",
+		e.state AS "supplierParentId.state",
+		e.is_yqgys AS "supplierParentId.isYqgys",
+		e.OFFICE_ID AS "supplierParentId.officeId.id",
+		e.PARAMS_ID AS "supplierParentId.paramsId.id"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN bill_info b on a.bill_id = b.id
+		LEFT JOIN supplier_enterprise c on a.supplier_enterprise_id = c.id
+		LEFT JOIN core_enterprise d on a.core_enterprise_id = d.id
+		LEFT JOIN supplier_enterprise e on a.supplier_parent_id = e.id
+	</sql>
+    
+	<select id="get" resultType="Yyrkzlys_record">
+		SELECT 
+			<include refid="columns"/>
+		FROM yyrkzlys_record a
+			<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Yyrkzlys_record">
+		SELECT 
+			<include refid="columns"/>
+		FROM yyrkzlys_record a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="projectName != null and projectName != ''">
+			AND a.project_name = #{projectName}
+		</if>
+		<if test="specifications != null and specifications != ''">
+			AND a.specifications = #{specifications}
+		</if>
+		<if test="unit != null and unit != ''">
+			AND a.unit = #{unit}
+		</if>
+		<if test="count != null and count != ''">
+			AND a.count = #{count}
+		</if>
+		<if test="produceCompany != null and produceCompany != ''">
+			AND a.produce_company = #{produceCompany}
+		</if>
+		<if test="produceNum != null and produceNum != ''">
+			AND a.produce_num = #{produceNum}
+		</if>
+		<if test="deviceNum != null and deviceNum != ''">
+			AND a.device_num = #{deviceNum}
+		</if>
+		<if test="validityTime != null and validityTime != ''">
+			AND a.validity_time = #{validityTime}
+		</if>
+		<if test="qualityCondition != null and qualityCondition != ''">
+			AND a.quality_condition = #{qualityCondition}
+		</if>
+		<if test="acceptConclusion != null and acceptConclusion != ''">
+			AND a.accept_conclusion = #{acceptConclusion}
+		</if>
+		<if test="inspector != null and inspector != ''">
+			AND a.inspector = #{inspector}
+		</if>
+		<if test="unitPrice != null and unitPrice != ''">
+			AND a.unit_price = #{unitPrice}
+		</if>
+		<if test="allPrice != null and allPrice != ''">
+			AND a.all_price = #{allPrice}
+		</if>
+		<if test="billId != null and billId.id != null and billId.id != ''">
+			AND a.bill_id = #{billId.id}
+		</if>
+		<if test="billId != null and billId.contractNum != null and billId.contractNum != ''">
+			AND b.contract_num = #{billId.contractNum}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="supplierParentId != null and supplierParentId.id != null and supplierParentId.id != ''">
+			AND a.supplier_parent_id = #{supplierParentId.id}
+		</if>
+		<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+			AND a.core_enterprise_id = #{coreEnterpriseId.id}
+		</if>
+		<if test="searchStartDate != null and searchStartDate != ''">AND a.time <![CDATA[>=]]> #{searchStartDate}</if>
+ 		<if test="searchEndDate != null and searchEndDate != ''">AND a.time <![CDATA[<=]]> #{searchEndDate}</if>
+		ORDER BY a.time DESC
+	</select>
+	
+	<select id="findAllList" resultType="Yyrkzlys_record">
+		SELECT 
+			<include refid="columns"/>
+		FROM yyrkzlys_record a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.time DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM yyrkzlys_record a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="projectName != null and projectName != ''">
+			AND a.project_name = #{projectName}
+		</if>
+		<if test="specifications != null and specifications != ''">
+			AND a.specifications = #{specifications}
+		</if>
+		<if test="unit != null and unit != ''">
+			AND a.unit = #{unit}
+		</if>
+		<if test="count != null and count != ''">
+			AND a.count = #{count}
+		</if>
+		<if test="produceCompany != null and produceCompany != ''">
+			AND a.produce_company = #{produceCompany}
+		</if>
+		<if test="produceNum != null and produceNum != ''">
+			AND a.produce_num = #{produceNum}
+		</if>
+		<if test="deviceNum != null and deviceNum != ''">
+			AND a.device_num = #{deviceNum}
+		</if>
+		<if test="validityTime != null and validityTime != ''">
+			AND a.validity_time = #{validityTime}
+		</if>
+		<if test="qualityCondition != null and qualityCondition != ''">
+			AND a.quality_condition = #{qualityCondition}
+		</if>
+		<if test="acceptConclusion != null and acceptConclusion != ''">
+			AND a.accept_conclusion = #{acceptConclusion}
+		</if>
+		<if test="inspector != null and inspector != ''">
+			AND a.inspector = #{inspector}
+		</if>
+		<if test="unitPrice != null and unitPrice != ''">
+			AND a.unit_price = #{unitPrice}
+		</if>
+		<if test="allPrice != null and allPrice != ''">
+			AND a.all_price = #{allPrice}
+		</if>
+		<if test="billId != null and billId.id != null and billId.id != ''">
+			AND a.bill_id = #{billId.id}
+		</if>
+		<if test="billId != null and billId.contractNum != null and billId.contractNum != ''">
+			AND b.contract_num = #{billId.contractNum}
+		</if>
+		<if test="supplierEnterpriseId != null and supplierEnterpriseId.id != null and supplierEnterpriseId.id != ''">
+			AND a.supplier_enterprise_id = #{supplierEnterpriseId.id}
+		</if>
+		<if test="supplierParentId != null and supplierParentId.id != null and supplierParentId.id != ''">
+			AND a.supplier_parent_id = #{supplierParentId.id}
+		</if>
+		<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+			AND a.core_enterprise_id = #{coreEnterpriseId.id}
+		</if>
+		<if test="searchStartDate != null and searchStartDate != ''">AND a.time <![CDATA[>=]]> #{searchStartDate}</if>
+ 		<if test="searchEndDate != null and searchEndDate != ''">AND a.time <![CDATA[<=]]> #{searchEndDate}</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO yyrkzlys_record(
+			id,
+			project_name,
+			specifications,
+			unit,
+			count,
+			produce_company,
+			produce_num,
+			device_num,
+			validity_time,
+			quality_condition,
+			accept_conclusion,
+			time,
+			inspector,
+			unit_price,
+			all_price,
+			core_enterprise_id,
+			supplier_parent_id,
+			supplier_enterprise_id,
+			bill_id,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG
+		) VALUES (
+			#{id},
+			#{projectName},
+			#{specifications},
+			#{unit},
+			#{count},
+			#{produceCompany},
+			#{produceNum},
+			#{deviceNum},
+			#{validityTime},
+			#{qualityCondition},
+			#{acceptConclusion},
+			#{time},
+			#{inspector},
+			#{unitPrice},
+			#{allPrice},
+			#{coreEnterpriseId.id},
+			#{supplierParentId.id},
+			#{supplierEnterpriseId.id},
+			#{billId.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE yyrkzlys_record SET
+			project_name = #{projectName},
+			specifications = #{specifications},
+			unit = #{unit},
+			count = #{count},
+			produce_company = #{produceCompany},
+			produce_num = #{produceNum},
+			device_num = #{deviceNum},
+			validity_time = #{validityTime},
+			quality_condition = #{qualityCondition},
+			accept_conclusion = #{acceptConclusion},
+			time = #{time},
+			inspector = #{inspector},
+			unit_price = #{unitPrice},
+			all_price = #{allPrice},
+			core_enterprise_id = #{coreEnterpriseId.id},
+			supplier_parent_id = #{supplierParentId.id},
+			supplier_enterprise_id = #{supplierEnterpriseId.id},
+			bill_id = #{billId.id},
+			create_by = #{createBy.id},
+			CREATE_DATE = #{createDate},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks},
+			DEL_FLAG = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM yyrkzlys_record
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE yyrkzlys_record SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>

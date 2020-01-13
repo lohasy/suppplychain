@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Core_userDao">
+	<sql id="columns">
+  		a.core_enterprise_id AS "coreEnterpriseId.id",
+		a.user_id AS "userId.id",
+		
+		b.name AS "coreEnterpriseId.name",
+		b.org_code AS "coreEnterpriseId.orgCode",
+		b.business_period_to AS "coreEnterpriseId.businessPeriodTo",
+		b.registered_capital AS "coreEnterpriseId.registeredCapital",
+		b.type AS "coreEnterpriseId.type",
+		b.PROVINCE_ID as "coreEnterpriseId.provinceArea.id",
+		b.CITY_ID as "coreEnterpriseId.cityArea.id",
+		b.business_address AS "coreEnterpriseId.businessAddress",
+		b.business_license AS "coreEnterpriseId.businessLicense",
+		b.legal_card_positive AS "coreEnterpriseId.legalCardPositive",
+		b.legal_card_back AS "coreEnterpriseId.legalCardBack",
+		b.legal_card_validity AS "coreEnterpriseId.legalCardValidity",
+		b.legal_card_office AS "coreEnterpriseId.legalCardOffice",
+		b.legal_name AS "coreEnterpriseId.legalName",
+		b.legal_id_card AS "coreEnterpriseId.legalIdCard",
+		b.legal_sex AS "coreEnterpriseId.legalSex",
+		b.legal_nation AS "coreEnterpriseId.legalNation",
+		b.legal_address AS "coreEnterpriseId.legalAddress",
+		b.charge_card_positive AS "coreEnterpriseId.chargeCardPositive",
+		b.charge_card_back AS "coreEnterpriseId.chargeCardBack",
+		b.charge_card_validity AS "coreEnterpriseId.chargeCardValidity",
+		b.charge_card_office AS "coreEnterpriseId.chargeCardOffice",
+		b.charge_name AS "coreEnterpriseId.chargeName",
+		b.charge_id_card AS "coreEnterpriseId.chargeIdCard",
+		b.charge_sex AS "coreEnterpriseId.chargeSex",
+		b.charge_nation AS "coreEnterpriseId.chargeNation",
+		b.charge_phone AS "coreEnterpriseId.chargePhone",
+		b.charge_email AS "coreEnterpriseId.chargeEmail",
+		b.charge_address AS "coreEnterpriseId.chargeAddress",
+		b.OFFICE_ID AS "coreEnterpriseId.officeId.id",
+		b.PARAMS_ID AS "coreEnterpriseId.paramsId.id",
+		
+		c.province_id AS "userId.provinceId.id",
+    	c.city_id AS "userId.cityId.id",
+		c.company_id AS "userId.company.id",
+    	c.office_id AS "userId.office.id",
+    	c.login_name AS "userId.loginName",
+    	c.no AS "userId.no",
+		c.name AS "userId.name",
+		c.email AS "userId.email",
+		c.phone AS "userId.phone",
+		c.mobile AS "userId.mobile",
+		c.user_type AS "userId.userType",
+		c.login_ip AS "userId.loginIp",
+		c.login_date AS "userId.loginDate",
+		c.remarks AS "userId.remarks",
+		c.login_flag AS "userId.loginFlag",
+		c.photo AS "userId.photo",
+		c.qrcode AS "userId.qrcode"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN core_enterprise b on a.core_enterprise_id = b.id
+		LEFT JOIN sys_user c on a.user_id = c.id
+	</sql>
+    
+	<select id="get" resultType="Core_user">
+		SELECT 
+			<include refid="columns"/>
+		FROM core_user a
+			<include refid="joins"/>
+		WHERE a.core_enterprise_id = #{coreEnterpriseId.id} and a.user_id = #{userId.id}
+	</select>
+	
+	<select id="findList" resultType="Core_user">
+		SELECT 
+			<include refid="columns"/>
+		FROM core_user a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+			AND a.core_enterprise_id = #{coreEnterpriseId.id}
+		</if>
+		<if test="userId != null and userId.id != null and userId.id != ''">
+			AND a.user_id = #{userId.id}
+		</if>
+	</select>
+	
+	<select id="findAllList" resultType="Core_user">
+		SELECT 
+			<include refid="columns"/>
+		FROM core_user a
+			<include refid="joins"/>
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM core_user a
+			<include refid="joins"/>
+		WHERE 1=1
+		<if test="coreEnterpriseId != null and coreEnterpriseId.id != null and coreEnterpriseId.id != ''">
+			AND a.core_enterprise_id = #{coreEnterpriseId.id}
+		</if>
+		<if test="userId != null and userId.id != null and userId.id != ''">
+			AND a.user_id = #{userId.id}
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO core_user(
+			core_enterprise_id,
+			user_id
+		) VALUES (
+			#{coreEnterpriseId.id},
+			#{userId.id}
+		)
+	</insert>
+	
+	<update id="delete">
+		DELETE FROM core_user
+		WHERE core_enterprise_id = #{coreEnterpriseId.id} and user_id = #{userId.id}
+	</update>
+	
+	<update id="deleteCore">
+		delete from core_user WHERE core_enterprise_id = #{core_id}   
+	</update>
+	
+	<update id="deleteByUser">
+		delete from core_user WHERE user_id = #{user_id}   
+	</update>
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.cyl.dao.Voucher_infoDao">
+  
+  <sql id="columns">
+		a.id,
+		a.name,
+		a.url,
+		a.bill_id AS "billId.id",
+		a.type,
+		a.CREATE_BY AS "createBy.id",
+		a.CREATE_DATE AS "createDate",
+		a.UPDATE_BY AS "updateBy.id",
+		a.UPDATE_DATE AS "updateDate",
+		a.REMARKS AS "remarks",
+		a.DEL_FLAG AS "delFlag"
+	</sql>
+	
+	<sql id="joins">
+		LEFT JOIN bill_info b on a.bill_id = b.id
+	</sql>
+    
+	<select id="get" resultType="Voucher_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM voucher_info a
+			<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Voucher_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM voucher_info a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="billId != null and billId.id != null and billId.id != ''">
+			AND a.bill_id = #{billId.id}
+		</if>
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findAllList" resultType="Voucher_info">
+		SELECT 
+			<include refid="columns"/>
+		FROM voucher_info a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} 
+		ORDER BY a.create_date DESC
+	</select>
+	
+	<select id="findCount" resultType="Long">
+		SELECT 
+			count(1)
+		FROM voucher_info a
+			<include refid="joins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="type != null and type != ''">
+			AND a.type = #{type}
+		</if>
+		<if test="name != null and name != ''">
+			AND a.name LIKE 
+			<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+			<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
+		</if>
+		<if test="billId != null and billId.id != null and billId.id != ''">
+			AND a.bill_id = #{billId.id}
+		</if>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO voucher_info(
+			id,
+			name,
+			url,
+			bill_id,
+			type,
+			CREATE_BY,
+			CREATE_DATE,
+			UPDATE_BY,
+			UPDATE_DATE,
+			REMARKS,
+			DEL_FLAG
+		) VALUES (
+			#{id},
+			#{name},
+			#{url},
+			#{billId.id},
+			#{type},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE voucher_info SET 
+			name = #{name},
+			url = #{url},
+			bill_id = #{billId.id},
+			type = #{type},
+			create_by = #{createBy.id},
+			CREATE_DATE = #{createDate},
+			UPDATE_BY = #{updateBy.id},
+			UPDATE_DATE = #{updateDate},
+			REMARKS = #{remarks},
+			DEL_FLAG = #{delFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<!--物理删除-->
+	<update id="delete">
+		DELETE FROM voucher_info
+		WHERE id = #{id}
+	</update>
+	
+	<!--逻辑删除-->
+	<update id="deleteByLogic">
+		UPDATE voucher_info SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+</mapper>
