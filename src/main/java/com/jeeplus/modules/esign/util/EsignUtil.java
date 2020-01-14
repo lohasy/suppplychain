@@ -12,7 +12,8 @@ import java.net.URLConnection;
  * @author lohas
  */
 public class EsignUtil {
-    private static final String GET_TOKEN_URL = "https://smlopenapi.esign.cn/v1/oauth2/access_token?appId=APPID&secret=APPSECRET&grantType=client_credentials";
+    private static final String BARE_URL = "https://smlopenapi.esign.cn";
+    private static final String GET_TOKEN_URL = "/v1/oauth2/access_token?appId=APPID&secret=APPSECRET&grantType=client_credentials";
     private static final String APPID = "4438793080";
     private static final String APPSECRET = "46748dcae0a380f46e75e0e9b7b284e3";
     /**
@@ -24,7 +25,7 @@ public class EsignUtil {
      * 获取token
      */
     private static void getToken(){
-        String url = GET_TOKEN_URL.replace("APPID",APPID).replace("APPSECRET",APPSECRET);
+        String url =BARE_URL + GET_TOKEN_URL.replace("APPID",APPID).replace("APPSECRET",APPSECRET);
         String tokenStr = getTokenStr(url);
         System.out.println(tokenStr);
         JSONObject jsonObject = JSONObject.parseObject(tokenStr);
