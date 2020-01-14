@@ -13,10 +13,12 @@ import java.net.URLConnection;
  */
 
 public class EsignUtil {
+    //todo 上线前改成生产的地址以及密钥
     private static final String BASE_URL = "https://smlopenapi.esign.cn";
-    private static final String GET_TOKEN_URL = "/v1/oauth2/access_token?appId=APPID&secret=APPSECRET&grantType=client_credentials";
     private static final String APPID = "4438793080";
     private static final String APPSECRET = "46748dcae0a380f46e75e0e9b7b284e3";
+
+    private static final String GET_TOKEN_URL = "/v1/oauth2/access_token?appId=APPID&secret=APPSECRET&grantType=client_credentials";
     /**
      * 存储token和过期时间
      */
