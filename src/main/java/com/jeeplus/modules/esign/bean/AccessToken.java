@@ -31,6 +31,6 @@ public class AccessToken {
      * @return
      */
     public boolean isExpired(){
-        return System.currentTimeMillis()-expiresIn >= 7200;
+        return System.currentTimeMillis()>=expiresIn;
     }
 }
