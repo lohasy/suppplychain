@@ -5,6 +5,14 @@ package com.jeeplus.modules.esign.bean;
  */
 public class CerateSingFlowsParm {
 
+
+    private boolean autoArchive; //是否自动归档，默认false；
+    private String businessScene; //文件主题
+    private long contractValidity; //文件有效截止日期,毫秒
+    private long contractRemind; //文文件到期前，提前多少小时回调提醒续签，小时
+    private long signValidity;//签署有效截止日期,毫秒
+    private String initiatorAccountId;//发起人账户id，即发起本次签署的操作人个人账号id；如不传，默认由对接平台发起
+    private String initiatorAuthorizedAccountId;//发起方主体id，如存在个人代机构发起签约，则需传入机构id；如不传，则默认是对接平台
     private class ConfigInfo {
         private String noticeDeveloperUrl; //回调通知地址 ,默认取项目配置通知地址
         private String noticeType; //通知方式，逗号分割，1-短信，2-邮件 。默认值1，请务必请选择一个通知方式，否则客户将接收不到流程的签署通知和审批通知，如果流程需要审批，将导致审批无法完成；如果客户需要不通知，可以设置noticeType=""
@@ -43,13 +51,6 @@ public class CerateSingFlowsParm {
             this.signPlatform = signPlatform;
         }
     }
-    private boolean autoArchive; //是否自动归档，默认false；
-    private String businessScene; //文件主题
-    private long contractValidity; //文件有效截止日期,毫秒
-    private long contractRemind; //文文件到期前，提前多少小时回调提醒续签，小时
-    private long signValidity;//签署有效截止日期,毫秒
-    private String initiatorAccountId;//发起人账户id，即发起本次签署的操作人个人账号id；如不传，默认由对接平台发起
-    private String initiatorAuthorizedAccountId;//发起方主体id，如存在个人代机构发起签约，则需传入机构id；如不传，则默认是对接平台
     private ConfigInfo configInfo; //任务配置信息
 
     public ConfigInfo getConfigInfo() {
