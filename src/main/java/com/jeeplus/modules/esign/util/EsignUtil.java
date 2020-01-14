@@ -2,6 +2,8 @@ package com.jeeplus.modules.esign.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.modules.esign.bean.AccessToken;
+import com.jeeplus.modules.esign.bean.EsignResultDto;
+import com.jeeplus.modules.esign.bean.FaceUrlDto;
 import com.jeeplus.modules.esign.bean.UserEsignFaceDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +64,7 @@ public class EsignUtil {
         return at.getAccessToken();
     }
 
-    public static String getFaceUrl(UserEsignFaceDto userEsignFaceDto){
+    public static FaceUrlDto getFaceUrl(UserEsignFaceDto userEsignFaceDto){
         String token=getAccessToken();
         String s = JSONObject.toJSONString(userEsignFaceDto);
         JSONObject jsonObject = JSONObject.parseObject(s);
@@ -70,13 +72,14 @@ public class EsignUtil {
         map.put("X-Tsign-Open-App-Id",APPID);
         map.put("X-Tsign-Open-Token",token);
         JSONObject jsonResult = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
-        return null;
+        EsignResultDto esignResultDto = JSONObject.parseObject(jsonResult.toJSONString(), EsignResultDto.class);
+        FaceUrlDto faceUrlDto = JSONObject.parseObject(esignResultDto.getData(), FaceUrlDto.class);
+        return faceUrlDto;
     }
 
     public static void main(String[] args) {
-        /*String accessToken = getAccessToken();
+        String accessToken = getAccessToken();
         System.out.println(accessToken);
-        System.out.println(getAccessToken());*/
-        getFaceUrl(new UserEsignFaceDto());
+        System.out.println(getAccessToken());
     }
 }

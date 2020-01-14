@@ -1,0 +1,33 @@
+package com.jeeplus.modules.esign.web;
+
+import com.jeeplus.modules.esign.bean.FaceResultDto;
+import com.jeeplus.modules.esign.bean.ServerResponse;
+import com.jeeplus.modules.esign.service.FaceService;
+import com.jeeplus.modules.sys.service.SystemConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+
+@Controller
+@RequestMapping(value="${adminPath}/coreSupplierCtrl")
+public class FaceController {
+    @Autowired
+    private FaceService faceService;
+
+
+    @RequestMapping(value = {"faceUrl", ""})
+    @ResponseBody
+    public Object getFaceUrl(){
+        return ServerResponse.createBySuccess(faceService.getFaceUrl());
+    }
+
+    @RequestMapping(value = {"faceResult", ""},method = RequestMethod.POST)
+    @ResponseBody
+    public Object getFaceResult(@RequestBody FaceResultDto faceResultDto){
+        return faceService.faceResult(faceResultDto);
+    }
+}
