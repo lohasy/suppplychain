@@ -741,6 +741,12 @@
             <artifactId>okhttp</artifactId>
             <version>3.11.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.8</version>
+        </dependency>
 		
     </dependencies>
 
