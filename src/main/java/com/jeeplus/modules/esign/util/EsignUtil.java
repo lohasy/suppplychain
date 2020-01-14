@@ -13,7 +13,8 @@ import java.net.URLConnection;
  */
 
 public class EsignUtil {
-    private static final String GET_TOKEN_URL = "https://smlopenapi.esign.cn/v1/oauth2/access_token?appId=APPID&secret=APPSECRET&grantType=client_credentials";
+    private static final String BASE_URL = "https://smlopenapi.esign.cn";
+    private static final String GET_TOKEN_URL = "/v1/oauth2/access_token?appId=APPID&secret=APPSECRET&grantType=client_credentials";
     private static final String APPID = "4438793080";
     private static final String APPSECRET = "46748dcae0a380f46e75e0e9b7b284e3";
     /**
@@ -26,7 +27,7 @@ public class EsignUtil {
      */
     private static void getToken(){
         try{
-            String url = GET_TOKEN_URL.replace("APPID",APPID).replace("APPSECRET",APPSECRET);
+            String url = BASE_URL+GET_TOKEN_URL.replace("APPID",APPID).replace("APPSECRET",APPSECRET);
             JSONObject jsonStr=new JSONObject();
             JSONObject jsonResult = OKHttpUtils.getRequest(url, jsonStr);
             JSONObject json = jsonResult.getJSONObject("data");
@@ -71,7 +72,6 @@ public class EsignUtil {
         e.printStackTrace();
         }
         return null;
-
     }
 
     public static void main(String[] args) {
