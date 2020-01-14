@@ -91,6 +91,11 @@ public class EsignUtil {
         return result;
     }
 
+    /**
+     * 根据账户id获取签章
+     * @param accountId 账户id
+     * @return
+     */
     public static JSONObject queryEsignSealsByAccoundId(String accountId){
         String url = BASE_URL + "/v1/accounts/accountId/seals";
         url = url.replace("accountId",accountId);

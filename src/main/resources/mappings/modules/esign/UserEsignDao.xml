@@ -17,12 +17,12 @@
 			#{id},
 			#{userId},
 			#{esignType},
-g			#{esinId},>
+ 		    #{esignId},
 			#{seelId},
 			#{realNameStatus},
 			#{createdTime},
 			#{updatedTime},
-			#{valid},
+			#{valid}
 		)
 	</insert>
 </mapper>

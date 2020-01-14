@@ -265,8 +265,8 @@ public class GysController extends BaseController{
 		model.addAttribute("supplier_enterprise", supplier_enterprise);
 		return "platform/gysExamine";
 	}
-	
-	
+
+
 	/**
 	 * 点击提交供应商审核
 	 * @param supplier_enterprise
@@ -302,10 +302,10 @@ public class GysController extends BaseController{
 						leaderUser.setMobile(leaderUserPhone);
 						leaderUser.setName(supplier_enterprise.getAgencyName());
 						leaderUser.setEmail(supplier_enterprise.getAgencyEmail());
-						
+
 						// 密码MD5加密
 						leaderUser.setPassword(SystemService.entryptPassword(leaderUser.getPassword()));
-						
+
 						//将用户与角色进行绑定
 						List<Role> ros = roleDao.findList(new Role());
 						if(ros != null && ros.size() > 0) {
@@ -318,82 +318,23 @@ public class GysController extends BaseController{
 								}
 							}
 						}
-						
+
 						//注册用户
 						if(leaderUser.getRole() != null && !Utils.isEmpty(leaderUser.getRole().getId())) {
 
 							leaderUser.setCreateDate(new Date());
 							leaderUser.setUpdateDate(new Date());
 							systemService.saveUser(leaderUser);
+							registEsign(supplier_enterprise, leaderUser);
 
 
-
-							/**
-							 * @Auther yumx添加==判断审核通过的用户
-							 * 是否供应商负责人，如果是则注册e签宝账户及企业账户
-							 * @Date 2020.1.14
-							 */
-							if(leaderUser.getRole().getId() =="1457fff9841c490395fff6e59e75d5e1"){
-								/**
-								 * 注册个人用户
-								 */
-								JSONObject accountInfo = new JSONObject();
-								accountInfo.put("email",supplier_enterprise.getAgencyEmail());
-								accountInfo.put("thirdPartyUserId",leaderUser.getId());
-								accountInfo.put("idNumber",supplier_enterprise.getAgencyIdCard());
-								accountInfo.put("mobile",supplier_enterprise.getAgencyPhone());
-								//类型默认是身份证
-								accountInfo.put("idType","");
-								accountInfo.put("name",leaderUser.getName());
-								//注册负责人e签宝个人账户
-								JSONObject esignAccount = EsignUtil.createEsignAccount(accountInfo);
-								//获取个人账户accountId并保存
-								String accountId = esignAccount.getString("accountId");
-
-								UserEsign userEsign = new UserEsign();
-								userEsign.setEsignId(accountId);
-								userEsign.setUserId(leaderUser.getId());
-								if(supplier_enterprise.getAgencyIdCard().equals(supplier_enterprise.getLegalIdCard())){
-									userEsign.setEsignType(2);//法人
-								}
-								userEsign.setEsignType(3);//经办人
-								JSONObject sealsInfo = EsignUtil.queryEsignSealsByAccoundId(accountId);
-								JSONArray seals = sealsInfo.getJSONArray("seals");
-								String sealId = seals.getJSONObject(0).getString("sealId");
-								userEsign.setSeelId(sealId);
-								userEsignDao.insert(userEsign);
-								/**
-								 * 注册企业账户
-								 */
-								JSONObject companyInfo = new JSONObject();
-								companyInfo.put("creator",accountId);
-								//证件类型取得是组织机构代码
-								companyInfo.put("idType","CRED_ORG_CODE");
-								companyInfo.put("idNumber",supplier_enterprise.getOrgCode());
-								companyInfo.put("name",supplier_enterprise.getName());
-								companyInfo.put("thirdPartyUserId",supplier_enterprise.getId());
-								JSONObject esignComponyAccount = EsignUtil.createEsignComponyAccount(companyInfo);
-								//获取企业用户orgId并保存
-								String orgId = esignComponyAccount.getString("orgId");
-								UserEsign userEsignCompany = new UserEsign();
-								userEsignCompany.setEsignType(1);//企业
-								JSONObject sealsInfoCompany = EsignUtil.queryEsignSealsByAccoundId(orgId);
-								JSONArray sealsCompany = sealsInfo.getJSONArray("seals");
-								String sealIdCompany = seals.getJSONObject(0).getString("sealId");
-								userEsignCompany.setSeelId(sealIdCompany);
-								userEsignCompany.setUserId(supplier_enterprise.getId());
-								userEsignCompany.setEsignId(orgId);
-								userEsignDao.insert(userEsignCompany);
-
-							}
-							
 							//将用户与供应商进行绑定
 							Supplier_user su = new Supplier_user();
 							su.setUserId(leaderUser);
 							su.setSupplierEnterpriseId(supplier_enterprise);
 							supplierUserDao.insert(su);
 						}
-						
+
 						//发送短信
 						try {
 							SystemConfig config = systemConfigService.get("1");
@@ -408,13 +349,13 @@ public class GysController extends BaseController{
 					}
 				}
 			}
-			
+
 			mail.setTitle("平台审核通过！");
 			mail.setOverview("平台审核通过！");
 			mail.setContent("平台审核通过！");
 			addMessage(redirectAttributes, "平台审核通过！");
 		}
-		
+
 		//发送邮件消息
 		mailDao.insert(mail);
 		mailCompose.setStatus("1");
@@ -432,11 +373,72 @@ public class GysController extends BaseController{
 		}
 		mailCompose.setReceiverList(receiverList);
 		mailComposeService.sendMail(mailCompose);
-		
+
 		return "redirect:" + adminPath + "/gys/gys-index/?repage";
 	}
-	
-	
+
+	public void registEsign(Supplier_enterprise supplier_enterprise, User leaderUser) {
+		/**
+		 * @Auther yumx添加==判断审核通过的用户
+				* 是否供应商负责人，如果是则注册e签宝账户及企业账户
+				* @Date 2020.1.14
+				*/
+		if(leaderUser.getRole().getId().equals("1457fff9841c490395fff6e59e75d5e1")){
+			/**
+			 * 注册个人用户
+			 */
+			JSONObject accountInfo = new JSONObject();
+			accountInfo.put("email",supplier_enterprise.getAgencyEmail());
+			accountInfo.put("thirdPartyUserId",leaderUser.getId());
+			accountInfo.put("idNumber",supplier_enterprise.getAgencyIdCard());
+			accountInfo.put("mobile",supplier_enterprise.getAgencyPhone());
+			//类型默认是身份证
+			accountInfo.put("idType","");
+			accountInfo.put("name",leaderUser.getName());
+			//注册负责人e签宝个人账户
+			JSONObject esignAccount = EsignUtil.createEsignAccount(accountInfo);
+			//获取个人账户accountId并保存
+			String accountId = esignAccount.getString("accountId");
+
+			UserEsign userEsign = new UserEsign();
+			userEsign.setEsignId(accountId);
+			userEsign.setUserId(leaderUser.getId());
+			if(supplier_enterprise.getAgencyIdCard().equals(supplier_enterprise.getLegalIdCard())){
+				userEsign.setEsignType(2);//法人
+			}
+			userEsign.setEsignType(3);//经办人
+			JSONObject sealsInfo = EsignUtil.queryEsignSealsByAccoundId(accountId);
+			JSONArray seals = sealsInfo.getJSONArray("seals");
+			String sealId = seals.getJSONObject(0).getString("sealId");
+			userEsign.setSeelId(sealId);
+			userEsignDao.insert(userEsign);
+			/**
+			 * 注册企业账户
+			 */
+			JSONObject companyInfo = new JSONObject();
+			companyInfo.put("creator",accountId);
+			//证件类型取得是组织机构代码
+			companyInfo.put("idType","CRED_ORG_CODE");
+			companyInfo.put("idNumber",supplier_enterprise.getOrgCode());
+			companyInfo.put("name",supplier_enterprise.getName());
+			companyInfo.put("thirdPartyUserId",supplier_enterprise.getId());
+			JSONObject esignComponyAccount = EsignUtil.createEsignComponyAccount(companyInfo);
+			//获取企业用户orgId并保存
+			String orgId = esignComponyAccount.getString("orgId");
+			UserEsign userEsignCompany = new UserEsign();
+			userEsignCompany.setEsignType(1);//企业
+			JSONObject sealsInfoCompany = EsignUtil.queryEsignSealsByAccoundId(orgId);
+			JSONArray sealsCompany = sealsInfo.getJSONArray("seals");
+			String sealIdCompany = seals.getJSONObject(0).getString("sealId");
+			userEsignCompany.setSeelId(sealIdCompany);
+			userEsignCompany.setUserId(supplier_enterprise.getId());
+			userEsignCompany.setEsignId(orgId);
+			userEsignDao.insert(userEsignCompany);
+
+		}
+	}
+
+
 	/**
 	 * 供应商合同
 	 * @param supplier_enterprise
