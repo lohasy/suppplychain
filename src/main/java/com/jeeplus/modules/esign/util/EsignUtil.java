@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -63,7 +66,10 @@ public class EsignUtil {
         String token=getAccessToken();
         String s = JSONObject.toJSONString(userEsignFaceDto);
         JSONObject jsonObject = JSONObject.parseObject(s);
-        OKHttpUtils.postJsonAddHeader(BASE_URL+"/v2/identity/auth/web/"++"/orgIdentityUrl");
+        HashMap map=new HashMap<String,String>();
+        map.put("X-Tsign-Open-App-Id",APPID);
+        map.put("X-Tsign-Open-Token",token);
+        JSONObject jsonObject1 = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
         return null;
     }
 
