@@ -1,4 +1,7 @@
 package com.jeeplus.common.gyscontroller;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.jeeplus.common.constant.CxConst;
 import com.jeeplus.common.paramservice.EnterpriseParamService;
@@ -17,6 +20,9 @@ import com.jeeplus.modules.cyl.dao.Supplier_shareholderDao;
 import com.jeeplus.modules.cyl.dao.Supplier_userDao;
 import com.jeeplus.modules.cyl.service.CoreSupplierService;
 import com.jeeplus.modules.cyl.service.SupplierChildService;
+import com.jeeplus.modules.esign.bean.UserEsign;
+import com.jeeplus.modules.esign.dao.UserEsignDao;
+import com.jeeplus.modules.esign.util.EsignUtil;
 import com.jeeplus.modules.iim.dao.MailDao;
 import com.jeeplus.modules.iim.entity.Mail;
 import com.jeeplus.modules.iim.entity.MailCompose;
@@ -91,6 +97,9 @@ public class GysController extends BaseController{
 	
 	@Autowired
 	private MailDao mailDao;
+
+	@Autowired
+	private UserEsignDao userEsignDao;
 	
 	
 	@ModelAttribute("supplier_enterprise")
@@ -312,9 +321,71 @@ public class GysController extends BaseController{
 						
 						//注册用户
 						if(leaderUser.getRole() != null && !Utils.isEmpty(leaderUser.getRole().getId())) {
+
 							leaderUser.setCreateDate(new Date());
 							leaderUser.setUpdateDate(new Date());
 							systemService.saveUser(leaderUser);
+
+
+
+							/**
+							 * @Auther yumx添加==判断审核通过的用户
+							 * 是否供应商负责人，如果是则注册e签宝账户及企业账户
+							 * @Date 2020.1.14
+							 */
+							if(leaderUser.getRole().getId() =="1457fff9841c490395fff6e59e75d5e1"){
+								/**
+								 * 注册个人用户
+								 */
+								JSONObject accountInfo = new JSONObject();
+								accountInfo.put("email",supplier_enterprise.getAgencyEmail());
+								accountInfo.put("thirdPartyUserId",leaderUser.getId());
+								accountInfo.put("idNumber",supplier_enterprise.getAgencyIdCard());
+								accountInfo.put("mobile",supplier_enterprise.getAgencyPhone());
+								//类型默认是身份证
+								accountInfo.put("idType","");
+								accountInfo.put("name",leaderUser.getName());
+								//注册负责人e签宝个人账户
+								JSONObject esignAccount = EsignUtil.createEsignAccount(accountInfo);
+								//获取个人账户accountId并保存
+								String accountId = esignAccount.getString("accountId");
+
+								UserEsign userEsign = new UserEsign();
+								userEsign.setEsignId(accountId);
+								userEsign.setUserId(leaderUser.getId());
+								if(supplier_enterprise.getAgencyIdCard().equals(supplier_enterprise.getLegalIdCard())){
+									userEsign.setEsignType(2);//法人
+								}
+								userEsign.setEsignType(3);//经办人
+								JSONObject sealsInfo = EsignUtil.queryEsignSealsByAccoundId(accountId);
+								JSONArray seals = sealsInfo.getJSONArray("seals");
+								String sealId = seals.getJSONObject(0).getString("sealId");
+								userEsign.setSeelId(sealId);
+								userEsignDao.insert(userEsign);
+								/**
+								 * 注册企业账户
+								 */
+								JSONObject companyInfo = new JSONObject();
+								companyInfo.put("creator",accountId);
+								//证件类型取得是组织机构代码
+								companyInfo.put("idType","CRED_ORG_CODE");
+								companyInfo.put("idNumber",supplier_enterprise.getOrgCode());
+								companyInfo.put("name",supplier_enterprise.getName());
+								companyInfo.put("thirdPartyUserId",supplier_enterprise.getId());
+								JSONObject esignComponyAccount = EsignUtil.createEsignComponyAccount(companyInfo);
+								//获取企业用户orgId并保存
+								String orgId = esignComponyAccount.getString("orgId");
+								UserEsign userEsignCompany = new UserEsign();
+								userEsignCompany.setEsignType(1);//企业
+								JSONObject sealsInfoCompany = EsignUtil.queryEsignSealsByAccoundId(orgId);
+								JSONArray sealsCompany = sealsInfo.getJSONArray("seals");
+								String sealIdCompany = seals.getJSONObject(0).getString("sealId");
+								userEsignCompany.setSeelId(sealIdCompany);
+								userEsignCompany.setUserId(supplier_enterprise.getId());
+								userEsignCompany.setEsignId(orgId);
+								userEsignDao.insert(userEsignCompany);
+
+							}
 							
 							//将用户与供应商进行绑定
 							Supplier_user su = new Supplier_user();
@@ -508,7 +579,6 @@ public class GysController extends BaseController{
     
 	/**
 	 * 编辑提交
-	 * @param uploadfile
 	 * @param supplier_enterprise
 	 * @param request
 	 * @param response
@@ -753,7 +823,7 @@ public class GysController extends BaseController{
 	
 	/**
 	 * 获取供应商融资统计
-	 * @param financing_info
+	 * @param supplier_enterprise
 	 * @param request
 	 * @param response
 	 */
