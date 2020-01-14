@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jeeplus.modules.esign.dao.SignFlowStartDao">
+    <update id="callBackSave" parameterType="String">
+        update t_user_esign_contact e
+        set e.signTime = #{signTime,jdbcType=STRING},
+        e.signResult = #{signResult,jdbcType=STRING},
+        e.resultDescription = #{resultDescription,jdbcType=STRING}
+        where e.process_id = #{flowId,jdbcType=STRING},
+        and e.user_id = #{accountId}
+    </update>
+</mapper>
