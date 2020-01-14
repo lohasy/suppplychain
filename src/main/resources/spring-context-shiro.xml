@@ -46,6 +46,7 @@
 				${adminPath}/cas = cas
 				${adminPath}/login = authc
 				${adminPath}/logout = anon
+				/face/faceResult/** = anon
 				${adminPath}/** = user
 				/act/rest/service/editor/** = perms[act:model:edit]
 				/act/rest/service/model/** = perms[act:model:edit]

@@ -4,6 +4,7 @@ import com.jeeplus.modules.esign.bean.FaceResultDto;
 import com.jeeplus.modules.esign.bean.ServerResponse;
 import com.jeeplus.modules.esign.service.FaceService;
 import com.jeeplus.modules.sys.service.SystemConfigService;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
-@RequestMapping(value="${adminPath}/coreSupplierCtrl")
+@RequestMapping(value="face")
 public class FaceController {
     @Autowired
     private FaceService faceService;
@@ -27,7 +28,8 @@ public class FaceController {
 
     @RequestMapping(value = {"faceResult", ""},method = RequestMethod.POST)
     @ResponseBody
+//    @RequiresRoles("super")
     public Object getFaceResult(@RequestBody FaceResultDto faceResultDto){
-        return faceService.faceResult(faceResultDto);
+        return ServerResponse.createBySuccess(faceService.faceResult(faceResultDto));
     }
 }

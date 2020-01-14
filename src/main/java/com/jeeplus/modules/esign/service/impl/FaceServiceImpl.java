@@ -63,20 +63,17 @@ public class FaceServiceImpl implements FaceService {
     @Override
     public Object faceResult(FaceResultDto faceResultDto) {
         UserEsign userEsign=new UserEsign();
-        userEsign.setEsignId(faceResultDto.getAccountId());
-        UserEsign userEsignRe = userEsignDao.get(userEsign);
+        UserEsign userEsignRe = userEsignDao.getUserEsignByUserId(faceResultDto.getAccountId());
         userEsignRe.setRealNameStatus("4");
         if(faceResultDto.getSuccess()){
             userEsignRe.setRealNameStatus("3");
         }
-        userEsignDao.update(userEsignRe);
+        userEsignDao.upfateUserEsignByUserId(userEsignRe);
         return "false";
     }
 
     public UserEsign getUserEsignByUserId(String userId){
-        UserEsign userEsign=new UserEsign();
-        userEsign.setUserId(userId);
-        UserEsign userEsignRe = userEsignDao.get(userEsign);
+        UserEsign userEsignRe = userEsignDao.getUserEsignByUserId(userId);
         return userEsignRe;
     }
 
