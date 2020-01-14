@@ -2,6 +2,7 @@ package com.jeeplus.modules.esign.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.modules.esign.bean.AccessToken;
+import com.jeeplus.modules.esign.bean.UserEsignFaceDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +57,14 @@ public class EsignUtil {
             getToken();
         }
         return at.getAccessToken();
+    }
+
+    public static String getFaceUrl(UserEsignFaceDto userEsignFaceDto){
+        String token=getAccessToken();
+        String s = JSONObject.toJSONString(userEsignFaceDto);
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        OKHttpUtils.postJsonAddHeader(BASE_URL+"/v2/identity/auth/web/"++"/orgIdentityUrl");
+        return null;
     }
 
     public static void main(String[] args) {
