@@ -69,13 +69,14 @@ public class EsignUtil {
         HashMap map=new HashMap<String,String>();
         map.put("X-Tsign-Open-App-Id",APPID);
         map.put("X-Tsign-Open-Token",token);
-        JSONObject jsonObject1 = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
+        JSONObject jsonResult = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
         return null;
     }
 
     public static void main(String[] args) {
-        String accessToken = getAccessToken();
+        /*String accessToken = getAccessToken();
         System.out.println(accessToken);
-        System.out.println(getAccessToken());
+        System.out.println(getAccessToken());*/
+        getFaceUrl(new UserEsignFaceDto());
     }
 }
