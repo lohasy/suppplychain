@@ -2,6 +2,8 @@ package com.jeeplus.modules.esign.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.modules.esign.bean.AccessToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -13,6 +15,9 @@ import java.net.URLConnection;
  */
 
 public class EsignUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(EsignUtil.class);
+
     //todo 上线前改成生产的地址以及密钥
     private static final String BASE_URL = "https://smlopenapi.esign.cn";
     private static final String APPID = "4438793080";
@@ -22,7 +27,7 @@ public class EsignUtil {
     /**
      * 存储token和过期时间
      */
-    private static AccessToken at;
+    private static volatile AccessToken at;
 
     /**
      * 获取token
@@ -38,7 +43,7 @@ public class EsignUtil {
             //创建token，并存储起来
             at = new AccessToken(token,expireIn);
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("获取e签宝accesstoken失败"+e.getMessage());
         }
     }
 
@@ -51,29 +56,6 @@ public class EsignUtil {
             getToken();
         }
         return at.getAccessToken();
-    }
-
-    /**
-     * 调用e签宝的token接口
-     * @param url
-     * @return
-     */
-    private static String getTokenStr(String url) {
-        try{
-            URL urlObj = new URL(url);
-            URLConnection conn = urlObj.openConnection();
-            InputStream inputStream = conn.getInputStream();
-            byte[] b = new byte[1024];
-            int len;
-            StringBuilder sb = new StringBuilder();
-            while ((len = inputStream.read(b)) != -1){
-                sb.append(new String(b,0,len));
-            }
-            return  sb.toString();
-        }catch (Exception e){
-        e.printStackTrace();
-        }
-        return null;
     }
 
     public static void main(String[] args) {
