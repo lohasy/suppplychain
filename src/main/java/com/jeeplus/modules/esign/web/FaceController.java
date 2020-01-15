@@ -24,14 +24,14 @@ public class FaceController {
     @RequestMapping(value = {"faceUrl", ""})
     @ResponseBody
     public Object getFaceUrl(){
-        return ServerResponse.createBySuccess(faceService.getFaceUrl());
+        return ServerResponse.success(faceService.getFaceUrl());
     }
 
     @RequestMapping(value = {"faceResult", ""},method = RequestMethod.POST)
     @ResponseBody
 //    @RequiresRoles("super")
     public Object getFaceResult(@RequestBody FaceResultDto faceResultDto){
-        return ServerResponse.createBySuccess(faceService.faceResult(faceResultDto));
+        return ServerResponse.success(faceService.faceResult(faceResultDto));
     }
 
 

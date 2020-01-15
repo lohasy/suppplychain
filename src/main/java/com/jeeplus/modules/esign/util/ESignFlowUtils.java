@@ -3,6 +3,7 @@ package com.jeeplus.modules.esign.util;
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.modules.esign.bean.signflow.FlowAddFile;
 import com.jeeplus.modules.esign.bean.signflow.SignFlowStart;
+import com.jeeplus.modules.esign.bean.signflow.Signfield;
 import com.jeeplus.modules.esign.comm.HttpHelper;
 import com.jeeplus.modules.esign.comm.JSONHelper;
 import com.jeeplus.modules.esign.constant.ConfigConstant;
@@ -50,10 +51,9 @@ public class ESignFlowUtils {
     /**
      * @description 添加签署方手动盖章签署区
      */
-    public static JSONObject addSignerHandSignArea(String flowId, List<String> fileIds, List<String> signerAccountIds,
-                                                   List<String> authorizedAccountIds) throws DefineException {
+    public static JSONObject addSignerHandSignArea(String flowId, List<Signfield> signfieldList) throws DefineException {
 
-        String param = SignParamUtil.addSignerHandSignAreaParam(fileIds, signerAccountIds, authorizedAccountIds);
+        String param = SignParamUtil.addSignerHandSignAreaParam(signfieldList);
         JSONObject json = HttpHelper.doCommHttp(RequestType.POST, ConfigConstant.addHandSignfieldsForPerson_URL(flowId),
                 param);
         return JSONHelper.castDataJson(json, JSONObject.class);
