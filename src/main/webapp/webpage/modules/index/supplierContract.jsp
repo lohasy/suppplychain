@@ -119,13 +119,13 @@
 
         //授权确定
         function sure() {
-            if ($.isEmpty($("#verify_code").val())) {
-                $("#error_verify_code").text("请输入签约授权码！");
-                setTimeout(function () {
-                    $("#error_verify_code").text("");
-                }, 2000);
-                return;
-            }
+            // if ($.isEmpty($("#verify_code").val())) {
+            //     $("#error_verify_code").text("请输入签约授权码！");
+            //     setTimeout(function () {
+            //         $("#error_verify_code").text("");
+            //     }, 2000);
+            //     return;
+            // }
             $("#validateCode").val($("#verify_code").val());
             $("#mgmtform").submit();
         }
