@@ -10,13 +10,13 @@
 		$(function(){
 			//处理状态
 			if(!$.isEmpty($("#orgState").val())){
-				if($("#orgState").val() == "2"){
+				if($("#orgState").val() == "2" || $("#orgState").val() == "-1"){
 					location.href = "${ctx}/logout";
 				}
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
 					location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
 				}
-				if($("#orgState").val() != "0" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"){
+				if($("#orgState").val() != "-1" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"){
 					location.href = "${ctx}/logout";
 				}
 			}

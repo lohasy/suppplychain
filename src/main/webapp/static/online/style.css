@@ -1280,15 +1280,18 @@ h1{ font-size:14px; font-weight:bold;}
     color:#666;
     font-size: 16px;
 }
-.real_name .real_btn{
+.real_name .real_box{
+    margin-top: 50px;
+    margin-left: 550px;
+    cursor:pointer;
+}
+.real_name .real_box span{
     padding: 10px 20px;
     color: #fff;
     background: #40a8eb;
     border-radius: 5px;
     display: inline-block;
-    margin-top: 50px;
-    margin-left: 550px;
-    cursor:pointer;
+    margin-right:10px;
 }
 .steps_nav{
 	width:696px;

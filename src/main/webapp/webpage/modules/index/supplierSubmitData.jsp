@@ -48,9 +48,12 @@
 					$("#title_nav2").html('<span class="steps_cur">重新</span><label></label><span>审核资料</span><label></label><span>审核通过</span>');
 				}
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
-					location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
+                	location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
+                }
+				if($("#orgState").val() == "-1" && !$.isEmpty($("#userId").val())){
+					location.href = "${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
 				}
-				if($("#orgState").val() != "0" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"){
+				if($("#orgState").val() != "-1" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"){
 					location.href = "${ctx}/logout";
 				}
 			}
@@ -64,10 +67,10 @@
 				
 				if($("#message").val() == "资料提交成功，等待平台审核！" && !$.isEmpty($("#userId").val())){
 					setTimeout(function(){
-						location.href = "${ctx}/sys/register/to-supplierSubmitData?id="+ $("#userId").val();
+						location.href = "${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
 					},2000);
 				}else if(!$.isEmpty($("#userId").val())){
-					location.href = "${ctx}/sys/register/to-supplierSubmitData?id="+ $("#userId").val();
+					location.href = "${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
 				}
 			}
 			
@@ -754,8 +757,8 @@
 		
 		//提交
 	    function checkForm() {
-	        location.href="${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
-            return;
+	        /*location.href="${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
+            return;*/
         	var company_name = $("#company_name").val();
 	        var org_code = $("#org_code").val();
 	        var license_expired_date = $("#license_expired_date").val();
