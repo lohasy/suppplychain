@@ -58,7 +58,7 @@
     	<input type="hidden" id="userId" name="userId.id" value="${supplier_user.userId.id}" />
   		<div class="title_nav"><span>1 注册账号</span><span>2 提交资料 </span><span style="color: #fff">3  实名认证</span><span>4 在线签约</span></div>
   		<div class="real_name">
-    		<p>为了满足你的业务需求，需要进行企业实名认证，请按照流程操作</p>
+    		<p>为了满足您的业务需求，需要进行企业实名认证，请按照流程操作</p>
     		<div class="real_box">
     		    <span id="real_name">马上实名</span>
                 <span id="close_btn">关闭</span>
