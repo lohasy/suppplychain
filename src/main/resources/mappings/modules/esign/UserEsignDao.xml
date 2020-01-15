@@ -28,8 +28,12 @@
     <resultMap type="com.jeeplus.modules.esign.bean.UserEsign" id="UserEsign"></resultMap>
 
     <select id="getUserEsignByUserId" resultMap="UserEsign">
-        select * from t_user_esign  where user_id=#{userId} order by created_time desc limit 1
+        select * from t_user_esign  where user_id=#{userId} and esign_type in (2,3) order by created_time desc limit 1
     </select>
+
+	<select id="getUserEsignByUserIdAndType" resultMap="UserEsign">
+		select * from t_user_esign  where user_id=#{userId} and esign_type=#{type} order by created_time desc limit 1
+	</select>
 
 	<select id="getUserEsignByEsignId" resultMap="UserEsign">
 		select * from t_user_esign  where esign_id=#{esignId} order by created_time desc limit 1
