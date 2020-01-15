@@ -1,9 +1,5 @@
 注：本文档查看需要先下载Typora，同级目录文件夹不能删除
 
-
-
-
-
 ## 一.安装jdk8
 
 #### 1.参考：https://www.cnblogs.com/heqiyoujing/p/9502726.html
