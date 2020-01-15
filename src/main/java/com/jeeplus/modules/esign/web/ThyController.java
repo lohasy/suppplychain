@@ -59,6 +59,19 @@ public class ThyController extends BaseController {
                                          @RequestBody SignFlowStart signFlowStart){
         ServerResponse serverResponse = null;
         try {
+            signFlowStart.setAutoArchive(true); //设置自动归档，归档后的签署文件才能下载
+            if (null == signFlowStart.getBusinessScene()){
+                signFlowStart.setBusinessScene("默认文件主题");
+            }
+            if(null == signFlowStart.getConfigInfo()){
+                ConfigInfo configInfo  = new ConfigInfo();
+                configInfo.setNoticeType("1"); //1-短信，2-邮件
+                signFlowStart.setConfigInfo(configInfo);
+            }
+            if(null == signFlowStart.getConfigInfo().getNoticeType()){
+                signFlowStart.getConfigInfo().setNoticeType("1");
+            }
+
             JSONObject jsonObject = ESignFlowUtils.createSignFlow(signFlowStart);
             serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
             JSONObject responseData = (JSONObject) jsonObject.get("data");
@@ -76,10 +89,16 @@ public class ThyController extends BaseController {
      */
     @RequestMapping(value = "addFlowDoc", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addFlowDoc(@RequestParam("flowId")String flowId,
-                                     @RequestBody List<FlowAddFile> files){
+    public ServerResponse addFlowDoc(@RequestParam(value = "flowId",required = true)String flowId,
+                                     @RequestBody(required = true) List<FlowAddFile> files){
         ServerResponse serverResponse = null;
         try {
+            if(null == flowId || "".equals(flowId.trim())){
+                return ServerResponse.fail(-1,"流程ID为不能空");
+            }
+            if (null == files || files.isEmpty()) {
+                return ServerResponse.fail(-1,"文档为空");
+            }
             JSONObject jsonObject = ESignFlowUtils.addFlowDoc(flowId,files);
             serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
         }catch (Exception e){
@@ -93,10 +112,16 @@ public class ThyController extends BaseController {
      */
     @RequestMapping(value = "addSignerHandSignArea", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addSignerHandSignArea(@RequestParam("flowId")String flowId,
-                                                @RequestBody List<Signfield> signfieldList){
+    public ServerResponse addSignerHandSignArea(@RequestParam(value = "flowId",required = true)String flowId,
+                                                @RequestBody(required = true) List<Signfield> signfieldList){
         ServerResponse serverResponse = null;
         try {
+            if(null == flowId || "".equals(flowId.trim())){
+                return ServerResponse.fail(-1,"流程ID为不能空");
+            }
+            if (null == signfieldList || signfieldList.isEmpty()) {
+                return ServerResponse.fail(-1,"签章信息为空");
+            }
             JSONObject jsonObject = ESignFlowUtils.addSignerHandSignArea(flowId,signfieldList);
             serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
         }catch (Exception e){
