@@ -17,6 +17,6 @@ public class FaceStartController {
     @RequestMapping(value = {"faceUrl", ""})
     @ResponseBody
     public Object getFaceUrl(){
-        return ServerResponse.createBySuccess(faceService.getFaceUrl());
+        return ServerResponse.success(faceService.getFaceUrl());
     }
 }
