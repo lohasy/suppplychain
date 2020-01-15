@@ -28,8 +28,13 @@
     <resultMap type="com.jeeplus.modules.esign.bean.UserEsign" id="UserEsign"></resultMap>
 
     <select id="getUserEsignByUserId" resultMap="UserEsign">
-        select * from t_user_esign  where user_id=#{userId}
+        select * from t_user_esign  where user_id=#{userId} order by created_time desc limit 1
     </select>
+
+	<select id="getUserEsignByEsignId" resultMap="UserEsign">
+		select * from t_user_esign  where esign_id=#{esignId} order by created_time desc limit 1
+	</select>
+
     <update id="upfateUserEsignByUserId" parameterType="com.jeeplus.modules.esign.bean.UserEsign">
         update t_user_esign
         <set>

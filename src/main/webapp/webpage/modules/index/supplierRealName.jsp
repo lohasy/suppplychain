@@ -12,14 +12,12 @@
 			if(!$.isEmpty($("#orgState").val())){
 
 				// 实名认证
-                if($("#orgState").val() == "0" && !$.isEmpty($("#userId").val())){
-                    location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
-                }
+
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
 					location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
 				}
 
-				if($("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "0" && $("#orgState").val() != "3"){
+				if($("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "-1" && $("#orgState").val() != "3"){
 					location.href = "${ctx}/logout";
 				}
 			}
@@ -27,7 +25,21 @@
 			if($.isEmpty($("#orgId").val())){
 				location.href = "${ctx}/logout";
 			}
+
+			$("#real_name").click(function(){
+                console.log("111")
+                location.href = "${ctx}/facetart/faceUrl"
+            })
+            $("#close_btn").click(function(){
+                console.log("222")
+                location.href = "${ctx}/logout"
+            })
 		});
+
+
+
+
+
 	</script>
 </head>
 <body>
@@ -47,7 +59,10 @@
   		<div class="title_nav"><span>1 注册账号</span><span>2 提交资料 </span><span style="color: #fff">3  实名认证</span><span>4 在线签约</span></div>
   		<div class="real_name">
     		<p>为了满足你的业务需求，需要进行企业实名认证，请按照流程操作</p>
-    		<div class="real_btn">马上实名</div>
+    		<div class="real_box">
+    		    <span id="real_name">马上实名</span>
+                <span id="close_btn">关闭</span>
+    		</div>
     		<div class="clear"></div>
   		</div>
   		<div class="clear"></div>

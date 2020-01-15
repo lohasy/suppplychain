@@ -92,6 +92,13 @@
 			<include refid="joins"/>
 		WHERE a.id = #{id} group by a.id
 	</select>
+
+	<select id="getById" resultType="Supplier_enterprise">
+		SELECT
+		*
+		FROM supplier_enterprise
+		WHERE id = #{id}
+	</select>
 	
 	<select id="getName" resultType="Supplier_enterprise">
 		SELECT 
