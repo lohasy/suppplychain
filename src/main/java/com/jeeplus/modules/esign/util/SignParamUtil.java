@@ -83,17 +83,13 @@ public class SignParamUtil {
 	/**
 	 * @description 添加签署方手动盖章签署区 参数设置
 	 * @return
-	 * @param fileIds              文件Id列表
-	 * @param signerAccountIds     签署人账号ID列表
-	 * @param authorizedAccountIds 授权主体账号ID列表
+	 * @param signfieldList              列表
 	 * @date 2019年7月18日 下午3:40:20
 	 * @author 宫清
 	 * @throws DefineException
 	 */
-	public static String addSignerHandSignAreaParam(List<String> fileIds, List<String> signerAccountIds,
-													List<String> authorizedAccountIds) throws DefineException {
-		JSONArray jarr = JSONArray.parseArray(
-				JSON.toJSONString(createSignerHandSignfields(fileIds, signerAccountIds, authorizedAccountIds)));
+	public static String addSignerHandSignAreaParam(List<Signfield> signfieldList) throws DefineException {
+		JSONArray jarr = JSONArray.parseArray(JSON.toJSONString(signfieldList));
 		JSONObject json = new JSONObject();
 		json.put("signfields", jarr);
 		return json.toString();
