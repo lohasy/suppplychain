@@ -19,4 +19,6 @@ public class FaceStartController {
     public Object getFaceUrl(){
         return ServerResponse.success(faceService.getFaceUrl());
     }
+
+
 }
