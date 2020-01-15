@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeeplus.modules.esign.dao.UserEsignDao">
-	
+
+    <resultMap type="com.jeeplus.modules.esign.bean.UserEsign" id="UserEsign"></resultMap>
+
+    <select id="getUserEsignByUserId" resultMap="UserEsign">
+        select * from t_user_esign  where user_id=#{userId}
+    </select>
+    <update id="upfateUserEsignByUserId" parameterType="com.jeeplus.modules.esign.bean.UserEsign">
+        update t_user_esign
+        <set>
+            <if test="esignId !=null and esignId !='' ">
+                esign_id = #{esignId},
+            </if>
+            <if test="realNameStatus !=null and realNameStatus !='' ">
+                real_name_status = #{realNameStatus},
+            </if>
+
+            <if test="valid !=null">
+                valid = #{valid},
+            </if>
+            updated_time = now(),
+        </set>
+
+    </update>
+
+    <insert id="insert">
+		INSERT INTO t_user_esign(
+			id,
+			user_id,
+			esign_type,
+			esign_id,
+			seel_id,
+			real_name_status,
+			created_time,
+			updated_time,
+			valid
+		) VALUES (
+			#{id},
+			#{userId},
+			#{esignType},
+ 		    #{esignId},
+			#{seelId},
+			#{realNameStatus},
+			#{createdTime},
+			#{updatedTime},
+			#{valid}
+		)
+	</insert>
 </mapper>
