@@ -59,19 +59,28 @@ public class ESignFlowUtils {
         return JSONHelper.castDataJson(json, JSONObject.class);
     }
 
-    /**
-     * @description 删除签署区
-     */
-//    public static JSONObject delSignArea(String flowId, String signfieldIds) throws DefineException {
-//        JSONObject json = HttpHelper.doCommHttp(RequestType.DELETE,
-//                ConfigConstant.deleteSignfields_URL(flowId, signfieldIds), null);
-//        return JSONHelper.castDataJson(json, JSONObject.class);
-//    }
-
     public static JSONObject startSignFlow(String flowId) throws DefineException {
         return HttpHelper.doCommHttp(RequestType.PUT, ConfigConstant.startFlows_URL(flowId), null);
     }
 
+    /**
+     * @param flowId  创建签署流程时返回的签署流程ID
+     * @param fileIds 文档id列表,多个id使用英文“，”分隔
+     * @throws DefineException
+     * @description 流程文档下载
+     * <p>
+     * 说明：
+     * <p>
+     * 流程归档后，查询和下载签署后的文件
+     * @author 宫清
+     * @date 2019年7月21日 下午5:59:45
+     */
+    public static void downloadFlowDoc(String flowId) throws DefineException {
+        JSONObject json = HttpHelper.doCommHttp(RequestType.GET, ConfigConstant.aboutDocument_URL(flowId, null), null);
+//        JSONHelper.castDataJson(json, Object.class);
+        final String url = String.valueOf(json.get("data"));
+        JSONObject result = HttpHelper.doCommHttp(RequestType.GET, url, null);
+    }
 
 
 }

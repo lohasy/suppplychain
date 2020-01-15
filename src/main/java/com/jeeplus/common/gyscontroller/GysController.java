@@ -421,6 +421,7 @@ public class GysController extends BaseController{
 
 
 			userEsign.setSeelId(sealId);
+			userEsign.setCreatedTime(new Date());
 			userEsignDao.insert(userEsign);
 			/**
 			 * 注册企业账户
@@ -450,6 +451,7 @@ public class GysController extends BaseController{
 			userEsignCompany.setSeelId(sealIdCompany);
 			userEsignCompany.setUserId(supplier_enterprise.getId());
 			userEsignCompany.setEsignId(orgId);
+			userEsignCompany.setCreatedTime(new Date());
 			userEsignDao.insert(userEsignCompany);
 
 		}
