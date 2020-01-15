@@ -1,5 +1,6 @@
 package com.jeeplus.modules.esign.web;
 
+import com.jeeplus.modules.esign.util.EsignUtil;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class Mysjob {
 
     public void refreshToken(){
-        System.out.println("哈哈");
+        EsignUtil.refreshAccessToken();
     }
 }
 
