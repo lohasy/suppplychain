@@ -47,6 +47,7 @@
 				${adminPath}/login = authc
 				${adminPath}/logout = anon
 				/face/faceResult/** = anon
+				/signResult/callBackSave/** = anon
 				${adminPath}/** = user
 				/act/rest/service/editor/** = perms[act:model:edit]
 				/act/rest/service/model/** = perms[act:model:edit]

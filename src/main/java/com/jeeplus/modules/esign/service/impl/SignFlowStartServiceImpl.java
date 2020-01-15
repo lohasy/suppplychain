@@ -1,7 +1,7 @@
 package com.jeeplus.modules.esign.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.jeeplus.modules.esign.bean.ServerResponse;
+import com.jeeplus.modules.esign.bean.signflow.ServerResponseResult;
 import com.jeeplus.modules.esign.dao.SignFlowStartDao;
 import com.jeeplus.modules.esign.exception.DefineException;
 import com.jeeplus.modules.esign.service.SignFlowStartService;
@@ -18,15 +18,15 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
     private SignFlowStartDao signFlowStartDao;
 
     @Override
-    public ServerResponse signFlowStart(String flowId) throws DefineException {
+    public ServerResponseResult signFlowStart(String flowId) throws DefineException {
         JSONObject json = ESignFlowUtils.startSignFlow(flowId);
         Object obj = json.get("data");
         String message = json.getString("message");
         int code = json.getIntValue("code");
         if (code != 0 && obj == null) {
-            return ServerResponse.fail(code, message);
+            return ServerResponseResult.createByErrorCodeMessage(code, message);
         }
-        return ServerResponse.success(message);
+        return ServerResponseResult.createBySuccess(message);
     }
 
     @Override
@@ -39,4 +39,10 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
         String flowId = resultMap.get("flowId");
         signFlowStartDao.callBackSave(signTime, signResult, resultDescription, accountId, flowId);
     }
+
+    @Override
+    public void saveFlowDoc(String flowId) throws DefineException {
+        ESignFlowUtils.downloadFlowDoc(flowId);
+    }
+
 }
