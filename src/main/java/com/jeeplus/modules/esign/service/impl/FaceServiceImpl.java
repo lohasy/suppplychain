@@ -13,6 +13,7 @@ import com.jeeplus.modules.sys.utils.UserUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -68,19 +69,20 @@ public class FaceServiceImpl implements FaceService {
     }
 
     @Override
+    @Transactional
     public Object faceResult(FaceResultDto faceResultDto) {
         UserEsign userEsign=new UserEsign();
         UserEsign userEsignRe = userEsignDao.getUserEsignByUserIdAndType(faceResultDto.getAccountId(),"1");
         userEsignRe.setRealNameStatus("4");
         if(faceResultDto.getSuccess()){
             userEsignRe.setRealNameStatus("3");
+            //企业更新审核状态为3
+            UserEsign userEnter = getUserEsignByEsignId(faceResultDto.getAccountId());
+            Supplier_enterprise supplierEnterprise = supplier_enterprisedao.getById(userEnter.getUserId());
+            supplierEnterprise.setState("3");
+            supplier_enterprisedao.update(supplierEnterprise);
         }
         userEsignDao.upfateUserEsignByUserId(userEsignRe);
-        //企业更新审核状态为-1
-        UserEsign userEnter = getUserEsignByEsignId(faceResultDto.getAccountId());
-        Supplier_enterprise supplierEnterprise = supplier_enterprisedao.getById(userEnter.getUserId());
-        supplierEnterprise.setState("-1");
-        supplier_enterprisedao.update(supplierEnterprise);
         return "false";
     }
 
