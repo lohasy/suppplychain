@@ -4,79 +4,79 @@ package com.jeeplus.modules.esign.bean;
 import java.io.Serializable;
 
 /**
- *
+ * restful通用返回对象
+ * @param <T>
  */
 public class ServerResponse<T> implements Serializable {
 
-    private int status;
+
+    private static final long serialVersionUID = 1011570200526843614L;
+    /**
+     * 返回code
+     */
+    private int code;
+    /**
+     * 描述信息
+     */
     private String msg;
+    /**
+     * 返回内容
+     */
     private T data;
 
-    private ServerResponse(int status) {
-        this.status = status;
+    public static <T> ServerResponse<T> success(T data) {
+        return serverResponse(0, "成功", data);
     }
 
-    private ServerResponse(int status, T data) {
-        this.status = status;
-        this.data = data;
+    public static <T> ServerResponse<T> success(T data, String msg) {
+        return serverResponse(0, msg, data);
     }
 
-    private ServerResponse(int status, String msg, T data) {
-        this.status = status;
-        this.msg = msg;
-        this.data = data;
+    public static <T> ServerResponse<T> success( String msg) {
+        return serverResponse(0, msg, null);
     }
 
-    private ServerResponse(int status, String msg) {
-        this.status = status;
-        this.msg = msg;
+    public static <T>  ServerResponse<T> fail(int code, String msg) {
+        return serverResponse(code, msg, null);
     }
 
-    public boolean isSuccess() {
-        return this.status == ResponseCode.SUCCESS.getCode();
+    public static <T> ServerResponse<T> fail(String msg) {
+        return serverResponse(-1, msg, null);
     }
 
-    public int getStatus() {
-        return status;
+    public static <T> ServerResponse<T> fail(int code, String msg, T data) {
+        return serverResponse(code, msg, data);
     }
 
-    public T getData() {
-        return data;
+    private static <T> ServerResponse<T> serverResponse(int code, String msg, T data) {
+        ServerResponse<T> resultData = new ServerResponse<>();
+        resultData.setCode(code);
+        resultData.setMsg(msg);
+        resultData.setData(data);
+        return resultData;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String getMsg() {
         return msg;
     }
 
-
-    public static <T> ServerResponse<T> createBySuccess() {
-        return new ServerResponse<T>(ResponseCode.SUCCESS.getCode());
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 
-    public static <T> ServerResponse<T> createBySuccessMessage(String msg) {
-        return new ServerResponse<T>(ResponseCode.SUCCESS.getCode(), msg);
+    public T getData() {
+        return data;
     }
 
-    public static <T> ServerResponse<T> createBySuccess(T data) {
-        return new ServerResponse<T>(ResponseCode.SUCCESS.getCode(), data);
+    public void setData(T data) {
+        this.data = data;
     }
-
-    public static <T> ServerResponse<T> createBySuccess(String msg, T data) {
-        return new ServerResponse<T>(ResponseCode.SUCCESS.getCode(), msg, data);
-    }
-
-
-    public static <T> ServerResponse<T> createByError() {
-        return new ServerResponse<T>(ResponseCode.ERROR.getCode(), ResponseCode.ERROR.getDesc());
-    }
-
-
-    public static <T> ServerResponse<T> createByErrorMessage(String errorMessage) {
-        return new ServerResponse<T>(ResponseCode.ERROR.getCode(), errorMessage);
-    }
-
-    public static <T> ServerResponse<T> createByErrorCodeMessage(int errorCode, String errorMessage) {
-        return new ServerResponse<T>(errorCode, errorMessage);
-    }
-
 }

@@ -6,6 +6,7 @@ import com.jeeplus.modules.esign.service.FaceService;
 import com.jeeplus.modules.sys.service.SystemConfigService;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,14 +24,14 @@ public class FaceController {
     @RequestMapping(value = {"faceUrl", ""})
     @ResponseBody
     public Object getFaceUrl(){
-        return ServerResponse.createBySuccess(faceService.getFaceUrl());
+        return ServerResponse.success(faceService.getFaceUrl());
     }
 
     @RequestMapping(value = {"faceResult", ""},method = RequestMethod.POST)
     @ResponseBody
 //    @RequiresRoles("super")
     public Object getFaceResult(@RequestBody FaceResultDto faceResultDto){
-        return ServerResponse.createBySuccess(faceService.faceResult(faceResultDto));
+        return ServerResponse.success(faceService.faceResult(faceResultDto));
     }
 
 
