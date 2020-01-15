@@ -3,25 +3,6 @@
  */
 package com.jeeplus.modules.sys.web;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.web.util.SavedRequest;
-import org.apache.shiro.web.util.WebUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.google.common.collect.Maps;
 import com.jeeplus.common.config.Global;
 import com.jeeplus.common.json.AjaxJson;
@@ -45,8 +26,24 @@ import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.security.FormAuthenticationFilter;
 import com.jeeplus.modules.sys.security.SystemAuthorizingRealm.Principal;
 import com.jeeplus.modules.sys.utils.UserUtils;
-
 import fangfangrj.Utils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 登录Controller
@@ -281,14 +278,19 @@ public class LoginController extends BaseController{
 				
 				su = suList.get(0);
 				if(su.getSupplierEnterpriseId() != null) {
+					//初始状态
 					if(su.getSupplierEnterpriseId().getState() == null || "0".equals(su.getSupplierEnterpriseId().getState())){
 						return "redirect:" + adminPath + "/sys/register/to-supplierSubmitData?id="+ us.getId();
+						//待审核状态
 					}else if("1".equals(su.getSupplierEnterpriseId().getState())) {
 						return "redirect:" + adminPath + "/sys/register/to-supplierSubmitData?id="+ us.getId();
+						//
 					}else if("3".equals(su.getSupplierEnterpriseId().getState())) {
 						return "redirect:" + adminPath + "/sys/register/to-supplierContract?id="+ us.getId();
 					}else if("2".equals(su.getSupplierEnterpriseId().getState())) {
 						return "redirect:" + adminPath + "/sys/register/to-supplierSubmitData?id="+ us.getId();
+					}else if("-1".equals(su.getSupplierEnterpriseId().getState())) {
+						return "redirect:" + adminPath + "/sys/register/to-supplierRealName?id="+ us.getId();
 					}
 					request.setAttribute("isYxyqgys", su.getSupplierEnterpriseId().getIsYqgys());
 				}
