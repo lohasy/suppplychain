@@ -8,8 +8,16 @@ import com.jeeplus.common.utils.StringUtils;
  */
 public class ConfigConstant {
 
-	// 模拟环境域名
+	/**
+	 * 模拟环境域名
+ 	 */
 	public static final String host = "https://smlopenapi.esign.cn";
+
+	/**
+	 * 回调地址
+ 	 */
+	public static final String CALL_BACK_URL = "http://www.chuangxin.com/signResult/callBackSave";
+
 	// 生产环境域名
 //	public static final String host = "https://openapi.esign.cn";
 
