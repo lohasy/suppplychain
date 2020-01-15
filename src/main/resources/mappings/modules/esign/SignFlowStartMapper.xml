@@ -3,10 +3,10 @@
 <mapper namespace="com.jeeplus.modules.esign.dao.SignFlowStartDao">
     <update id="callBackSave">
         update t_user_esign_contact e
-        set e.signTime = #{signTime,jdbcType=VARCHAR},
-        e.signResult = #{signResult,jdbcType=VARCHAR},
-        e.resultDescription = #{resultDescription,jdbcType=VARCHAR}
-        where e.process_id = #{flowId,jdbcType=VARCHAR},
+        set e.sign_time = #{signTime,jdbcType=VARCHAR},
+        e.sign_result = #{signResult,jdbcType=VARCHAR},
+        e.result_description = #{resultDescription,jdbcType=VARCHAR}
+        where e.process_id = #{flowId,jdbcType=VARCHAR}
         and e.user_id = #{accountId,jdbcType=VARCHAR}
     </update>
 </mapper>

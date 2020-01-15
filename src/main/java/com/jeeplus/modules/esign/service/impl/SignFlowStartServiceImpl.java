@@ -24,20 +24,20 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
         String message = json.getString("message");
         int code = json.getIntValue("code");
         if (code != 0 && obj == null) {
-            return ServerResponseResult.createByErrorCodeMessage(code, message);
+            return ServerResponseResult.createByErrorMessage(message);
         }
         return ServerResponseResult.createBySuccess(message);
     }
 
     @Override
-    public void callBackSave(JSONObject json) {
-        Map<String, String> resultMap = JSONObject.toJavaObject(json, Map.class);
-        String signTime = resultMap.get("signTime");
-        String signResult = resultMap.get("signResult");
-        String resultDescription = resultMap.get("resultDescription");
-        String accountId = resultMap.get("accountId");
-        String flowId = resultMap.get("flowId");
-        signFlowStartDao.callBackSave(signTime, signResult, resultDescription, accountId, flowId);
+    public int callBackSave(JSONObject json) {
+        Map<String, Object> resultMap = JSONObject.toJavaObject(json, Map.class);
+        String signTime = (String) resultMap.get("signTime");
+        Integer signResult = (Integer) resultMap.get("signResult");
+        String resultDescription = (String) resultMap.get("resultDescription");
+        String accountId = (String) resultMap.get("accountId");
+        String flowId = (String) resultMap.get("flowId");
+        return signFlowStartDao.callBackSave(signTime, signResult.toString(), resultDescription, accountId, flowId);
     }
 
     @Override

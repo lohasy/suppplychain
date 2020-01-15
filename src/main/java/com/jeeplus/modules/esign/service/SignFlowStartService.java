@@ -11,7 +11,11 @@ public interface SignFlowStartService {
 
     ServerResponseResult signFlowStart(String flowId) throws DefineException;
 
-    void callBackSave(JSONObject json);
+    /**
+     * @param json
+     * @return
+     */
+    int callBackSave(JSONObject json);
 
     void saveFlowDoc(String flowId) throws DefineException;
 
