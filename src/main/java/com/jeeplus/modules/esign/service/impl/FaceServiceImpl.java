@@ -69,10 +69,10 @@ public class FaceServiceImpl implements FaceService {
             userEsignRe.setRealNameStatus("3");
         }
         userEsignDao.upfateUserEsignByUserId(userEsignRe);
-        //企业更新审核状态为1
+        //企业更新审核状态为-1
         UserEsign userEnter = getUserEsignByEsignId(faceResultDto.getAccountId());
         Supplier_enterprise supplierEnterprise = supplier_enterprisedao.getById(userEnter.getUserId());
-        supplierEnterprise.setState("1");
+        supplierEnterprise.setState("-1");
         supplier_enterprisedao.update(supplierEnterprise);
         return "false";
     }

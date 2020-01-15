@@ -49,7 +49,7 @@
     		<div class="successful_l"><img src="${ctxStatic}/images/successful_01.jpg"></div>
     		<div class="successful_r" style="margin-top: 30px;">
       			<div class="successful_title">恭喜您注册成功！</div>
-      			<div class="successful_nei">您刚走了第1步，还要两步才能进行融资操作哦！<br>马上提交资料进行企业认证吧！</div>
+      			<div class="successful_nei">您刚走了第1步，还要三步才能进行融资操作哦！<br>马上提交资料吧！</div>
       			<div class="successful_link"><a href="${ctx}/sys/register/to-supplierSubmitData?id=${supplier_user.userId.id}">立即提交资料</a></div>
     		</div>
     		<div class="clear"></div>
