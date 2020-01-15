@@ -32,4 +32,6 @@ public class FaceController {
     public Object getFaceResult(@RequestBody FaceResultDto faceResultDto){
         return ServerResponse.createBySuccess(faceService.faceResult(faceResultDto));
     }
+
+
 }
