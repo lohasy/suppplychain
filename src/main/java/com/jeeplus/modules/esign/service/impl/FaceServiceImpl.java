@@ -29,11 +29,13 @@ public class FaceServiceImpl implements FaceService {
     private UserEsignDao userEsignDao ;
 
     @Override
-    public  Object getFaceUrl() {
+    public  FaceUrlDto getFaceUrl() {
         String userId = UserUtils.getUser().getId();
         ContextInfo contextInfo=new ContextInfo();
-        contextInfo.setNotifyUrl("haha");
-        contextInfo.setRedirectUrl("");
+        //异步回调接口
+        contextInfo.setNotifyUrl("localhost:8080/supplyChainFinancePlatform/face/faceResult");
+        //重定向地址
+        contextInfo.setRedirectUrl("http://localhost:8080/a/sys/register/to-supplierContract?id="+UserUtils.getUser().getId());
         OrgEntity orgEntity = new OrgEntity();
         Supplier_user supplier_user = new Supplier_user();
         supplier_user.setUserId(UserUtils.getUser());
@@ -52,7 +54,7 @@ public class FaceServiceImpl implements FaceService {
         userEsignFaceDto.setAgentAccountId(userEsignRe.getEsignId());
         contextInfo.setContextId(userEsignRe.getEsignId());
 
-        UserEsign userEnter = getUserEsignByUserId(supplierEnterprise.getId());
+        UserEsign userEnter = getUserEsignByUserIdEnter(supplierEnterprise.getId(),"1");
         userEsignFaceDto.setAccountId(userEnter.getEsignId());
 
         userEsignFaceDto.setContextInfo(contextInfo);
@@ -60,10 +62,15 @@ public class FaceServiceImpl implements FaceService {
         return EsignUtil.getFaceUrl(userEsignFaceDto);
     }
 
+    private UserEsign getUserEsignByUserIdEnter(String userId,String type) {
+        UserEsign userEsignRe = userEsignDao.getUserEsignByUserIdAndType(userId,type);
+        return userEsignRe;
+    }
+
     @Override
     public Object faceResult(FaceResultDto faceResultDto) {
         UserEsign userEsign=new UserEsign();
-        UserEsign userEsignRe = userEsignDao.getUserEsignByUserId(faceResultDto.getAccountId());
+        UserEsign userEsignRe = userEsignDao.getUserEsignByUserIdAndType(faceResultDto.getAccountId(),"1");
         userEsignRe.setRealNameStatus("4");
         if(faceResultDto.getSuccess()){
             userEsignRe.setRealNameStatus("3");
