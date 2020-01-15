@@ -21,8 +21,16 @@ public class ServerResponse<T> implements Serializable {
         return ServerResponse(0, msg, data);
     }
 
+    public static ServerResponse success( String msg) {
+        return ServerResponse(0, msg, null);
+    }
+
     public static ServerResponse fail(int code, String msg) {
         return ServerResponse(code, msg, null);
+    }
+
+    public static ServerResponse fail(String msg) {
+        return ServerResponse(-1, msg, null);
     }
 
     public static ServerResponse fail(int code, String msg, Object data) {
