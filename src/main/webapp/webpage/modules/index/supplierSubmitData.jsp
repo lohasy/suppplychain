@@ -32,7 +32,8 @@
 	           	}, 1000);
 	    	}
 		}
-	
+
+	    //---------------  跳转
 		$(function(){
 			getProvinceAreaSelect();
 			
@@ -44,10 +45,10 @@
 					$("#title_nav2").html('<span>企业资料提交</span><label></label><span class="steps_cur">审核资料</span><label></label><span>审核通过</span>');
 				}
 				if($("#orgState").val() == "2"){
-					$("#title_nav2").html('<span class="steps_cur">重新提交资料</span><label></label><span>审核资料</span><label></label><span>审核通过</span>');
+					$("#title_nav2").html('<span class="steps_cur">重新</span><label></label><span>审核资料</span><label></label><span>审核通过</span>');
 				}
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
-					location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();;
+					location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
 				}
 				if($("#orgState").val() != "0" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"){
 					location.href = "${ctx}/logout";
@@ -753,6 +754,8 @@
 		
 		//提交
 	    function checkForm() {
+	        location.href="${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
+            return;
         	var company_name = $("#company_name").val();
 	        var org_code = $("#org_code").val();
 	        var license_expired_date = $("#license_expired_date").val();
@@ -1023,7 +1026,7 @@
     	<input type="hidden" id="supplierShareHolders" name="guDongs" />
     	<div class="successful clear">
       		<div class="title_nav2">
-            	<span>1  注册账号</span><span><font color="#ffffff">2 提交资料</font></span><span>3  在线签约</span>
+            	<span>1  注册账号</span><span><font color="#ffffff">2 提交资料</font></span><span>3  实名认证</span><span>4  在线签约</span>
           	</div>
           	<div class="steps_nav" id="title_nav2">
             	<span class="steps_cur">企业资料提交</span><label></label><span>审核资料</span><label></label><span>审核通过</span>
