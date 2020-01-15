@@ -28,4 +28,6 @@ public interface Supplier_enterpriseDao extends CrudDao<Supplier_enterprise> {
 	 * @return
 	 */
 	public Supplier_enterprise getName(String name);
+
+	public Supplier_enterprise getById(String id);
 }

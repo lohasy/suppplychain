@@ -771,7 +771,35 @@ public class RegisterController extends BaseController {
 		model.addAttribute("supplier_user", su);
 		return "modules/index/supplierRegisterSuccess";
 	}
-	
+
+
+	/**
+	 * 跳转到供应商实名注册页面
+	 * @param user
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequestMapping(value = "to-supplierRealName")
+	public String toSupplierRealName(User user,
+									 HttpServletRequest request,
+									 HttpServletResponse response,
+									 Model model, RedirectAttributes redirectAttributes) {
+		Supplier_user su = new Supplier_user();
+		if(user != null && !Utils.isEmpty(user.getId())) {
+			user = userDao.get(user.getId());
+			su.setUserId(user);
+			List<Supplier_user> list = supplierUserDao.findList(su);
+			if(list != null && list.size() > 0) {
+				su = list.get(0);
+			}
+		}
+		model.addAttribute("supplier_user", su);
+		return "modules/index/supplierRealName";
+	}
+
 	
 	/**
 	 * 跳转到供应商提交资料界面
@@ -895,6 +923,7 @@ public class RegisterController extends BaseController {
 			Supplier_enterprise supplier_enterprise = supplier_user.getSupplierEnterpriseId();
 			
 			try {
+				//实名认证
 				supplier_enterprise.setState("1");
 				gysservice.save(supplier_enterprise);
 				request.getSession().getServletContext().removeAttribute(supplier_user.getSupplierEnterpriseId().getAgencyPhone());

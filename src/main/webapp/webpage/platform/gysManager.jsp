@@ -136,6 +136,10 @@
 											<c:if test="${supplier_enterprise.state == '3'}">
 												<span class="badge badge-primary">待签约</span>
 											</c:if>
+
+											<c:if test="${supplier_enterprise.state == '-1'}">
+												<span class="badge badge-primary">实名认证</span>
+											</c:if>
 											<c:if test="${supplier_enterprise.state == '4'}">
 												<span class="badge badge-success">已签约待银行授信</span>
 											</c:if>

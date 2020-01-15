@@ -1,26 +1,18 @@
 package com.jeeplus.modules.esign.web;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.jeeplus.common.config.Global;
-import com.jeeplus.common.controller.PdfUitl;
 import com.jeeplus.common.web.BaseController;
-import com.jeeplus.modules.cyl.bean.Material_info;
 import com.jeeplus.modules.esign.bean.ServerResponse;
 import com.jeeplus.modules.esign.bean.signflow.ConfigInfo;
 import com.jeeplus.modules.esign.bean.signflow.FlowAddFile;
 import com.jeeplus.modules.esign.bean.signflow.SignFlowStart;
 import com.jeeplus.modules.esign.bean.signflow.Signfield;
-import com.jeeplus.modules.esign.comm.JSONHelper;
 import com.jeeplus.modules.esign.dao.ThyDao;
 import com.jeeplus.modules.esign.exception.DefineException;
 import com.jeeplus.modules.esign.util.ESignFlowUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -64,7 +56,7 @@ public class ThyController extends BaseController {
     @RequestMapping(value = "createSignFlow", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse createSignFlow(@RequestParam("contract_id")String contract_id,
-                                         @RequestParam("signFlowStart") SignFlowStart signFlowStart){
+                                         @RequestBody SignFlowStart signFlowStart){
         ServerResponse serverResponse = null;
         try {
             JSONObject jsonObject = ESignFlowUtils.createSignFlow(signFlowStart);
@@ -85,7 +77,7 @@ public class ThyController extends BaseController {
     @RequestMapping(value = "addFlowDoc", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse addFlowDoc(@RequestParam("flowId")String flowId,
-                                     @RequestParam("files") List<FlowAddFile> files){
+                                     @RequestBody List<FlowAddFile> files){
         ServerResponse serverResponse = null;
         try {
             JSONObject jsonObject = ESignFlowUtils.addFlowDoc(flowId,files);
@@ -102,7 +94,7 @@ public class ThyController extends BaseController {
     @RequestMapping(value = "addSignerHandSignArea", method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse addSignerHandSignArea(@RequestParam("flowId")String flowId,
-                                                @RequestParam("fileIds")List<Signfield> signfieldList){
+                                                @RequestBody List<Signfield> signfieldList){
         ServerResponse serverResponse = null;
         try {
             JSONObject jsonObject = ESignFlowUtils.addSignerHandSignArea(flowId,signfieldList);

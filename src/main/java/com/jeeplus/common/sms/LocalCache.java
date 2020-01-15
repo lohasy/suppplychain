@@ -142,7 +142,7 @@ public class LocalCache {
                         - tce.getGmtModify());
                 //" 过期时间 : "+timoutTime);
                 if (tce.getExpire() > timoutTime) {
-                    logger.info(key+"过期时间:"+timoutTime);
+                    logger.info(key+":"+cache.get(key).getValue()+"过期时间:"+timoutTime);
                     continue;
                 }
                 logger.info(" 清除过期缓存 ： " + key);
