@@ -6,4 +6,6 @@ public interface FaceService {
     Object getFaceUrl();
 
     Object faceResult(FaceResultDto faceResultDto);
+
+    Object getAccessToken();
 }

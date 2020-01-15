@@ -33,6 +33,11 @@ public class FaceController {
     public Object getFaceResult(@RequestBody FaceResultDto faceResultDto){
         return ServerResponse.success(faceService.faceResult(faceResultDto));
     }
+    @RequestMapping(value = {"getAccessToken", ""})
+    @ResponseBody
+    public Object getAccessToken(){
+        return ServerResponse.success(faceService.getAccessToken());
+    }
 
 
 }

@@ -77,6 +77,12 @@ public class FaceServiceImpl implements FaceService {
         return "false";
     }
 
+    @Override
+    public Object getAccessToken() {
+        EsignUtil.getAccessToken();
+        return null;
+    }
+
     public UserEsign getUserEsignByUserId(String userId){
         UserEsign userEsignRe = userEsignDao.getUserEsignByUserId(userId);
         return userEsignRe;
