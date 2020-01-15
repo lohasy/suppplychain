@@ -57,17 +57,32 @@ public class ThyController extends BaseController {
     @ResponseBody
     public ServerResponse createSignFlow(@RequestParam("contract_id")String contract_id,
                                          @RequestBody SignFlowStart signFlowStart){
-        ServerResponse serverResponse = null;
+//        ServerResponse serverResponse = null;
+        contract_id = "588d4c4c902246149e82cccceaf61fcf"; //暂时写死
+        String flowId ="";
         try {
+            signFlowStart.setAutoArchive(true); //设置自动归档，归档后的签署文件才能下载
+            if (null == signFlowStart.getBusinessScene()){
+                signFlowStart.setBusinessScene("默认文件主题");
+            }
+            if(null == signFlowStart.getConfigInfo()){
+                ConfigInfo configInfo  = new ConfigInfo();
+                configInfo.setNoticeType("1"); //1-短信，2-邮件
+                signFlowStart.setConfigInfo(configInfo);
+            }
+            if(null == signFlowStart.getConfigInfo().getNoticeType()){
+                signFlowStart.getConfigInfo().setNoticeType("1");
+            }
+
             JSONObject jsonObject = ESignFlowUtils.createSignFlow(signFlowStart);
-            serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
-            JSONObject responseData = (JSONObject) jsonObject.get("data");
-            String flowId = responseData.getString("flowId");
+//            serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
+//            JSONObject responseData = (JSONObject) jsonObject.get("data");
+             flowId = jsonObject.getString("flowId");
             thyDao.updateProcessId(contract_id,flowId);
         }catch (Exception e){
             return ServerResponse.fail(-1,"创建签署流程异常");
         }
-        return serverResponse;
+        return ServerResponse.success("流程创建成功",flowId);
     }
 
 
@@ -76,10 +91,16 @@ public class ThyController extends BaseController {
      */
     @RequestMapping(value = "addFlowDoc", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addFlowDoc(@RequestParam("flowId")String flowId,
-                                     @RequestBody List<FlowAddFile> files){
+    public ServerResponse addFlowDoc(@RequestParam(value = "flowId",required = true)String flowId,
+                                     @RequestBody(required = true) List<FlowAddFile> files){
         ServerResponse serverResponse = null;
         try {
+            if(null == flowId || "".equals(flowId.trim())){
+                return ServerResponse.fail(-1,"流程ID为不能空");
+            }
+            if (null == files || files.isEmpty()) {
+                return ServerResponse.fail(-1,"文档为空");
+            }
             JSONObject jsonObject = ESignFlowUtils.addFlowDoc(flowId,files);
             serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
         }catch (Exception e){
@@ -93,10 +114,23 @@ public class ThyController extends BaseController {
      */
     @RequestMapping(value = "addSignerHandSignArea", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addSignerHandSignArea(@RequestParam("flowId")String flowId,
-                                                @RequestBody List<Signfield> signfieldList){
+    public ServerResponse addSignerHandSignArea(@RequestParam(value = "flowId",required = true)String flowId,
+                                                @RequestBody(required = true) List<Signfield> signfieldList){
         ServerResponse serverResponse = null;
         try {
+            if(null == flowId || "".equals(flowId.trim())){
+                return ServerResponse.fail(-1,"流程ID为不能空");
+            }
+            if (null == signfieldList || signfieldList.isEmpty()) {
+                return ServerResponse.fail(-1,"签章信息为空");
+            }
+            for(Signfield file : signfieldList){
+                if(null == file.getFileId() || "".equals(file.getFileId().trim()) ||
+                        null == file.getSignerAccountId() ||
+                        "".equals(file.getSignerAccountId().trim())){
+                    return ServerResponse.fail(-1,"文件或签章人id缺失");
+                }
+            }
             JSONObject jsonObject = ESignFlowUtils.addSignerHandSignArea(flowId,signfieldList);
             serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
         }catch (Exception e){

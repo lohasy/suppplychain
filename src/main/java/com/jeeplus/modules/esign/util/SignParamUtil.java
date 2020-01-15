@@ -68,6 +68,9 @@ public class SignParamUtil {
 //		String[] arr = fileIds.split(",");
 		for (FlowAddFile file : files) {
 			JSONObject innerjson = new JSONObject();
+			if(null == file.getFileId() || "".equals(file.getFileId().trim())){
+				throw new DefineException("文档ID为空");
+			}
 			innerjson.put("fileId", file.getFileId());
 			innerjson.put("encryption", file.getEncryption());
 			innerjson.put("fileName", file.getFileName());
@@ -85,7 +88,6 @@ public class SignParamUtil {
 	 * @return
 	 * @param signfieldList              列表
 	 * @date 2019年7月18日 下午3:40:20
-	 * @author 宫清
 	 * @throws DefineException
 	 */
 	public static String addSignerHandSignAreaParam(List<Signfield> signfieldList) throws DefineException {
