@@ -24,4 +24,28 @@
         </set>
 
     </update>
+
+    <insert id="insert">
+		INSERT INTO t_user_esign(
+			id,
+			user_id,
+			esign_type,
+			esign_id,
+			seel_id,
+			real_name_status,
+			created_time,
+			updated_time,
+			valid
+		) VALUES (
+			#{id},
+			#{userId},
+			#{esignType},
+ 		    #{esignId},
+			#{seelId},
+			#{realNameStatus},
+			#{createdTime},
+			#{updatedTime},
+			#{valid}
+		)
+	</insert>
 </mapper>

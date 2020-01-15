@@ -26,6 +26,21 @@ public class UserEsign {
 	private Date updatedTime;
 	private Integer valid;
 
+	public UserEsign(Integer id, String userId, Integer esignType, String esignId, String seelId, String realNameStatus, Date createdTime, Date updatedTime, Integer valid) {
+		this.id = id;
+		this.userId = userId;
+		this.esignType = esignType;
+		this.esignId = esignId;
+		this.seelId = seelId;
+		this.realNameStatus = realNameStatus;
+		this.createdTime = createdTime;
+		this.updatedTime = updatedTime;
+		this.valid = valid;
+	}
+
+	public UserEsign() {
+	}
+
 	public Integer getId() {
 		return id;
 	}
