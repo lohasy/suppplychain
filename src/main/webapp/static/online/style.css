@@ -1102,11 +1102,10 @@ h1{ font-size:14px; font-weight:bold;}
 }
 
 .title_nav{
-	width:726px;
+	width:995px;
 	height:54px;
 	line-height:54px;
 	margin:0 auto 0 auto;
-	background:url(../images/title_01.jpg) no-repeat;
 }
 .title_nav span{
 	width:242px;
@@ -1116,8 +1115,24 @@ h1{ font-size:14px; font-weight:bold;}
 	color:#666666;
 	font-size:18px;
 }
+.title_nav span:nth-child(1){
+    width:245px;
+    background:url(../images/bgt.png) no-repeat;
+}
+.title_nav span:nth-child(2){
+    width:248px;
+    background:url(../images/bg4.png) no-repeat;
+}
+.title_nav span:nth-child(3){
+    width:248px;
+    background:url(../images/bgi.png) no-repeat;
+}
+.title_nav span:nth-child(4){
+    width:248px;
+    background:url(../images/bg4.png) no-repeat;
+}
 .title_nav2{
-	width:726px;
+	width:980px;
 	height:54px;
 	line-height:54px;
 	margin:0 auto 0 auto;
@@ -1130,6 +1145,10 @@ h1{ font-size:14px; font-weight:bold;}
 	text-align:center;
 	color:#666666;
 	font-size:18px;
+}
+.title_nav2 span:nth-child(4){
+    width:248px;
+    background: url(../images/bg4.png) no-repeat;
 }
 .title_nav3{
 	width:726px;
@@ -1253,6 +1272,23 @@ h1{ font-size:14px; font-weight:bold;}
 	color:#ffffff !important;
 	background:#dddddd;
 	border-radius:8px;
+}
+.real_name{
+    margin: 135px;
+}
+.real_name p{
+    color:#666;
+    font-size: 16px;
+}
+.real_name .real_btn{
+    padding: 10px 20px;
+    color: #fff;
+    background: #40a8eb;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 550px;
+    cursor:pointer;
 }
 .steps_nav{
 	width:696px;

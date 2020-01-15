@@ -923,7 +923,9 @@ public class RegisterController extends BaseController {
 			Supplier_enterprise supplier_enterprise = supplier_user.getSupplierEnterpriseId();
 			
 			try {
-				supplier_enterprise.setState("1");
+				//实名认证
+				supplier_enterprise.setState("-1");
+//				supplier_enterprise.setState("1");
 				gysservice.save(supplier_enterprise);
 				request.getSession().getServletContext().removeAttribute(supplier_user.getSupplierEnterpriseId().getAgencyPhone());
 				
