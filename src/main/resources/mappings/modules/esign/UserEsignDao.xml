@@ -45,5 +45,6 @@
             </if>
             updated_time = now(),
         </set>
+		where user_id=#{userId}
     </update>
 </mapper>
