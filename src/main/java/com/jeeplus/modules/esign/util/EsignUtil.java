@@ -5,6 +5,8 @@ import com.jeeplus.modules.esign.bean.AccessToken;
 import com.jeeplus.modules.esign.bean.EsignResultDto;
 import com.jeeplus.modules.esign.bean.FaceUrlDto;
 import com.jeeplus.modules.esign.bean.UserEsignFaceDto;
+import com.jeeplus.modules.esign.comm.LocalCacheHelper;
+import com.jeeplus.modules.esign.constant.CacheKeyConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,7 @@ public class EsignUtil {
     /**
      * 获取token
      */
-    private static void getToken(){
+    private static String getToken(){
         try{
             String url = BASE_URL+GET_TOKEN_URL.replace("APPID",APPID).replace("APPSECRET",APPSECRET);
             JSONObject jsonStr=new JSONObject();
@@ -48,10 +50,11 @@ public class EsignUtil {
             String token = json.getString("token");
             String expireIn = json.getString("expiresIn");
             //创建token，并存储起来
-            at = new AccessToken(token,expireIn);
+            return token;
         }catch (Exception e){
             logger.error("获取e签宝accesstoken失败"+e.getMessage());
         }
+        return null;
     }
 
     /**
@@ -59,10 +62,11 @@ public class EsignUtil {
      * @return
      */
     public static String getAccessToken(){
-        if(at == null||at.isExpired()){
-            getToken();
+        if(null==LocalCacheHelper.get(CacheKeyConstant.TOKEN)){
+            String token = getToken();
+            LocalCacheHelper.put(CacheKeyConstant.TOKEN,token);
         }
-        return at.getAccessToken();
+        return LocalCacheHelper.get(CacheKeyConstant.TOKEN).toString();
     }
 
     /**
@@ -129,5 +133,10 @@ public class EsignUtil {
         String accessToken = getAccessToken();
         System.out.println(accessToken);
         System.out.println(getAccessToken());
+    }
+
+    public static void refreshAccessToken() {
+        String token = getToken();
+        LocalCacheHelper.put(CacheKeyConstant.TOKEN,token);
     }
 }
