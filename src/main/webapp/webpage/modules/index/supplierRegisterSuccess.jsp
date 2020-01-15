@@ -10,7 +10,10 @@
 		$(function(){
 			//处理状态
 			if(!$.isEmpty($("#orgState").val())){
-				if($("#orgState").val() == "2" || $("#orgState").val() == "-1"){
+				if($("#orgState").val() == "2"){
+					location.href = "${ctx}/logout";
+				}
+				if( $("#orgState").val() == "-1"){
 					location.href = "${ctx}/logout";
 				}
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
