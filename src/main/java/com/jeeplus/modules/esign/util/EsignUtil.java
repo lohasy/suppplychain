@@ -2,10 +2,19 @@ package com.jeeplus.modules.esign.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.modules.esign.bean.AccessToken;
+import com.jeeplus.modules.esign.bean.EsignResultDto;
+import com.jeeplus.modules.esign.bean.FaceUrlDto;
+import com.jeeplus.modules.esign.bean.UserEsignFaceDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * @author lohas
@@ -13,7 +22,7 @@ import java.util.HashMap;
 
 public class EsignUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(OKHttpUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(EsignUtil.class);
 
     //todo 上线前改成生产的地址以及密钥
     private static final String BASE_URL = "https://smlopenapi.esign.cn";
@@ -59,6 +68,19 @@ public class EsignUtil {
             getToken();
         }
         return at.getAccessToken();
+    }
+
+    public static FaceUrlDto getFaceUrl(UserEsignFaceDto userEsignFaceDto){
+        String token=getAccessToken();
+        String s = JSONObject.toJSONString(userEsignFaceDto);
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        HashMap map=new HashMap<String,String>();
+        map.put("X-Tsign-Open-App-Id",APPID);
+        map.put("X-Tsign-Open-Token",token);
+        JSONObject jsonResult = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
+        EsignResultDto esignResultDto = JSONObject.parseObject(jsonResult.toJSONString(), EsignResultDto.class);
+        FaceUrlDto faceUrlDto = JSONObject.parseObject(esignResultDto.getData(), FaceUrlDto.class);
+        return faceUrlDto;
     }
 
     /**

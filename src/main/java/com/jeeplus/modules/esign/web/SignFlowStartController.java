@@ -31,7 +31,7 @@ public class SignFlowStartController {
         try {
             return signFlowStartService.signFlowStart(flowId);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage(e.getMessage());
+            return ServerResponse.fail(e.getMessage());
         }
     }
 
@@ -51,7 +51,7 @@ public class SignFlowStartController {
         try {
             return signFlowStartService.signFlowStart(flowId);
         } catch (Exception e) {
-            return ServerResponse.createByErrorMessage(e.getMessage());
+            return ServerResponse.fail(e.getMessage());
         }
     }
 

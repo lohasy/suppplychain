@@ -24,9 +24,9 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
         String message = json.getString("message");
         int code = json.getIntValue("code");
         if (code != 0 && obj == null) {
-            return ServerResponse.createByErrorCodeMessage(code, message);
+            return ServerResponse.fail(code, message);
         }
-        return ServerResponse.createBySuccessMessage(message);
+        return ServerResponse.success(message);
     }
 
     @Override
