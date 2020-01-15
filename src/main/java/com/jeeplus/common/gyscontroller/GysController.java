@@ -397,7 +397,8 @@ public class GysController extends BaseController{
 			//注册负责人e签宝个人账户
 			JSONObject esignAccount = EsignUtil.createEsignAccount(accountInfo);
 			//获取个人账户accountId并保存
-			String accountId = esignAccount.getString("accountId");
+			JSONObject data = esignAccount.getJSONObject("data");
+			String accountId = data.getString("accountId");
 
 			UserEsign userEsign = new UserEsign();
 			userEsign.setEsignId(accountId);
@@ -406,9 +407,18 @@ public class GysController extends BaseController{
 				userEsign.setEsignType(2);//法人
 			}
 			userEsign.setEsignType(3);//经办人
+			try{
+				Thread.sleep(2000);
+			}catch (Exception e){
+				logger.error(e.getMessage());
+			}
+
 			JSONObject sealsInfo = EsignUtil.queryEsignSealsByAccoundId(accountId);
-			JSONArray seals = sealsInfo.getJSONArray("seals");
+			JSONObject dataInfo = sealsInfo.getJSONObject("data");
+			JSONArray seals = dataInfo.getJSONArray("seals");
 			String sealId = seals.getJSONObject(0).getString("sealId");
+
+
 			userEsign.setSeelId(sealId);
 			userEsignDao.insert(userEsign);
 			/**
@@ -417,18 +427,25 @@ public class GysController extends BaseController{
 			JSONObject companyInfo = new JSONObject();
 			companyInfo.put("creator",accountId);
 			//证件类型取得是组织机构代码
-			companyInfo.put("idType","CRED_ORG_CODE");
+			companyInfo.put("idType","");
 			companyInfo.put("idNumber",supplier_enterprise.getOrgCode());
 			companyInfo.put("name",supplier_enterprise.getName());
 			companyInfo.put("thirdPartyUserId",supplier_enterprise.getId());
 			JSONObject esignComponyAccount = EsignUtil.createEsignComponyAccount(companyInfo);
 			//获取企业用户orgId并保存
-			String orgId = esignComponyAccount.getString("orgId");
+			JSONObject dataCompanyInfo = esignComponyAccount.getJSONObject("data");
+			String orgId = dataCompanyInfo.getString("orgId");
 			UserEsign userEsignCompany = new UserEsign();
 			userEsignCompany.setEsignType(1);//企业
+			try{
+				Thread.sleep(2000);
+			}catch (Exception e){
+				logger.error(e.getMessage());
+			}
 			JSONObject sealsInfoCompany = EsignUtil.queryEsignSealsByAccoundId(orgId);
-			JSONArray sealsCompany = sealsInfo.getJSONArray("seals");
-			String sealIdCompany = seals.getJSONObject(0).getString("sealId");
+			JSONObject dataInfoCompany = sealsInfoCompany.getJSONObject("data");
+			JSONArray sealsCompany = dataInfoCompany.getJSONArray("seals");
+			String sealIdCompany = sealsCompany.getJSONObject(0).getString("sealId");
 			userEsignCompany.setSeelId(sealIdCompany);
 			userEsignCompany.setUserId(supplier_enterprise.getId());
 			userEsignCompany.setEsignId(orgId);
