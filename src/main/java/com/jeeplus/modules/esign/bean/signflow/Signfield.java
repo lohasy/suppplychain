@@ -43,13 +43,26 @@ public class Signfield {
 
 	// 平台自动盖章签署区添加时创建对象
 	public Signfield(String fileId, Integer order, PosBean posBean, String sealId, Integer signType,
-                     String thirdOrderNo) {
+                     String thirdOrderNo,String sealType) {
 		this.fileId = fileId;
 		this.order = order;
 		this.posBean = posBean;
 		this.sealId = sealId;
 		this.signType = signType;
 		this.thirdOrderNo = thirdOrderNo;
+		this.sealType=sealType;
+	}
+
+	public Signfield(String fileId, Integer order, PosBean posBean, String sealId, Integer signType, String thirdOrderNo, String actorIndentityType, String assignedPosbean, String sealType) {
+		this.fileId = fileId;
+		this.order = order;
+		this.posBean = posBean;
+		this.sealId = sealId;
+		this.signType = signType;
+		this.thirdOrderNo = thirdOrderNo;
+		this.actorIndentityType = actorIndentityType;
+		this.assignedPosbean = assignedPosbean;
+		this.sealType = sealType;
 	}
 
 	// 添加签署方自动盖章签署区时创建对象

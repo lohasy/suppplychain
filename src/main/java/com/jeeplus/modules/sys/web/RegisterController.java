@@ -868,13 +868,14 @@ public class RegisterController extends BaseController {
 	 */
 	@RequestMapping(value = "having-supplierContract")
 	public String havingSupplierContract(@RequestParam(value="validateCode", required =false) String vCode, Supplier_user supplier_user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		if(!Utils.isEmpty(vCode) && supplier_user != null && supplier_user.getSupplierEnterpriseId() != null && !Utils.isEmpty(supplier_user.getSupplierEnterpriseId().getId()) && !Utils.isEmpty(supplier_user.getSupplierEnterpriseId().getAgencyPhone())) {
-			//检验手机验证码是否一致
-			if (!vCode.equals(request.getSession().getServletContext().getAttribute(supplier_user.getSupplierEnterpriseId().getAgencyPhone()))) {
-				model.addAttribute("message", "签约授权码输入错误！");
-				model.addAttribute("supplier_user", supplier_user);
-				return "modules/index/supplierContract";
-			}
+//		if(!Utils.isEmpty(vCode) && supplier_user != null && supplier_user.getSupplierEnterpriseId() != null && !Utils.isEmpty(supplier_user.getSupplierEnterpriseId().getId()) && !Utils.isEmpty(supplier_user.getSupplierEnterpriseId().getAgencyPhone())) {
+		if(supplier_user != null && supplier_user.getSupplierEnterpriseId() != null && !Utils.isEmpty(supplier_user.getSupplierEnterpriseId().getId()) && !Utils.isEmpty(supplier_user.getSupplierEnterpriseId().getAgencyPhone())) {
+		//检验手机验证码是否一致
+//			if (!vCode.equals(request.getSession().getServletContext().getAttribute(supplier_user.getSupplierEnterpriseId().getAgencyPhone()))) {
+//				model.addAttribute("message", "签约授权码输入错误！");
+//				model.addAttribute("supplier_user", supplier_user);
+//				return "modules/index/supplierContract";
+//			}
 			
 			supplier_user.setSupplierEnterpriseId(supplier_enterpriseDao.get(supplier_user.getSupplierEnterpriseId().getId()));
 			supplier_user.getSupplierEnterpriseId().setState("4");

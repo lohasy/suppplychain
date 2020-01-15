@@ -9,6 +9,13 @@ public class FlowAddFile {
     private String fileName; // 文档名称,默认文件名称
     private String filePassword; //文档密码, 如果encryption值为1, 文档密码不能为空，默认没有密码
 
+    public FlowAddFile(int encryption, String fileId, String fileName, String filePassword) {
+        this.encryption = encryption;
+        this.fileId = fileId;
+        this.fileName = fileName;
+        this.filePassword = filePassword;
+    }
+
     public int getEncryption() {
         return encryption;
     }
