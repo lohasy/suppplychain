@@ -7,6 +7,7 @@ import com.jeeplus.modules.esign.bean.FaceUrlDto;
 import com.jeeplus.modules.esign.bean.UserEsignFaceDto;
 import com.jeeplus.modules.esign.comm.LocalCacheHelper;
 import com.jeeplus.modules.esign.constant.CacheKeyConstant;
+import com.jeeplus.modules.esign.constant.ConfigConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +44,14 @@ public class EsignUtil {
      */
     private static String getToken(){
         try{
-            String url = BASE_URL+GET_TOKEN_URL.replace("APPID",APPID).replace("APPSECRET",APPSECRET);
+            String url = ConfigConstant.host +GET_TOKEN_URL.replace("APPID",ConfigConstant.PROJECT_ID).replace("APPSECRET",ConfigConstant.PROJECT_SECRET);
             JSONObject jsonStr=new JSONObject();
             JSONObject jsonResult = OKHttpUtils.getRequest(url, jsonStr);
             JSONObject json = jsonResult.getJSONObject("data");
             String token = json.getString("token");
             String expireIn = json.getString("expiresIn");
+            String refreshToken = json.getString("refreshToken");
+            LocalCacheHelper.put(CacheKeyConstant.REFRESH_TOKEN,refreshToken);
             //创建token，并存储起来
             return token;
         }catch (Exception e){
@@ -136,7 +139,12 @@ public class EsignUtil {
     }
 
     public static void refreshAccessToken() {
-        String token = getToken();
+        JSONObject jsonStr=new JSONObject();
+        JSONObject jsonResult = OKHttpUtils.getRequest(ConfigConstant.refreshToken_URL(ConfigConstant.PROJECT_ID,String.valueOf(LocalCacheHelper.get(CacheKeyConstant.REFRESH_TOKEN))), jsonStr);
+        JSONObject json = jsonResult.getJSONObject("data");
+        String token = json.getString("token");
+        String refreshToken = json.getString("refreshToken");
+        LocalCacheHelper.put(CacheKeyConstant.REFRESH_TOKEN,refreshToken);
         LocalCacheHelper.put(CacheKeyConstant.TOKEN,token);
     }
 }
