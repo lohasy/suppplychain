@@ -196,10 +196,10 @@
 				      		<dd>${supplier_enterprise.agencyName}</dd>
 				      		<dt>性别：</dt>
                     		<dd>
-                    			<c:if test="${supplier_enterprise.legalSex == '0'}">
+                    			<c:if test="${supplier_enterprise.agencySex== '0'}">
 	                    			男
 	                    		</c:if>
-	                    		<c:if test="${supplier_enterprise.legalSex == '1'}">
+	                    		<c:if test="${supplier_enterprise.agencySex == '1'}">
 	                    			女
 	                    		</c:if>
                     		</dd>
@@ -270,7 +270,7 @@
 	               		<div class="ibox-content">
 	                  		<div>
 	                    		<label class="check-inline">
-	                      			<div class="iradio_square-green" style="position: relative;"><input type="radio" value="3" id="state" name="state" class="i-checks" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 审核通过
+	                      			<div class="iradio_square-green" style="position: relative;"><input type="radio" value="-1" id="state" name="state" class="i-checks" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins></div> 审核通过
 	                    		</label>
 	                 	 	</div>
 	                  		<div style="margin-top: 10px;">
