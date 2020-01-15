@@ -12,4 +12,5 @@ public interface ThyDao extends CrudDao<UserEsignContact> {
     //更新流程id
     public void updateProcessId(@Param("contract_id") String contract_id, @Param("process_id")String process_id);
 
+    public String getUserEsignIdByUserId(@Param("user_id") String user_id);
 }

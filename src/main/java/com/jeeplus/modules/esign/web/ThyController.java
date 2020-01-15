@@ -10,6 +10,7 @@ import com.jeeplus.modules.esign.bean.signflow.Signfield;
 import com.jeeplus.modules.esign.dao.ThyDao;
 import com.jeeplus.modules.esign.exception.DefineException;
 import com.jeeplus.modules.esign.util.ESignFlowUtils;
+import com.jeeplus.modules.sys.utils.UserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -91,9 +92,10 @@ public class ThyController extends BaseController {
      */
     @RequestMapping(value = "addFlowDoc", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addFlowDoc(@RequestParam(value = "flowId",required = true)String flowId,
-                                     @RequestBody(required = true) List<FlowAddFile> files){
-        ServerResponse serverResponse = null;
+    public ServerResponse addFlowDoc(@RequestParam(value = "flowId")String flowId,
+                                     @RequestBody List<FlowAddFile> files){
+//        ServerResponse serverResponse = null;
+        String msg = "";
         try {
             if(null == flowId || "".equals(flowId.trim())){
                 return ServerResponse.fail(-1,"流程ID为不能空");
@@ -102,11 +104,12 @@ public class ThyController extends BaseController {
                 return ServerResponse.fail(-1,"文档为空");
             }
             JSONObject jsonObject = ESignFlowUtils.addFlowDoc(flowId,files);
-            serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
+            msg = jsonObject.toString();
+//            serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
         }catch (Exception e){
             return ServerResponse.fail(-1,"流程文档添加系统异常");
         }
-        return serverResponse;
+        return ServerResponse.success(msg);
     }
 
     /**
@@ -114,9 +117,10 @@ public class ThyController extends BaseController {
      */
     @RequestMapping(value = "addSignerHandSignArea", method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponse addSignerHandSignArea(@RequestParam(value = "flowId",required = true)String flowId,
-                                                @RequestBody(required = true) List<Signfield> signfieldList){
-        ServerResponse serverResponse = null;
+    public ServerResponse addSignerHandSignArea(@RequestParam(value = "flowId")String flowId,
+                                                @RequestBody List<Signfield> signfieldList){
+//        ServerResponse serverResponse = null;
+        String msg ="";
         try {
             if(null == flowId || "".equals(flowId.trim())){
                 return ServerResponse.fail(-1,"流程ID为不能空");
@@ -124,19 +128,27 @@ public class ThyController extends BaseController {
             if (null == signfieldList || signfieldList.isEmpty()) {
                 return ServerResponse.fail(-1,"签章信息为空");
             }
+            String userid = UserUtils.getUser().getId();
+            String splierId = UserUtils.getUser().getSupplier().getId();
+            String uesing = thyDao.getUserEsignIdByUserId(userid);
+            String spsing = thyDao.getUserEsignIdByUserId(splierId);
             for(Signfield file : signfieldList){
                 if(null == file.getFileId() || "".equals(file.getFileId().trim()) ||
                         null == file.getSignerAccountId() ||
                         "".equals(file.getSignerAccountId().trim())){
                     return ServerResponse.fail(-1,"文件或签章人id缺失");
                 }
+                file.setSignerAccountId(uesing);
+                file.setAuthorizedAccountId(spsing);
             }
             JSONObject jsonObject = ESignFlowUtils.addSignerHandSignArea(flowId,signfieldList);
-            serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
+//            serverResponse = JSONObject.parseObject(jsonObject.toString(), ServerResponse.class);
+
+            msg = jsonObject.toString();
         }catch (Exception e){
             return ServerResponse.fail(-1,"添加签署方手动盖章签署区异常");
         }
-        return serverResponse;
+        return ServerResponse.success(msg,"成功");
     }
 
 }

@@ -6,4 +6,8 @@
         UPDATE t_user_esign_contact SET process_id = #{process_id} WHERE contract_id = #{contract_id}
     </update>
 
+    <select id="getUserEsignIdByUserId" resultType="string">
+        SELECT esign_id FROM t_user_esign WHERE user_id = #{user_id}
+    </select>
+
 </mapper>
