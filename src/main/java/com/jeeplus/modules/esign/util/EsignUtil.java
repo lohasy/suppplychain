@@ -2,10 +2,14 @@ package com.jeeplus.modules.esign.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.modules.esign.bean.AccessToken;
+import com.jeeplus.modules.esign.bean.EsignResultDto;
+import com.jeeplus.modules.esign.bean.FaceUrlDto;
+import com.jeeplus.modules.esign.bean.UserEsignFaceDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+
 
 /**
  * @author lohas
@@ -96,15 +100,29 @@ public class EsignUtil {
      * @param accountId 账户id
      * @return
      */
-    public static JSONObject queryEsignSealsByAccoundId(String accountId){
+    public static JSONObject queryEsignSealsByAccoundId(String accountId) {
         String url = BASE_URL + "/v1/accounts/accountId/seals";
-        url = url.replace("accountId",accountId);
-        headCommonMap.put("X-Tsign-Open-App-Id",APPID);
-        headCommonMap.put("X-Tsign-Open-Token",getAccessToken());
-        headCommonMap.put("Content-Type","application/json");
+        url = url.replace("accountId", accountId);
+        headCommonMap.put("X-Tsign-Open-App-Id", APPID);
+        headCommonMap.put("X-Tsign-Open-Token", getAccessToken());
+        headCommonMap.put("Content-Type", "application/json");
         logger.info(headCommonMap.toString());
         JSONObject jsonResult = OKHttpUtils.getRestfulAddHeader(url, headCommonMap);
         return jsonResult;
+    }
+
+    public static FaceUrlDto getFaceUrl(UserEsignFaceDto userEsignFaceDto){
+        String token=getAccessToken();
+        String s = JSONObject.toJSONString(userEsignFaceDto);
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        HashMap map=new HashMap<String,String>();
+        map.put("X-Tsign-Open-App-Id",APPID);
+        map.put("X-Tsign-Open-Token",token);
+        JSONObject jsonResult = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
+        EsignResultDto esignResultDto = JSONObject.parseObject(jsonResult.toJSONString(), EsignResultDto.class);
+        FaceUrlDto faceUrlDto = JSONObject.parseObject(esignResultDto.getData(), FaceUrlDto.class);
+        return faceUrlDto;
+
     }
 
     public static void main(String[] args) {

@@ -9,5 +9,8 @@ import java.util.List;
 
 @MyBatisDao
 public interface UserEsignDao extends CrudDao<UserEsign> {
+    UserEsign getUserEsignByUserId(String userId);
 
+
+    void upfateUserEsignByUserId(UserEsign userEsignRe);
 }
