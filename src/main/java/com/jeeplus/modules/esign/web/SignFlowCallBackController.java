@@ -44,13 +44,15 @@ public class SignFlowCallBackController {
     @ResponseBody
     public ServerResponseResult callBackSave(@RequestBody JSONObject json) {
         try {
-            Assert.notNull(json, "json is cannot be null !");
             int i = signFlowStartService.callBackSave(json);
             if (i == 1) {
-                return ServerResponseResult.createBySuccessMessage("回调成功");
+                logger.info("回调成功！");
+                return ServerResponseResult.createBySuccessMessage("回调成功！");
             }
-            return ServerResponseResult.createBySuccessMessage("已更新");
+            logger.info("回调已更新！数据库更新记录为0");
+            return ServerResponseResult.createBySuccessMessage("已更新！");
         } catch (Exception e) {
+            logger.info("回调失败！请检查流程问题！");
             return ServerResponseResult.createByErrorMessage("回调失败！");
         }
     }
