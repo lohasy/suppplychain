@@ -24,8 +24,11 @@ public class EsignUtil {
 
     //todo 上线前改成生产的地址以及密钥
     private static final String BASE_URL = "https://smlopenapi.esign.cn";
-    private static final String APPID = "4438793080";
-    private static final String APPSECRET = "46748dcae0a380f46e75e0e9b7b284e3";
+  /*  private static final String APPID = "4438793080";
+    private static final String APPSECRET = "46748dcae0a380f46e75e0e9b7b284e3";*/
+
+    private static final String APPID = "4438793380";
+    private static final String APPSECRET = "03e018808dbf566714b8f7a33b182707";
     private static HashMap<String, String> headCommonMap = new HashMap<>();
 
 

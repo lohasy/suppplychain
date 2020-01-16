@@ -22,9 +22,9 @@ public class ConfigConstant {
 //	public static final String host = "https://openapi.esign.cn";
 
 	// 项目Id(应用Id）
-	public static final String PROJECT_ID = "4438793080";
+	public static final String PROJECT_ID = "4438793380";
 	// 项目密钥(应用密钥）
-	public static final String PROJECT_SECRET = "46748dcae0a380f46e75e0e9b7b284e3";
+	public static final String PROJECT_SECRET = "03e018808dbf566714b8f7a33b182707";
 
 	// ------Token相关地址------
 	// 获取Token
