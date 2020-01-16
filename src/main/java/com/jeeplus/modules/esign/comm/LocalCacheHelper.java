@@ -16,7 +16,7 @@ import java.util.Map;
  */
 public class LocalCacheHelper {
 
-	private static final Map<String, Object> localCache = Maps.newConcurrentMap();
+	private static final  Map<String, Object> localCache = Maps.newConcurrentMap();
 
 	
 	/**
