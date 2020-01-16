@@ -57,10 +57,14 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
 
     @Override
     public int callBackSave(JSONObject json) {
+        logger.info("=======================回调开始=======================");
         Map<String, Object> resultMap = JSONObject.toJavaObject(json, Map.class);
+
         String signTime = (String) resultMap.get("signTime");
         Integer signResult = (Integer) resultMap.get("signResult");
+
         String authorizedAccountId = (String) resultMap.get("authorizedAccountId");
+
         if (Objects.equals(signResult, CALLBACK_SUCCESS)) {
             UserEsign userEnter = getUserEsignByEsignId(authorizedAccountId);
             Supplier_enterprise supplierEnterprise = supplier_enterprisedao.getById(userEnter.getUserId());
@@ -70,6 +74,9 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
         String resultDescription = (String) resultMap.get("resultDescription");
         String accountId = (String) resultMap.get("accountId");
         String flowId = (String) resultMap.get("flowId");
+        logger.info("流程id：" + flowId);
+        logger.info("账户id：" + accountId);
+        logger.info("组织id：" + authorizedAccountId);
         return signFlowStartDao.callBackSave(signTime, signResult.toString(), resultDescription, accountId, flowId);
     }
 
