@@ -12,18 +12,18 @@
     <link href="${ctxStatic}/online/style.css" rel="stylesheet" type="text/css"/>
     <script src="${ctxStatic}/online/lgt-web.js"></script>
     <style>
-        .chuangxin_logout{
-            float:right;
-            width:168px;
-            height:45px;
-            line-height:45px;
-            text-align:center;
-            font-size:18px;
-            color:#ffffff !important;
+        .chuangxin_logout {
+            float: right;
+            width: 168px;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            font-size: 18px;
+            color: #ffffff !important;
             background: #ff1b2c;
-            border-radius:8px;
-            margin-left:25px;
-            display:inline;
+            border-radius: 8px;
+            margin-left: 25px;
+            display: inline;
         }
 
 
@@ -137,20 +137,20 @@
         }
 
 
-
-        //授权确定
+        //签约跳转
         function sureNew() {
-                $.ajax({
-                    url: "${ctx}/thy/createSignFlow",
-                    type: "get",
-                    dataType: "json",
-                    success: function (data, status, xhr) {
-                        console.log(data);
-                    },
-                    error: function (xhr, status, error) {
-                        layer.msg(status);
-                    }
-                });
+            $.ajax({
+                url: "${ctx}/thy/createSignFlow",
+                type: "get",
+                dataType: "json",
+                success: function (data, status, xhr) {
+                    console.log(data.data);
+                    location.href = "${ctx}/signResult/singStart?flowId=" + data.data;
+                },
+                error: function (xhr, status, error) {
+                    layer.msg(status);
+                }
+            });
 
         }
     </script>
@@ -273,11 +273,12 @@
                     <div class="clear"></div>
                 </div>
             </div>
-            <div class="successful_xie_con" id="a01"  style="display: none;">
+            <div class="successful_xie_con" id="a01" style="display: none;">
                 <div class="hetong">
                     <div class="hetong_title">用户授权协议</div>
                     <div class="hetong_nei">
-                          《用户授权协议》(以下简称“本协议”)是创信供应链管理有限公司（以下简称“本公司”） 创信供应链 平台（以下简称“本平台”）与用户（以下简称“您”）所订立的有效合约。您通过网络页面点击确认或以其他方式选择接受本协议，即表示您与本公司已达成协议并同意接受本协议的全部约定内容。
+                        《用户授权协议》(以下简称“本协议”)是创信供应链管理有限公司（以下简称“本公司”） 创信供应链
+                        平台（以下简称“本平台”）与用户（以下简称“您”）所订立的有效合约。您通过网络页面点击确认或以其他方式选择接受本协议，即表示您与本公司已达成协议并同意接受本协议的全部约定内容。
                         <br/>
                         <br/>在接受本协议之前，请您仔细阅读本协议的全部内容（特别是以粗体下划线标注的内容）。如您不同意本协议的内容，或无法准确理解本协议任何条款的含义，请不要进行确认及后续操作，一旦确认即视为您同意本协议全部内容。如果您对本协议有疑问的，请通过service@cx-gyl.com邮箱进行询问，其将向您解释。
                         <br/>
@@ -297,7 +298,7 @@
                     <div class="clear"></div>
                 </div>
             </div>
-            <div class="successful_xie_con" id="a02"  style="display: none;">
+            <div class="successful_xie_con" id="a02" style="display: none;">
                 <div class="hetong">
                     <div class="hetong_title">e签宝用户隐私政策</div>
                     <div class="hetong_nei">
@@ -362,7 +363,8 @@
                         <br/>我们不会与任何公司、组织和个人共享您的个人信息，但以下情况除外：
                         <br/>（一）共享
                         <br/>1.1我们可能会根据法律法规规定、诉讼争议解决需要，或按行政、司法机关依法提出的要求，对外共享您的个人信息。
-                        <br/>1.2与合作机构共享: 为实现本电子签约或服务目的，我们的某些服务将由我们和合作机构共同提供。我们会根据法律法规与合作伙伴共享您的某些个人信息。您的个人身份信息及签约信息需传输至电子认证服务机构(简称CA)、公证处、司法鉴定中心、区块链、互联网法院、仲裁委、第三方身份认证机构，由上述权威机构出具相应证明文件或处理案件等目的使用并保存。我们仅会出于合法、正当、必要的目的共享您的个人信息，并且只会共享提供服务所必要的个人信息。
+                        <br/>1.2与合作机构共享:
+                        为实现本电子签约或服务目的，我们的某些服务将由我们和合作机构共同提供。我们会根据法律法规与合作伙伴共享您的某些个人信息。您的个人身份信息及签约信息需传输至电子认证服务机构(简称CA)、公证处、司法鉴定中心、区块链、互联网法院、仲裁委、第三方身份认证机构，由上述权威机构出具相应证明文件或处理案件等目的使用并保存。我们仅会出于合法、正当、必要的目的共享您的个人信息，并且只会共享提供服务所必要的个人信息。
                         <br/>1.3为了让您有更好的体验、改善我们的服务或经您同意的其他用途，在符合相关法律法规的前提下，我们可能将通过某些服务所收集的信息用于我们的其他服务。例如，将您在使用我们某项服务时的信息，用于用户研究分析与统计等服务。
                         <br/>1.4为了确保服务的安全，帮助我们更好地了解我们应用程序的运行情况，我们可能记录相关信息或将所收集到的信息用于大数据分析，例如，您应用程序的频率、故障信息、总体使用情况、性能数据或分析形成不包含任何个人信息的城市热力图或行业洞察报告等。我们可能对外公开并与我们的合作伙伴分享经统计加工后不含身份识别内容的信息，用于了解用户如何使用我们服务或让公众了解我们服务的总体使用趋势。
                         <br/> 
@@ -378,7 +380,8 @@
                         <br/>3.3法律法规规定的其他情形。
                         <br/> 
                         <br/>四、 我们如何使用COOKIE技术
-                        <br/>在您使用我们的产品或服务时，我们的平台会自动接收并记录您的浏览器和计算机上的信息，其中包括您的 IP 地址，您生成的电子签章，软硬件特征信息、以及您需求的网页记录，COOKIE中的信息等。为确保网站正常运转，我们会在您的计算机或移动设备上存储名为Cookie的小数据文件。在您未拒绝接受COOKIE的情况下，COOKIE将被发送到您的浏览器，并储存在您的计算机硬盘。我们使用COOKIE储存您访问我们网站的相关数据，在您访问或再次访问我们的网站时，我们能识别您的身份，并通过分析数据为您提供更好更多的服务。您有权选择接受或拒绝接受COOKIE。您可以通过修改浏览器的设置以拒绝接受COOKIE，但是我们需要提醒您，因为您拒绝接受COOKIE，您可能无法使用依赖于COOKIE的部分功能。
+                        <br/>在您使用我们的产品或服务时，我们的平台会自动接收并记录您的浏览器和计算机上的信息，其中包括您的 IP
+                        地址，您生成的电子签章，软硬件特征信息、以及您需求的网页记录，COOKIE中的信息等。为确保网站正常运转，我们会在您的计算机或移动设备上存储名为Cookie的小数据文件。在您未拒绝接受COOKIE的情况下，COOKIE将被发送到您的浏览器，并储存在您的计算机硬盘。我们使用COOKIE储存您访问我们网站的相关数据，在您访问或再次访问我们的网站时，我们能识别您的身份，并通过分析数据为您提供更好更多的服务。您有权选择接受或拒绝接受COOKIE。您可以通过修改浏览器的设置以拒绝接受COOKIE，但是我们需要提醒您，因为您拒绝接受COOKIE，您可能无法使用依赖于COOKIE的部分功能。
                         <br/> 
                         <br/>五、 我们如何存储您的个人信息
                         <br/>（一）我们在中华人民共和国境内收集和产生的个人信息将存储在中华人民共和国境内。若为处理跨境业务，确需向境外机构传输境内收集的相关个人信息的，我们会按照法律、行政法规和相关监管部门的规定执行。我们会确保您的个人信息得到足够的保护，例如匿名化、加密存储等。
@@ -492,13 +495,14 @@
             <div class="reg_yue clear">
                 <input id="mycheckbox" type="checkbox" class="checkbix" style="margin: 0;"/>
                 <label aria-label="" role="checkbox" for="mycheckbox" class="checkbix"><span class=""></span></label>
-                <div style="margin-left: 0px; display: inline-block; margin-top: -40px;">我方已认真阅读并同意接受《用户注册服务协议》<span>、《用户授权协议》、《e签宝用户隐私政策》</span></div>
+                <div style="margin-left: 0px; display: inline-block; margin-top: -40px;">我方已认真阅读并同意接受《用户注册服务协议》<span>、《用户授权协议》、《e签宝用户隐私政策》</span>
+                </div>
             </div>
             <div class="successful_xie_bot clear">
                 <a href="${ctx}/logout" class="chuangxin_logout" data-kid="503">关闭</a>
                 <c:if test="${fn:contains(fns:getUser().roleNames, '供应商负责人')}">
                     <a href="javascript: void(0);" class="successful_a" id="sign" onclick="contract()" data-kid="503"
-                       data-pcode="20180914195816982987838600">马上签约</a >
+                       data-pcode="20180914195816982987838600">马上签约</a>
                 </c:if>
                 <c:if test="${not fn:contains(fns:getUser().roleNames, '供应商负责人')}">
                     <a href="javascript: void(0);" style="background-color: #a0a0a0;" class="successful_a" id="sign"

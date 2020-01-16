@@ -1,4 +1,5 @@
 package com.jeeplus.common.gyscontroller;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
@@ -6,6 +7,7 @@ import com.jeeplus.common.constant.CxConst;
 import com.jeeplus.common.paramservice.EnterpriseParamService;
 import com.jeeplus.common.persistence.Page;
 import com.jeeplus.common.service.BaseService;
+import com.jeeplus.common.sms.LocalCache;
 import com.jeeplus.common.sms.SMSUtils;
 import com.jeeplus.common.utils.IdGen;
 import com.jeeplus.common.utils.StringUtils;
@@ -275,6 +277,9 @@ public class GysController extends BaseController{
 	@RequestMapping(value = "subgysShenHe")
 	public String subgysShenHe(Supplier_enterprise supplier_enterprise, Model model,RedirectAttributes redirectAttributes) {
 		gysservice.save(supplier_enterprise);
+
+
+
 		MailCompose mailCompose = new MailCompose();
 		Mail mail = new Mail();
 		mailCompose.setMail(mail);
@@ -317,7 +322,11 @@ public class GysController extends BaseController{
 								}
 							}
 						}
-
+						String content = "{\"supplier_enterprise\":\""+ supplier_enterprise.getName() +"\",\"username\":\""+ leaderUserPhone +"\",\"userpassword\":\""+ leaderUserPwd +"\"" +
+//									",\"url\":\""+ CxConst.PROD_URL +"\"" +
+								"}";
+						LocalCache localCache = new LocalCache();
+						localCache.putValue(leaderUserPhone + "-" + CxConst.SMS_TEMPLATE_CODE_SUPPLIER, content, 600);
 						//注册用户
 						if(leaderUser.getRole() != null && !Utils.isEmpty(leaderUser.getRole().getId())) {
 
@@ -337,9 +346,7 @@ public class GysController extends BaseController{
 						//发送短信
 						try {
 							SystemConfig config = systemConfigService.get("1");
-							String content = "{\"supplier_enterprise\":\""+ supplier_enterprise.getName() +"\",\"username\":\""+ leaderUserPhone +"\",\"userpassword\":\""+ leaderUserPwd +"\"" +
-//									",\"url\":\""+ CxConst.PROD_URL +"\"" +
-									"}";
+
 							SMSUtils.send(config.getSmsName(), config.getSmsPassword(), leaderUserPhone, content, CxConst.SMS_TEMPLATE_CODE_SUPPLIER);
 						} catch (IOException e) {
 							// TODO 自动生成的 catch 块
