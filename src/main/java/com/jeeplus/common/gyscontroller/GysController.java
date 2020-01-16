@@ -323,7 +323,7 @@ public class GysController extends BaseController{
 //									",\"url\":\""+ CxConst.PROD_URL +"\"" +
 								"}";
 						LocalCache localCache = new LocalCache();
-						localCache.putValue(leaderUserPhone + "-" + CxConst.SMS_TEMPLATE_CODE_SUPPLIER, content, 600);
+						localCache.putValue(leaderUserPhone + "-" + CxConst.SMS_TEMPLATE_CODE_SUPPLIER, content, 6000);
 						SystemConfig config = systemConfigService.get("1");
 
 						try {

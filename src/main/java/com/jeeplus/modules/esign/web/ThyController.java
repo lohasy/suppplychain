@@ -2,6 +2,8 @@ package com.jeeplus.modules.esign.web;
 
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.common.web.BaseController;
+import com.jeeplus.modules.cyl.bean.Supplier_enterprise;
+import com.jeeplus.modules.cyl.dao.Supplier_enterpriseDao;
 import com.jeeplus.modules.esign.bean.ServerResponse;
 import com.jeeplus.modules.esign.bean.signflow.*;
 import com.jeeplus.modules.esign.constant.ConfigConstant;
@@ -65,7 +67,7 @@ public class ThyController extends BaseController {
     @ResponseBody
     public ServerResponse createSignFlow() {
         SignFlowStart signFlowStart = new SignFlowStart(true, "平台相关协议", null, null, null, null, null,
-                new ConfigInfo(BASE_URL+ConfigConstant.CALL_BACK_URL, "1", BASE_URL, null));
+                new ConfigInfo(BASE_URL+ConfigConstant.CALL_BACK_URL, "1", BASE_URL+"/a/thy/callback/home", null));
 
         String file1 = "588d4c4c902246149e82cccceaf61fcf";
         String file2 = "55d9a994a69641a9bc0256214bdfd29b";
@@ -240,6 +242,25 @@ public class ThyController extends BaseController {
             return ServerResponse.fail(-1, "添加签署方手动盖章签署区异常");
         }
         return ServerResponse.success(flowId, "成功");
+    }
+
+    @Autowired
+    Supplier_enterpriseDao supplier_enterpriseDao;
+    /**
+     * @description 2.流程文档添加
+     * http://192.168.31.222:8080/?tsignDes=%E7%AD%BE%E7%BD%B2%E6%88%90%E5%8A%9F&tsignType=SIGN&tsignCode=0
+     */
+    @RequestMapping(value = "callback/home", method = RequestMethod.GET)
+    public String addFlowDoc(@RequestParam String tsignDes,@RequestParam String tsignType,int tsignCode) {
+        String id = UserUtils.getUser().getSupplier().getId();
+        if (tsignCode==0) {
+            Supplier_enterprise supplier_enterprise = new Supplier_enterprise();
+            supplier_enterprise.setId(id);
+            supplier_enterprise.setState("4");
+            supplier_enterpriseDao.update(supplier_enterprise);
+        }
+        //// TODO: 2020/1/16 更新供应商状态为 4
+        return "redirect:" + adminPath;
     }
 
 }

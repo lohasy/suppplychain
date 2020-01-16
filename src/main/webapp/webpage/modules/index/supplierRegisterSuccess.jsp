@@ -10,6 +10,7 @@
 		$(function(){
 			//处理状态
 			if(!$.isEmpty($("#orgState").val())){
+				console.log("supperlierRegisterSuccess"+$("#orgState").val());
 				if($("#orgState").val() == "2"){
 					location.href = "${ctx}/logout";
 				}
@@ -18,9 +19,6 @@
 				}
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
 					location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
-				}
-				if($("#orgState").val() != "-1" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"){
-					location.href = "${ctx}/logout";
 				}
 			}
 			
@@ -44,7 +42,7 @@
     	<input type="hidden" id="orgId" name="supplierEnterpriseId.id" value="${supplier_user.supplierEnterpriseId.id}" />
     	<input type="hidden" id="orgState" value="${supplier_user.supplierEnterpriseId.state}" />
     	<input type="hidden" id="userId" name="userId.id" value="${supplier_user.userId.id}" />
-  		<div class="title_nav"><span><font color="#ffffff">1 注册账号</font></span><span>2  提交资料</span><span>3  实名认证</span><span>4  在线签约</span></div>
+  		<div class="title_nav" id="title_nav6"><span><font color="#ffffff">1 注册账号</font></span><span>2  提交资料</span><span>3  实名认证</span><span>4  在线签约</span></div>
   		<div class="successful_cheng">
     		<div class="successful_l"><img src="${ctxStatic}/images/successful_01.jpg"></div>
     		<div class="successful_r" style="margin-top: 30px;">

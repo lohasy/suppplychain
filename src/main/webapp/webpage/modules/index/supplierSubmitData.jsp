@@ -41,7 +41,7 @@
 			
 			//处理状态
 			if(!$.isEmpty($("#orgState").val())){
-				console.log($("#orgState").val())
+				console.log($("#orgState").val());
 				if($("#orgState").val() == "1"){
 					$("#title_nav2").html('<span>企业资料提交</span><label></label><span class="steps_cur">审核资料</span><label></label><span>审核通过</span>');
 				}
@@ -54,9 +54,6 @@
 				//身份认证
 				if($("#orgState").val() == "-1" && !$.isEmpty($("#userId").val())){
 					location.href = "${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
-				}
-				if($("#orgState").val() != "0" && $("#orgState").val() != "-1" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"){
-					location.href = "${ctx}/logout";
 				}
 			}
 			

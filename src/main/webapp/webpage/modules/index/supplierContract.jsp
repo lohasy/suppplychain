@@ -32,12 +32,12 @@
         $(function () {
             //处理状态
             if (!$.isEmpty($("#orgState").val())) {
+                console.log("supperlierContract"+$("#orgState").val());
                 if ($("#orgState").val() == "2") {
                     location.href = "${ctx}/logout";
                 }
                 if (($("#orgState").val() == "0" || $("#orgState").val() == "1") && !$.isEmpty($("#userId").val())) {
                     location.href = "${ctx}/sys/register/to-supplierSubmitData?id=" + $("#userId").val();
-                    ;
                 }
                 if ($("#orgState").val() != "0" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"&&$("#orgState").val() != "-1" ) {
                     location.href = "${ctx}/logout";

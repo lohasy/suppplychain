@@ -10,16 +10,14 @@
 		$(function(){
 			//处理状态
 			if(!$.isEmpty($("#orgState").val())){
-
+				console.log("supperlierRealName"+$("#orgState").val());
 				// 实名认证
 
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
 					location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
 				}
 
-				if($("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "-1" && $("#orgState").val() != "3"){
-					location.href = "${ctx}/logout";
-				}
+
 			}
 
 			if($.isEmpty($("#orgId").val())){
