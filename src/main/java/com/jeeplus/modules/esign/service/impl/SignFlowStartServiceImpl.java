@@ -14,6 +14,8 @@ import com.jeeplus.modules.esign.enums.RequestType;
 import com.jeeplus.modules.esign.exception.DefineException;
 import com.jeeplus.modules.esign.service.SignFlowStartService;
 import com.jeeplus.modules.esign.util.ESignFlowUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,8 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
     private static int CALLBACK_SUCCESS = 2;
     private static String SIGN_SUCCESS = "4";
     private static String SIGN_TYPE = "0";
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private SignFlowStartDao signFlowStartDao;
@@ -97,6 +101,7 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
     @Override
     public ServerResponseResult getSignUrl(String flowId, String accountId, String organizeId){
         try {
+            logger.info("=================开始获取url===================");
             JSONObject result = qrySignUrl(flowId, accountId, organizeId, SIGN_TYPE);
             return ServerResponseResult.createBySuccess(result);
         } catch (DefineException e){
