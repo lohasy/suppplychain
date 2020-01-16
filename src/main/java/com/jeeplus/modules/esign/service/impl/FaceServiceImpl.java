@@ -5,6 +5,8 @@ import com.jeeplus.modules.cyl.bean.Supplier_user;
 import com.jeeplus.modules.cyl.dao.Supplier_enterpriseDao;
 import com.jeeplus.modules.cyl.dao.Supplier_userDao;
 import com.jeeplus.modules.esign.bean.*;
+import com.jeeplus.modules.esign.comm.LocalCacheHelper;
+import com.jeeplus.modules.esign.constant.CacheKeyConstant;
 import com.jeeplus.modules.esign.dao.UserEsignDao;
 import com.jeeplus.modules.esign.service.FaceService;
 import com.jeeplus.modules.esign.util.EsignUtil;
@@ -40,7 +42,7 @@ public class FaceServiceImpl implements FaceService {
         String userId = UserUtils.getUser().getId();
         ContextInfo contextInfo = new ContextInfo();
         //异步回调接口
-        contextInfo.setNotifyUrl(BASE_URL + "/supplyChainFinancePlatform/face/faceResult");
+        contextInfo.setNotifyUrl(BASE_URL + "/face/faceResult");
         //重定向地址
         contextInfo.setRedirectUrl(BASE_URL + "/a/sys/register/to-supplierContract?id=" + UserUtils.getUser().getId());
         OrgEntity orgEntity = new OrgEntity();
@@ -102,8 +104,7 @@ public class FaceServiceImpl implements FaceService {
 
     @Override
     public Object getAccessToken() {
-        EsignUtil.getAccessToken();
-        return null;
+        return LocalCacheHelper.get(CacheKeyConstant.TOKEN);
     }
 
     public UserEsign getUserEsignByUserId(String userId) {
