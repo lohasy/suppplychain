@@ -72,8 +72,6 @@ public class ThyController extends BaseController {
         String file3 = "49abd859f2464cad9644ae8745f8f725";
         String flowId = "";
         ServerResponse createSignFlow = getCreateSignFlow(signFlowStart);
-
-
         try {
             if (createSignFlow.getCode() != 0) {
                 return createSignFlow;
@@ -84,7 +82,6 @@ public class ThyController extends BaseController {
                 files.add(new FlowAddFile(0, file2, "数字证书用户授权协议", null));
                 files.add(new FlowAddFile(0, file3, "用户注册服务协议", null));
                 ServerResponse addFlowDoc = getAddFlowDoc(flowId, files);
-
                 if (addFlowDoc.getCode() != 0) {
                     return addFlowDoc;
                 } else {
@@ -97,8 +94,6 @@ public class ThyController extends BaseController {
                     if (getAddSignerHandSignArea.getCode() != 0) {
                         return getAddSignerHandSignArea;
                     }
-
-
                     String userid = UserUtils.getUser().getId();
                     String splierId = UserUtils.getUser().getSupplier().getId();
 //                    String uesing = thyDao.getUserEsignIdByUserId(userid);
@@ -121,6 +116,7 @@ public class ThyController extends BaseController {
                 }
             }
         } catch (Exception e) {
+            logger.error("创建签章失败",e);
             return ServerResponse.fail(-1, "创建签章失败");
         }
 
@@ -154,6 +150,7 @@ public class ThyController extends BaseController {
             flowId = jsonObject.getString("flowId");
             thyDao.updateProcessId(contract_id, flowId);
         } catch (Exception e) {
+            logger.error("创建签署流程异常",e);
             return ServerResponse.fail(-1, "创建签署流程异常");
         }
         return ServerResponse.success(flowId, "流程创建成功");
@@ -189,6 +186,7 @@ public class ThyController extends BaseController {
             JSONObject jsonObject = ESignFlowUtils.addFlowDoc(flowId, files);
             msg = jsonObject.toString();
         } catch (Exception e) {
+            logger.error("流程文档添加系统异常",e);
             return ServerResponse.fail(-1, "流程文档添加系统异常");
         }
         return ServerResponse.success(msg);
@@ -237,6 +235,7 @@ public class ThyController extends BaseController {
 
             msg = jsonObject.toString();
         } catch (Exception e) {
+            logger.error("添加签署方手动盖章签署区异常",e);
             return ServerResponse.fail(-1, "添加签署方手动盖章签署区异常");
         }
         return ServerResponse.success(flowId, "成功");

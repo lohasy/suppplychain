@@ -39,7 +39,7 @@
                     location.href = "${ctx}/sys/register/to-supplierSubmitData?id=" + $("#userId").val();
                     ;
                 }
-                if ($("#orgState").val() != "0" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3") {
+                if ($("#orgState").val() != "0" && $("#orgState").val() != "1" && $("#orgState").val() != "2" && $("#orgState").val() != "3"&&$("#orgState").val() != "-1" ) {
                     location.href = "${ctx}/logout";
                 }
             }

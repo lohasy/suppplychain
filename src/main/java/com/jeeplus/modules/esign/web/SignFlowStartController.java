@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 签署流程发起（e签宝）
@@ -25,6 +26,7 @@ public class SignFlowStartController {
      * 签署流程发起
      */
     @RequestMapping("singStart")
+    @ResponseBody
     public ServerResponseResult signFlowStart(@RequestParam String flowId) {
         try {
             return signFlowStartService.signFlowStart(flowId);
@@ -37,6 +39,7 @@ public class SignFlowStartController {
      * 回调结果保存
      */
     @RequestMapping("signResult/callBackSave")
+    @ResponseBody
     public void callBackSave(@RequestParam JSONObject json) {
           signFlowStartService.callBackSave(json);
     }
@@ -45,6 +48,7 @@ public class SignFlowStartController {
      * 合同文件保存
      */
     @RequestMapping("saveFlowDoc")
+    @ResponseBody
     public ServerResponseResult saveFlowDoc(@RequestParam String flowId) {
         try {
             signFlowStartService.saveFlowDoc(flowId);
