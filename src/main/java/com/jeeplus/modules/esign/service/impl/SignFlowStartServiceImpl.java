@@ -98,7 +98,7 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
     public ServerResponseResult getSignUrl(String flowId, String accountId, String organizeId){
         try {
             JSONObject result = qrySignUrl(flowId, accountId, organizeId, SIGN_TYPE);
-            return ServerResponseResult.createBySuccess(result.get("data"));
+            return ServerResponseResult.createBySuccess(result);
         } catch (DefineException e){
             return ServerResponseResult.createByErrorMessage("调用失败");
         }
