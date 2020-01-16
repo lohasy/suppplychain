@@ -1,6 +1,8 @@
 package com.jeeplus.modules.esign.comm;
 
 import com.google.common.collect.Maps;
+import com.jeeplus.modules.esign.constant.CacheKeyConstant;
+import com.jeeplus.modules.esign.util.EsignUtil;
 
 import java.util.Map;
 
@@ -18,7 +20,9 @@ public class LocalCacheHelper {
 
 	private static final  Map<String, Object> localCache = Maps.newConcurrentMap();
 
-	
+	static {
+		EsignUtil.getAccessToken();
+	}
 	/**
 	 *  不允许外部创建实例
 	 */
