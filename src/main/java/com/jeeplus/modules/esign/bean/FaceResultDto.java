@@ -37,4 +37,14 @@ public class FaceResultDto {
     public void setSuccess(Boolean success) {
         this.success = success;
     }
+
+    @Override
+    public String toString() {
+        return "FaceResultDto{" +
+                "flowId='" + flowId + '\'' +
+                ", accountId='" + accountId + '\'' +
+                ", agentAccountId='" + agentAccountId + '\'' +
+                ", success=" + success +
+                '}';
+    }
 }
