@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.common.web.BaseController;
 import com.jeeplus.modules.esign.bean.ServerResponse;
 import com.jeeplus.modules.esign.bean.signflow.*;
+import com.jeeplus.modules.esign.constant.ConfigConstant;
 import com.jeeplus.modules.esign.dao.ThyDao;
 import com.jeeplus.modules.esign.exception.DefineException;
 import com.jeeplus.modules.esign.util.ESignFlowUtils;
@@ -57,7 +58,7 @@ public class ThyController extends BaseController {
     @ResponseBody
     public ServerResponse createSignFlow() {
         SignFlowStart signFlowStart = new SignFlowStart(true,"负责人在线签约",null,null,null,null,null,
-                new ConfigInfo("http://saledemo.tsign.cn:8887/CSTNotify/asyn/notify?belong=xuandong","1","https://www.baidu.com",null));
+                new ConfigInfo(ConfigConstant.CALL_BACK_URL,"1","https://www.baidu.com",null));
 
         String file1 = "588d4c4c902246149e82cccceaf61fcf";
         String file2 = "55d9a994a69641a9bc0256214bdfd29b";
