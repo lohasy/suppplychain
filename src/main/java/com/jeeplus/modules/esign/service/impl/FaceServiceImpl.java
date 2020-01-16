@@ -28,17 +28,17 @@ public class FaceServiceImpl implements FaceService {
 
     @Autowired
     private UserEsignDao userEsignDao;
-    @Value("${CALL_BACK_URL}")
-    private String CALL_BACK_URL;
+    @Value("${BASE_URL}")
+    private String BASE_URL;
 
     @Override
     public FaceUrlDto getFaceUrl() {
         String userId = UserUtils.getUser().getId();
         ContextInfo contextInfo = new ContextInfo();
         //异步回调接口
-        contextInfo.setNotifyUrl(CALL_BACK_URL + "/supplyChainFinancePlatform/face/faceResult");
+        contextInfo.setNotifyUrl(BASE_URL + "/supplyChainFinancePlatform/face/faceResult");
         //重定向地址
-        contextInfo.setRedirectUrl(CALL_BACK_URL + "/a/sys/register/to-supplierContract?id=" + UserUtils.getUser().getId());
+        contextInfo.setRedirectUrl(BASE_URL + "/a/sys/register/to-supplierContract?id=" + UserUtils.getUser().getId());
         OrgEntity orgEntity = new OrgEntity();
         Supplier_user supplier_user = new Supplier_user();
         supplier_user.setUserId(UserUtils.getUser());

@@ -12,6 +12,7 @@ import com.jeeplus.modules.esign.util.ESignFlowUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,9 @@ public class ThyController extends BaseController {
     ThyDao thyDao;
     @Autowired
     private SignFlowStartService signFlowStartService;
+
+    @Value("${BASE_URL}")
+    private String BASE_URL;
 
     @RequestMapping("aaa")
     @ResponseBody
@@ -61,7 +65,7 @@ public class ThyController extends BaseController {
     @ResponseBody
     public ServerResponse createSignFlow() {
         SignFlowStart signFlowStart = new SignFlowStart(true, "负责人在线签约", null, null, null, null, null,
-                new ConfigInfo(ConfigConstant.CALL_BACK_URL, "1", "https://www.baidu.com", null));
+                new ConfigInfo(BASE_URL+ConfigConstant.CALL_BACK_URL, "1", "https://www.baidu.com", null));
 
         String file1 = "588d4c4c902246149e82cccceaf61fcf";
         String file2 = "55d9a994a69641a9bc0256214bdfd29b";

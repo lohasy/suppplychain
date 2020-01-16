@@ -28,6 +28,7 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
 
     private static int CALLBACK_SUCCESS = 2;
     private static String SIGN_SUCCESS = "4";
+    private static String SIGN_TYPE = "0";
 
     @Autowired
     private SignFlowStartDao signFlowStartDao;
@@ -96,13 +97,12 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
     @Override
     public ServerResponseResult getSignUrl(String flowId, String accountId, String organizeId){
         try {
-            JSONObject result = qrySignUrl(flowId, accountId, organizeId, "0");
+            JSONObject result = qrySignUrl(flowId, accountId, organizeId, SIGN_TYPE);
             return ServerResponseResult.createBySuccess(result.get("data"));
         } catch (DefineException e){
             return ServerResponseResult.createByErrorMessage("调用失败");
         }
     }
-
 
     public static JSONObject qrySignUrl(String flowId, String accountId, String organizeId, String urlType)
             throws DefineException {
