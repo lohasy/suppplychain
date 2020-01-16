@@ -37,7 +37,7 @@
     <task:executor id="executor" pool-size="10"/> <task:scheduler id="scheduler" pool-size="10"/>
     <task:annotation-driven scheduler="scheduler" executor="executor" proxy-target-class="true"/>
     <task:scheduled-tasks>
-		<task:scheduled ref="scheduledManager" method="refreshToken" cron = "0 0/5 * * * ?"/>
+		<task:scheduled ref="scheduledManager" method="refreshToken" cron = "0 0/60 * * * ?"/>
 	</task:scheduled-tasks>
     <import resource="spring-context-shiro.xml"/>
     

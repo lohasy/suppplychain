@@ -45,7 +45,7 @@ public class EsignUtil {
     /**
      * 获取token
      */
-    private static String getToken(){
+    public static String getToken(){
         try{
             String url = ConfigConstant.host +GET_TOKEN_URL.replace("APPID",ConfigConstant.PROJECT_ID).replace("APPSECRET",ConfigConstant.PROJECT_SECRET);
             JSONObject jsonStr=new JSONObject();
