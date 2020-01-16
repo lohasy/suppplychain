@@ -42,7 +42,7 @@ public class FaceServiceImpl implements FaceService {
         String userId = UserUtils.getUser().getId();
         ContextInfo contextInfo = new ContextInfo();
         //异步回调接口
-        contextInfo.setNotifyUrl(BASE_URL + "/supplyChainFinancePlatform/face/faceResult");
+        contextInfo.setNotifyUrl(BASE_URL + "/face/faceResult");
         //重定向地址
         contextInfo.setRedirectUrl(BASE_URL + "/a/sys/register/to-supplierContract?id=" + UserUtils.getUser().getId());
         OrgEntity orgEntity = new OrgEntity();
