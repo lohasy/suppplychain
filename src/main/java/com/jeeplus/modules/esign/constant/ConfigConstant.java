@@ -14,9 +14,9 @@ public class ConfigConstant {
 	public static final String host = "https://smlopenapi.esign.cn";
 
 	/**
-	 * 回调地址
+	 * 回调测试地址
  	 */
-	public static final String CALL_BACK_URL = "http://www.chuangxin.com/signResult/callBackSave";
+	public static final String CALL_BACK_URL = "http://47.100.235.132/signResult/callBackSave";
 
 	// 生产环境域名
 //	public static final String host = "https://openapi.esign.cn";
