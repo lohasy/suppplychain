@@ -9,6 +9,12 @@ import com.jeeplus.modules.esign.exception.DefineException;
  */
 public interface SignFlowStartService {
 
+    /**
+     *
+     * @param flowId
+     * @return
+     * @throws DefineException
+     */
     ServerResponseResult signFlowStart(String flowId) throws DefineException;
 
     /**
@@ -17,6 +23,14 @@ public interface SignFlowStartService {
      */
     int callBackSave(JSONObject json);
 
-    void saveFlowDoc(String flowId) throws DefineException;
+    String saveFlowDoc(String flowId) throws DefineException;
+
+    /**
+     * @param flowId
+     * @param accountId
+     * @param organizeId
+     * @return
+     */
+    ServerResponseResult getSignUrl(String flowId, String accountId, String organizeId);
 
 }
