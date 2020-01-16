@@ -120,7 +120,7 @@ public class LocalCache {
         public void run() {
             while (true) {
                 try {
-                    logger.info("Cache monitor");
+//                    logger.info("Cache monitor");
                     TimeUnit.SECONDS.sleep(MONITOR_DURATION);
                     checkTime();
                 } catch (Exception e) {

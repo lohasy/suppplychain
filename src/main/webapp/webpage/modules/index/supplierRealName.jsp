@@ -79,7 +79,16 @@
 				<div class="successful_title">恭喜您资料审核成功！</div>
 				<div class="successful_nei">您刚走了第2步，还要两步才能进行融资操作哦！<br>马上进行企业实行认证吧！</div>
 				<div class="successful_link">
-					<a href="javascript:void(0);" id="real_name" style="margin-right: 20px">马上实名</a>
+
+					<c:if test="${fn:contains(fns:getUser().roleNames, '供应商负责人')}">
+						<a href="javascript:void(0);" id="real_name" style="margin-right: 20px">马上实名</a>
+					</c:if>
+					<c:if test="${not fn:contains(fns:getUser().roleNames, '供应商负责人')}">
+						<a href="javascript:void(0);" style="margin-right: 20px;background-color: #5E5E5E;">无实名权限</a>
+					</c:if>
+
+
+
 					<a href="javascript:void(0);" id="close_btn">关闭</a>
 				</div>
 			</div>

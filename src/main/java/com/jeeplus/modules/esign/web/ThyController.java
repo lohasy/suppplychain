@@ -60,8 +60,8 @@ public class ThyController extends BaseController {
     @RequestMapping(value = "createSignFlow", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse createSignFlow() {
-        SignFlowStart signFlowStart = new SignFlowStart(true,"负责人在线签约",null,null,null,null,null,
-                new ConfigInfo(ConfigConstant.CALL_BACK_URL,"1","https://www.baidu.com",null));
+        SignFlowStart signFlowStart = new SignFlowStart(true, "负责人在线签约", null, null, null, null, null,
+                new ConfigInfo(ConfigConstant.CALL_BACK_URL, "1", "https://www.baidu.com", null));
 
         String file1 = "588d4c4c902246149e82cccceaf61fcf";
         String file2 = "55d9a994a69641a9bc0256214bdfd29b";
@@ -72,25 +72,46 @@ public class ThyController extends BaseController {
 
         try {
             if (createSignFlow.getCode() != 0) {
-                return  createSignFlow;
+                return createSignFlow;
             } else {
-                flowId =String.valueOf(createSignFlow.getData());
+                flowId = String.valueOf(createSignFlow.getData());
                 List<FlowAddFile> files = new ArrayList<>();
                 files.add(new FlowAddFile(0, file1, "e签宝协议", null));
                 files.add(new FlowAddFile(0, file2, "数字证书用户授权协议", null));
                 files.add(new FlowAddFile(0, file3, "用户注册服务协议", null));
                 ServerResponse addFlowDoc = getAddFlowDoc(flowId, files);
 
-                if (addFlowDoc.getCode()!=0) {
-                    return  addFlowDoc;
-                }else{
+                if (addFlowDoc.getCode() != 0) {
+                    return addFlowDoc;
+                } else {
                     List<Signfield> signfieldList = new ArrayList<>();
-                    signfieldList.add(new Signfield(file1,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
-                    signfieldList.add(new Signfield(file2,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
-                    signfieldList.add(new Signfield(file3,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
+                    signfieldList.add(new Signfield(file1, 0, new PosBean("1", 158.72531f, 431.05658f, null, true), null, 1, "", "1"));
+                    signfieldList.add(new Signfield(file2, 0, new PosBean("1", 158.72531f, 431.05658f, null, true), null, 1, "", "1"));
+                    signfieldList.add(new Signfield(file3, 0, new PosBean("1", 158.72531f, 431.05658f, null, true), null, 1, "", "1"));
                     ServerResponse getAddSignerHandSignArea = getAddSignerHandSignArea(flowId, signfieldList);
+                    ServerResponseResult serverResponseResult = signFlowStartService.signFlowStart(flowId);
+                    if (getAddSignerHandSignArea.getCode() != 0) {
+                        return getAddSignerHandSignArea;
+                    }
 
-                    return signFlowStartService.signFlowStart(flowId);   //开始;
+
+                    String userid = UserUtils.getUser().getId();
+                    String splierId = UserUtils.getUser().getSupplier().getId();
+                    String uesing = thyDao.getUserEsignIdByUserId(userid);
+                    String spsing = thyDao.getUserEsignIdByUserId(splierId);
+                    ServerResponseResult getSignUrlRet = signFlowStartService.getSignUrl(flowId,uesing,spsing);
+                    ServerResponse getSignUrl = new ServerResponse();
+                    getSignUrl.setCode(getSignUrlRet.getStatus());
+                    getSignUrl.setMsg(getSignUrlRet.getMsg());
+                    getSignUrl.setData(getSignUrlRet.getData());
+
+                    return getSignUrl;
+//                    else {
+//                        getAddSignerHandSignArea.setCode(serverResponseResult.getStatus());
+//                        getAddSignerHandSignArea.setMsg(serverResponseResult.getMsg());
+//                        getAddSignerHandSignArea.setData(serverResponseResult.getData());
+//                        return getAddSignerHandSignArea;
+//                    }
                 }
             }
         } catch (Exception e) {
@@ -121,7 +142,7 @@ public class ThyController extends BaseController {
                 signFlowStart.setConfigInfo(configInfo);
             }
             if (null == signFlowStart.getConfigInfo().getNoticeType()) {
-                signFlowStart.getConfigInfo().setNoticeType("");
+                signFlowStart.getConfigInfo().setNoticeType(""); //1-短信，2-邮件 ，“”不通知
             }
             JSONObject jsonObject = ESignFlowUtils.createSignFlow(signFlowStart);
             flowId = jsonObject.getString("flowId");
@@ -129,7 +150,7 @@ public class ThyController extends BaseController {
         } catch (Exception e) {
             return ServerResponse.fail(-1, "创建签署流程异常");
         }
-        return ServerResponse.success( flowId,"流程创建成功");
+        return ServerResponse.success(flowId, "流程创建成功");
     }
 
 
@@ -198,7 +219,7 @@ public class ThyController extends BaseController {
             String uesing = thyDao.getUserEsignIdByUserId(userid);
             String spsing = thyDao.getUserEsignIdByUserId(splierId);
             for (Signfield file : signfieldList) {
-                if (StringUtils.isBlank(uesing)||StringUtils.isBlank(spsing)) {
+                if (StringUtils.isBlank(uesing) || StringUtils.isBlank(spsing)) {
                     return ServerResponse.fail(-1, "文件或签章人id缺失");
                 }
                 file.setSignerAccountId(uesing);
@@ -210,7 +231,7 @@ public class ThyController extends BaseController {
         } catch (Exception e) {
             return ServerResponse.fail(-1, "添加签署方手动盖章签署区异常");
         }
-        return ServerResponse.success(msg, "成功");
+        return ServerResponse.success(flowId, "成功");
     }
 
 }

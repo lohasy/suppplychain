@@ -77,7 +77,7 @@ public class SMSUtils {
         int stat = jsonObject.getIntValue("stat");
         if (stat == 100) {
             LocalCache localCache = new LocalCache();
-            localCache.putValue(tel + "-" + template, content, 60);
+            localCache.putValue(tel + "-" + template, content, 600);
         }
         return inputline;
     }
