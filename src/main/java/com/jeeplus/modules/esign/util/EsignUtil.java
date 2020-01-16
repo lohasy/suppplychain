@@ -140,7 +140,7 @@ public class EsignUtil {
         System.out.println(accessToken);
         System.out.println(getAccessToken());
     }
-
+    //todo 定时任务刷新token
     public static void refreshAccessToken() {
         logger.info("开始刷新accessToken,当前token={}",LocalCacheHelper.get(CacheKeyConstant.TOKEN));
         JSONObject jsonStr=new JSONObject();

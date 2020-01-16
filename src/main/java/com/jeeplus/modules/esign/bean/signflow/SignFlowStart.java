@@ -6,7 +6,7 @@ package com.jeeplus.modules.esign.bean.signflow;
  * @date 2019年7月15日 下午2:50:02
  * @since JDK1.7
  */
-public class SignFlowStart {
+public class  SignFlowStart {
 
 	// 是否自动归档，默认false
 	private Boolean autoArchive;
