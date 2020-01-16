@@ -66,6 +66,11 @@ public class FaceServiceImpl implements FaceService {
 
         userEsignFaceDto.setContextInfo(contextInfo);
         userEsignFaceDto.setOrgEntity(orgEntity);
+        //直接更改状态3  演示用
+        supplierEnterprise.setState("3");
+        supplier_enterprisedao.update(supplierEnterprise);
+
+
         return EsignUtil.getFaceUrl(userEsignFaceDto);
     }
 
