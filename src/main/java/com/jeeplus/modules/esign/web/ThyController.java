@@ -64,8 +64,8 @@ public class ThyController extends BaseController {
     @RequestMapping(value = "createSignFlow", method = RequestMethod.GET)
     @ResponseBody
     public ServerResponse createSignFlow() {
-        SignFlowStart signFlowStart = new SignFlowStart(true, "负责人在线签约", null, null, null, null, null,
-                new ConfigInfo(BASE_URL+ConfigConstant.CALL_BACK_URL, "1", "https://www.baidu.com", null));
+        SignFlowStart signFlowStart = new SignFlowStart(true, "平台相关协议", null, null, null, null, null,
+                new ConfigInfo(BASE_URL+ConfigConstant.CALL_BACK_URL, "1", BASE_URL, null));
 
         String file1 = "588d4c4c902246149e82cccceaf61fcf";
         String file2 = "55d9a994a69641a9bc0256214bdfd29b";
@@ -88,7 +88,7 @@ public class ThyController extends BaseController {
                     List<Signfield> signfieldList = new ArrayList<>();
                     signfieldList.add(new Signfield(file1, 0, new PosBean("8", 321.1536f, 261.62103f, null, true), null, 1, "", "1"));
                     signfieldList.add(new Signfield(file2, 0, new PosBean("1", 195.16225f, 163.92105f, null, true), null, 1, "", "1"));
-                    signfieldList.add(new Signfield(file3, 0, new PosBean("1", 195.16225f, 163.92105f, null, true), null, 1, "", "1"));
+                    signfieldList.add(new Signfield(file3, 0, new PosBean("3", 300.2765f, 141.36105f, null, true), null, 1, "", "1"));
                     ServerResponse getAddSignerHandSignArea = getAddSignerHandSignArea(flowId, signfieldList);
                     ServerResponseResult serverResponseResult = signFlowStartService.signFlowStart(flowId);
                     if (getAddSignerHandSignArea.getCode() != 0) {
@@ -96,10 +96,10 @@ public class ThyController extends BaseController {
                     }
                     String userid = UserUtils.getUser().getId();
                     String splierId = UserUtils.getUser().getSupplier().getId();
-//                    String uesing = thyDao.getUserEsignIdByUserId(userid);
-//                    String spsing = thyDao.getUserEsignIdByUserId(splierId);
-                    String uesing = thyDao.getUserEsignIdByUserId(splierId);  //暂时调换企业和个人id
-                    String spsing = thyDao.getUserEsignIdByUserId(userid);
+                    String uesing = thyDao.getUserEsignIdByUserId(userid);
+                    String spsing = thyDao.getUserEsignIdByUserId(splierId);
+//                    String uesing = thyDao.getUserEsignIdByUserId(splierId);  //暂时调换企业和个人id
+//                    String spsing = thyDao.getUserEsignIdByUserId(userid);
                     ServerResponseResult getSignUrlRet = signFlowStartService.getSignUrl(flowId,uesing,spsing);
                     ServerResponse getSignUrl = new ServerResponse();
                     getSignUrl.setCode(getSignUrlRet.getStatus());
@@ -220,14 +220,15 @@ public class ThyController extends BaseController {
             }
             String userid = UserUtils.getUser().getId();
             String splierId = UserUtils.getUser().getSupplier().getId();
-//            String uesing = thyDao.getUserEsignIdByUserId(userid);   //
-//            String spsing = thyDao.getUserEsignIdByUserId(splierId);
-            String uesing = thyDao.getUserEsignIdByUserId(splierId); //暂时调换企业和个人id
-            String spsing = thyDao.getUserEsignIdByUserId(userid);
+            String uesing = thyDao.getUserEsignIdByUserId(userid);   //
+            String spsing = thyDao.getUserEsignIdByUserId(splierId);
+//            String uesing = thyDao.getUserEsignIdByUserId(splierId); //暂时调换企业和个人id
+//            String spsing = thyDao.getUserEsignIdByUserId(userid);
             for (Signfield file : signfieldList) {
                 if (StringUtils.isBlank(uesing) || StringUtils.isBlank(spsing)) {
                     return ServerResponse.fail(-1, "文件或签章人id缺失");
                 }
+                file.setActorIndentityType("2");
                 file.setSignerAccountId(uesing);
                 file.setAuthorizedAccountId(spsing);
             }
