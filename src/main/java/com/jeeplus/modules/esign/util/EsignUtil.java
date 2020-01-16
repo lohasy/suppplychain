@@ -104,7 +104,7 @@ public class EsignUtil {
      * @return
      */
     public static JSONObject createEsignComponyAccount(JSONObject jsonObject){
-        String url = BASE_URL + "/v1/accounts/createByThirdPartyUserId";
+        String url = BASE_URL + "/v1/organizations/createByThirdPartyUserId";
         headCommonMap.put("X-Tsign-Open-App-Id",APPID);
         headCommonMap.put("X-Tsign-Open-Token",getAccessToken());
         headCommonMap.put("Content-Type","application/json");
