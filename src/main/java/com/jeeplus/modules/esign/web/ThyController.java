@@ -85,8 +85,8 @@ public class ThyController extends BaseController {
                     return addFlowDoc;
                 } else {
                     List<Signfield> signfieldList = new ArrayList<>();
-                    signfieldList.add(new Signfield(file1, 0, new PosBean("1", 158.72531f, 431.05658f, null, true), null, 1, "", "1"));
-                    signfieldList.add(new Signfield(file2, 0, new PosBean("1", 158.72531f, 431.05658f, null, true), null, 1, "", "1"));
+                    signfieldList.add(new Signfield(file1, 0, new PosBean("8", 321.1536f, 261.62103f, null, true), null, 1, "", "1"));
+                    signfieldList.add(new Signfield(file2, 0, new PosBean("1", 195.16225f, 163.92105f, null, true), null, 1, "", "1"));
                     signfieldList.add(new Signfield(file3, 0, new PosBean("1", 158.72531f, 431.05658f, null, true), null, 1, "", "1"));
                     ServerResponse getAddSignerHandSignArea = getAddSignerHandSignArea(flowId, signfieldList);
                     ServerResponseResult serverResponseResult = signFlowStartService.signFlowStart(flowId);
