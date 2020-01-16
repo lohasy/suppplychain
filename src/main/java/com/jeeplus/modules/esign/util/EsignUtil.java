@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class EsignUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(OKHttpUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(EsignUtil.class);
 
     //todo 上线前改成生产的地址以及密钥
     private static final String BASE_URL = "https://smlopenapi.esign.cn";
@@ -142,6 +142,7 @@ public class EsignUtil {
     }
 
     public static void refreshAccessToken() {
+        logger.info("开始刷新accessToken,当前token={}",LocalCacheHelper.get(CacheKeyConstant.TOKEN));
         JSONObject jsonStr=new JSONObject();
         JSONObject jsonResult = OKHttpUtils.getRequest(ConfigConstant.refreshToken_URL(ConfigConstant.PROJECT_ID,String.valueOf(LocalCacheHelper.get(CacheKeyConstant.REFRESH_TOKEN))), jsonStr);
         JSONObject json = jsonResult.getJSONObject("data");
@@ -149,5 +150,6 @@ public class EsignUtil {
         String refreshToken = json.getString("refreshToken");
         LocalCacheHelper.put(CacheKeyConstant.REFRESH_TOKEN,refreshToken);
         LocalCacheHelper.put(CacheKeyConstant.TOKEN,token);
+        logger.info("刷新accessToken完毕,当前token={}",LocalCacheHelper.get(CacheKeyConstant.TOKEN));
     }
 }

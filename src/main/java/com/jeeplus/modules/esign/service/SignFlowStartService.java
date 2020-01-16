@@ -10,7 +10,7 @@ import com.jeeplus.modules.esign.exception.DefineException;
 public interface SignFlowStartService {
 
     /**
-     *
+     * 签署流程开启
      * @param flowId
      * @return
      * @throws DefineException
@@ -18,14 +18,22 @@ public interface SignFlowStartService {
     ServerResponseResult signFlowStart(String flowId) throws DefineException;
 
     /**
+     * e签宝接口地址回调
      * @param json
      * @return
      */
     int callBackSave(JSONObject json);
 
+    /**
+     * 保存文档
+     * @param flowId
+     * @return
+     * @throws DefineException
+     */
     String saveFlowDoc(String flowId) throws DefineException;
 
     /**
+     * 获取签署地址的url
      * @param flowId
      * @param accountId
      * @param organizeId
