@@ -4,41 +4,52 @@ package com.jeeplus.modules.esign.bean;
 import java.io.Serializable;
 
 /**
+ * restful通用返回对象
+ * @param <T>
  */
 public class ServerResponse<T> implements Serializable {
 
-    private int code; //返回code
 
-    private String msg; //描述信息
+    private static final long serialVersionUID = 1011570200526843614L;
+    /**
+     * 返回code
+     */
+    private int code;
+    /**
+     * 描述信息
+     */
+    private String msg;
+    /**
+     * 返回内容
+     */
+    private T data;
 
-    private Object data; //返回内容
-
-    public static ServerResponse success(Object data) {
-        return ServerResponse(0, "成功", data);
+    public static <T> ServerResponse<T> success(T data) {
+        return serverResponse(0, "成功", data);
     }
 
-    public static ServerResponse success(Object data, String msg) {
-        return ServerResponse(0, msg, data);
+    public static <T> ServerResponse<T> success(T data, String msg) {
+        return serverResponse(0, msg, data);
     }
 
-    public static ServerResponse success( String msg) {
-        return ServerResponse(0, msg, null);
+    public static <T> ServerResponse<T> success( String msg) {
+        return serverResponse(0, msg, null);
     }
 
-    public static ServerResponse fail(int code, String msg) {
-        return ServerResponse(code, msg, null);
+    public static <T>  ServerResponse<T> fail(int code, String msg) {
+        return serverResponse(code, msg, null);
     }
 
-    public static ServerResponse fail(String msg) {
-        return ServerResponse(-1, msg, null);
+    public static <T> ServerResponse<T> fail(String msg) {
+        return serverResponse(-1, msg, null);
     }
 
-    public static ServerResponse fail(int code, String msg, Object data) {
-        return ServerResponse(code, msg, data);
+    public static <T> ServerResponse<T> fail(int code, String msg, T data) {
+        return serverResponse(code, msg, data);
     }
 
-    private static ServerResponse ServerResponse(int code, String msg, Object data) {
-        ServerResponse resultData = new ServerResponse();
+    private static <T> ServerResponse<T> serverResponse(int code, String msg, T data) {
+        ServerResponse<T> resultData = new ServerResponse<>();
         resultData.setCode(code);
         resultData.setMsg(msg);
         resultData.setData(data);
@@ -61,11 +72,11 @@ public class ServerResponse<T> implements Serializable {
         this.msg = msg;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 }

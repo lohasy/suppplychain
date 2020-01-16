@@ -5,15 +5,13 @@ import com.jeeplus.modules.esign.bean.AccessToken;
 import com.jeeplus.modules.esign.bean.EsignResultDto;
 import com.jeeplus.modules.esign.bean.FaceUrlDto;
 import com.jeeplus.modules.esign.bean.UserEsignFaceDto;
+import com.jeeplus.modules.esign.comm.LocalCacheHelper;
+import com.jeeplus.modules.esign.constant.CacheKeyConstant;
+import com.jeeplus.modules.esign.constant.ConfigConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -22,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EsignUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(EsignUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(OKHttpUtils.class);
 
     //todo 上线前改成生产的地址以及密钥
     private static final String BASE_URL = "https://smlopenapi.esign.cn";
@@ -44,19 +42,22 @@ public class EsignUtil {
     /**
      * 获取token
      */
-    private static void getToken(){
+    private static String getToken(){
         try{
-            String url = BASE_URL+GET_TOKEN_URL.replace("APPID",APPID).replace("APPSECRET",APPSECRET);
+            String url = ConfigConstant.host +GET_TOKEN_URL.replace("APPID",ConfigConstant.PROJECT_ID).replace("APPSECRET",ConfigConstant.PROJECT_SECRET);
             JSONObject jsonStr=new JSONObject();
             JSONObject jsonResult = OKHttpUtils.getRequest(url, jsonStr);
             JSONObject json = jsonResult.getJSONObject("data");
             String token = json.getString("token");
             String expireIn = json.getString("expiresIn");
+            String refreshToken = json.getString("refreshToken");
+            LocalCacheHelper.put(CacheKeyConstant.REFRESH_TOKEN,refreshToken);
             //创建token，并存储起来
-            at = new AccessToken(token,expireIn);
+            return token;
         }catch (Exception e){
             logger.error("获取e签宝accesstoken失败"+e.getMessage());
         }
+        return null;
     }
 
     /**
@@ -64,23 +65,11 @@ public class EsignUtil {
      * @return
      */
     public static String getAccessToken(){
-        if(at == null||at.isExpired()){
-            getToken();
+        if(null==LocalCacheHelper.get(CacheKeyConstant.TOKEN)){
+            String token = getToken();
+            LocalCacheHelper.put(CacheKeyConstant.TOKEN,token);
         }
-        return at.getAccessToken();
-    }
-
-    public static FaceUrlDto getFaceUrl(UserEsignFaceDto userEsignFaceDto){
-        String token=getAccessToken();
-        String s = JSONObject.toJSONString(userEsignFaceDto);
-        JSONObject jsonObject = JSONObject.parseObject(s);
-        HashMap map=new HashMap<String,String>();
-        map.put("X-Tsign-Open-App-Id",APPID);
-        map.put("X-Tsign-Open-Token",token);
-        JSONObject jsonResult = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
-        EsignResultDto esignResultDto = JSONObject.parseObject(jsonResult.toJSONString(), EsignResultDto.class);
-        FaceUrlDto faceUrlDto = JSONObject.parseObject(esignResultDto.getData(), FaceUrlDto.class);
-        return faceUrlDto;
+        return LocalCacheHelper.get(CacheKeyConstant.TOKEN).toString();
     }
 
     /**
@@ -118,20 +107,44 @@ public class EsignUtil {
      * @param accountId 账户id
      * @return
      */
-    public static JSONObject queryEsignSealsByAccoundId(String accountId){
+    public static JSONObject queryEsignSealsByAccoundId(String accountId) {
         String url = BASE_URL + "/v1/accounts/accountId/seals";
-        url = url.replace("accountId",accountId);
-        headCommonMap.put("X-Tsign-Open-App-Id",APPID);
-        headCommonMap.put("X-Tsign-Open-Token",getAccessToken());
-        headCommonMap.put("Content-Type","application/json");
+        url = url.replace("accountId", accountId);
+        headCommonMap.put("X-Tsign-Open-App-Id", APPID);
+        headCommonMap.put("X-Tsign-Open-Token", getAccessToken());
+        headCommonMap.put("Content-Type", "application/json");
         logger.info(headCommonMap.toString());
         JSONObject jsonResult = OKHttpUtils.getRestfulAddHeader(url, headCommonMap);
         return jsonResult;
+    }
+
+    public static FaceUrlDto getFaceUrl(UserEsignFaceDto userEsignFaceDto){
+        String token=getAccessToken();
+        String s = JSONObject.toJSONString(userEsignFaceDto);
+        JSONObject jsonObject = JSONObject.parseObject(s);
+        HashMap map=new HashMap<String,String>();
+        map.put("X-Tsign-Open-App-Id",APPID);
+        map.put("X-Tsign-Open-Token",token);
+        JSONObject jsonResult = OKHttpUtils.postJsonAddHeader(BASE_URL + "/v2/identity/auth/web/" + userEsignFaceDto.getAccountId() + "/orgIdentityUrl", map, jsonObject);
+        EsignResultDto esignResultDto = JSONObject.parseObject(jsonResult.toJSONString(), EsignResultDto.class);
+        FaceUrlDto faceUrlDto = JSONObject.parseObject(esignResultDto.getData(), FaceUrlDto.class);
+        return faceUrlDto;
+
     }
 
     public static void main(String[] args) {
         String accessToken = getAccessToken();
         System.out.println(accessToken);
         System.out.println(getAccessToken());
+    }
+
+    public static void refreshAccessToken() {
+        JSONObject jsonStr=new JSONObject();
+        JSONObject jsonResult = OKHttpUtils.getRequest(ConfigConstant.refreshToken_URL(ConfigConstant.PROJECT_ID,String.valueOf(LocalCacheHelper.get(CacheKeyConstant.REFRESH_TOKEN))), jsonStr);
+        JSONObject json = jsonResult.getJSONObject("data");
+        String token = json.getString("token");
+        String refreshToken = json.getString("refreshToken");
+        LocalCacheHelper.put(CacheKeyConstant.REFRESH_TOKEN,refreshToken);
+        LocalCacheHelper.put(CacheKeyConstant.TOKEN,token);
     }
 }

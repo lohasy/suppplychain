@@ -8,11 +8,11 @@ import com.jeeplus.modules.esign.bean.*;
 import com.jeeplus.modules.esign.dao.UserEsignDao;
 import com.jeeplus.modules.esign.service.FaceService;
 import com.jeeplus.modules.esign.util.EsignUtil;
+import com.jeeplus.modules.sys.entity.User;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -69,7 +69,18 @@ public class FaceServiceImpl implements FaceService {
             userEsignRe.setRealNameStatus("3");
         }
         userEsignDao.upfateUserEsignByUserId(userEsignRe);
+        //企业更新审核状态为-1
+        UserEsign userEnter = getUserEsignByEsignId(faceResultDto.getAccountId());
+        Supplier_enterprise supplierEnterprise = supplier_enterprisedao.getById(userEnter.getUserId());
+        supplierEnterprise.setState("-1");
+        supplier_enterprisedao.update(supplierEnterprise);
         return "false";
+    }
+
+    @Override
+    public Object getAccessToken() {
+        EsignUtil.getAccessToken();
+        return null;
     }
 
     public UserEsign getUserEsignByUserId(String userId){
@@ -77,6 +88,10 @@ public class FaceServiceImpl implements FaceService {
         return userEsignRe;
     }
 
+    public UserEsign getUserEsignByEsignId(String esignId){
+        UserEsign userEsignRe = userEsignDao.getUserEsignByEsignId(esignId);
+        return userEsignRe;
+    }
     @Test
     public  void test() {
         getFaceUrl();

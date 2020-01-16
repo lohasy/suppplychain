@@ -13,4 +13,6 @@ public interface UserEsignDao extends CrudDao<UserEsign> {
 
 
     void upfateUserEsignByUserId(UserEsign userEsignRe);
+
+    UserEsign getUserEsignByEsignId(String esignId);
 }

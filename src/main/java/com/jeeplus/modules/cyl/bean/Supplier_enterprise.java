@@ -235,7 +235,8 @@ public class Supplier_enterprise extends DataEntity<Supplier_enterprise>{
     private String companyConstitution;
 
     /**
-     * 状态（0：待提交资料；1：待平台审核；2：平台审核不通过；3：待签约；4：已签约待银行授信；5：授信通过；6：银行授信不通过）
+	 * // TODO: 2020/1/15 -1
+     * 状态（-1:实名认证 0：待提交资料；1：待平台审核；2：平台审核不通过；3：待签约；4：已签约待银行授信；5：授信通过；6：银行授信不通过）
      */
     private String state;
     

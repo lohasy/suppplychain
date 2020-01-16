@@ -1,5 +1,4 @@
 package com.jeeplus.common.gyscontroller;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
@@ -404,6 +403,7 @@ public class GysController extends BaseController{
 			UserEsign userEsign = new UserEsign();
 			userEsign.setEsignId(accountId);
 			userEsign.setUserId(leaderUser.getId());
+			userEsign.setCreatedTime(new Date());
 			if(supplier_enterprise.getAgencyIdCard().equals(supplier_enterprise.getLegalIdCard())){
 				userEsign.setEsignType(2);//法人
 			}

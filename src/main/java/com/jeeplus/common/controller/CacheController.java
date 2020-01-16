@@ -18,10 +18,14 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @RestController
 public class CacheController {
+    /**
+     * 获取短信发送的验证码
+     * @return
+     */
     @RequestMapping(method = RequestMethod.GET,value = "/smscache")
     public ConcurrentHashMap<String, CacheEntity> getCache(){
         String loginName = UserUtils.getUser().getLoginName();
-        if(loginName.equals("admin")){
+        if("admin".equals(loginName)){
             return LocalCache.cache;
         }
         return null;
