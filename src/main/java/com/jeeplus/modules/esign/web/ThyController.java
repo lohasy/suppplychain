@@ -92,12 +92,26 @@ public class ThyController extends BaseController {
                     ServerResponseResult serverResponseResult = signFlowStartService.signFlowStart(flowId);
                     if (getAddSignerHandSignArea.getCode() != 0) {
                         return getAddSignerHandSignArea;
-                    } else {
-                        getAddSignerHandSignArea.setCode(serverResponseResult.getStatus());
-                        getAddSignerHandSignArea.setMsg(serverResponseResult.getMsg());
-                        getAddSignerHandSignArea.setData(serverResponseResult.getData());
-                        return getAddSignerHandSignArea;
                     }
+
+
+                    String userid = UserUtils.getUser().getId();
+                    String splierId = UserUtils.getUser().getSupplier().getId();
+                    String uesing = thyDao.getUserEsignIdByUserId(userid);
+                    String spsing = thyDao.getUserEsignIdByUserId(splierId);
+                    ServerResponseResult getSignUrlRet = signFlowStartService.getSignUrl(flowId,uesing,spsing);
+                    ServerResponse getSignUrl = new ServerResponse();
+                    getSignUrl.setCode(getSignUrlRet.getStatus());
+                    getSignUrl.setMsg(getSignUrlRet.getMsg());
+                    getSignUrl.setData(getSignUrlRet.getData());
+
+                    return getSignUrl;
+//                    else {
+//                        getAddSignerHandSignArea.setCode(serverResponseResult.getStatus());
+//                        getAddSignerHandSignArea.setMsg(serverResponseResult.getMsg());
+//                        getAddSignerHandSignArea.setData(serverResponseResult.getData());
+//                        return getAddSignerHandSignArea;
+//                    }
                 }
             }
         } catch (Exception e) {
