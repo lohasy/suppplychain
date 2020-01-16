@@ -7,6 +7,7 @@ import com.jeeplus.modules.esign.bean.signflow.*;
 import com.jeeplus.modules.esign.constant.ConfigConstant;
 import com.jeeplus.modules.esign.dao.ThyDao;
 import com.jeeplus.modules.esign.exception.DefineException;
+import com.jeeplus.modules.esign.service.SignFlowStartService;
 import com.jeeplus.modules.esign.util.ESignFlowUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,8 @@ public class ThyController extends BaseController {
 
     @Autowired
     ThyDao thyDao;
+    @Autowired
+    private SignFlowStartService signFlowStartService;
 
     @RequestMapping("aaa")
     @ResponseBody
@@ -66,26 +69,34 @@ public class ThyController extends BaseController {
         String flowId = "";
         ServerResponse createSignFlow = getCreateSignFlow(signFlowStart);
 
-        if (createSignFlow.getCode() != 0) {
-            return  createSignFlow;
-        } else {
-            flowId =String.valueOf(createSignFlow.getData());
-            List<FlowAddFile> files = new ArrayList<>();
-            files.add(new FlowAddFile(0, file1, "e签宝协议", null));
-            files.add(new FlowAddFile(0, file2, "数字证书用户授权协议", null));
-            files.add(new FlowAddFile(0, file3, "用户注册服务协议", null));
-            ServerResponse addFlowDoc = getAddFlowDoc(flowId, files);
 
-            if (addFlowDoc.getCode()!=0) {
-                return  addFlowDoc;
-            }else{
-                List<Signfield> signfieldList = new ArrayList<>();
-                signfieldList.add(new Signfield(file1,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
-                signfieldList.add(new Signfield(file2,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
-                signfieldList.add(new Signfield(file3,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
-                return getAddSignerHandSignArea(flowId, signfieldList);
+        try {
+            if (createSignFlow.getCode() != 0) {
+                return  createSignFlow;
+            } else {
+                flowId =String.valueOf(createSignFlow.getData());
+                List<FlowAddFile> files = new ArrayList<>();
+                files.add(new FlowAddFile(0, file1, "e签宝协议", null));
+                files.add(new FlowAddFile(0, file2, "数字证书用户授权协议", null));
+                files.add(new FlowAddFile(0, file3, "用户注册服务协议", null));
+                ServerResponse addFlowDoc = getAddFlowDoc(flowId, files);
+
+                if (addFlowDoc.getCode()!=0) {
+                    return  addFlowDoc;
+                }else{
+                    List<Signfield> signfieldList = new ArrayList<>();
+                    signfieldList.add(new Signfield(file1,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
+                    signfieldList.add(new Signfield(file2,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
+                    signfieldList.add(new Signfield(file3,0,new PosBean("1",158.72531f,431.05658f,null,true),null,1,"","1"));
+                    ServerResponse getAddSignerHandSignArea = getAddSignerHandSignArea(flowId, signfieldList);
+
+                    return signFlowStartService.signFlowStart(flowId);   //开始;
+                }
             }
+        } catch (Exception e) {
+            return ServerResponse.fail(-1, "创建签章失败");
         }
+
     }
 
     /**
@@ -106,11 +117,11 @@ public class ThyController extends BaseController {
             }
             if (null == signFlowStart.getConfigInfo()) {
                 ConfigInfo configInfo = new ConfigInfo();
-                configInfo.setNoticeType("1"); //1-短信，2-邮件
+                configInfo.setNoticeType(""); //1-短信，2-邮件 ，“”不通知
                 signFlowStart.setConfigInfo(configInfo);
             }
             if (null == signFlowStart.getConfigInfo().getNoticeType()) {
-                signFlowStart.getConfigInfo().setNoticeType("1");
+                signFlowStart.getConfigInfo().setNoticeType("");
             }
             JSONObject jsonObject = ESignFlowUtils.createSignFlow(signFlowStart);
             flowId = jsonObject.getString("flowId");
