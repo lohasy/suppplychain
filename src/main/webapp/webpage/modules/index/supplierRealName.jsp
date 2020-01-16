@@ -51,11 +51,6 @@
                 location.href = "${ctx}/logout"
             })
 		});
-
-
-
-
-
 	</script>
 </head>
 <body>

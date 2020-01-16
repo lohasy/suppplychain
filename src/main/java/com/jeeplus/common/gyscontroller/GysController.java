@@ -277,9 +277,6 @@ public class GysController extends BaseController{
 	@RequestMapping(value = "subgysShenHe")
 	public String subgysShenHe(Supplier_enterprise supplier_enterprise, Model model,RedirectAttributes redirectAttributes) {
 		gysservice.save(supplier_enterprise);
-
-
-
 		MailCompose mailCompose = new MailCompose();
 		Mail mail = new Mail();
 		mailCompose.setMail(mail);
@@ -327,6 +324,15 @@ public class GysController extends BaseController{
 								"}";
 						LocalCache localCache = new LocalCache();
 						localCache.putValue(leaderUserPhone + "-" + CxConst.SMS_TEMPLATE_CODE_SUPPLIER, content, 600);
+						SystemConfig config = systemConfigService.get("1");
+
+						try {
+							String send = SMSUtils.send(config.getSmsName(), config.getSmsPassword(), leaderUserPhone, content, CxConst.SMS_TEMPLATE_CODE_SUPPLIER);
+							logger.info("发送账户和密码:"+send);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+
 						//注册用户
 						if(leaderUser.getRole() != null && !Utils.isEmpty(leaderUser.getRole().getId())) {
 
@@ -342,16 +348,15 @@ public class GysController extends BaseController{
 							su.setSupplierEnterpriseId(supplier_enterprise);
 							supplierUserDao.insert(su);
 						}
-
 						//发送短信
-						try {
-							SystemConfig config = systemConfigService.get("1");
-
-							SMSUtils.send(config.getSmsName(), config.getSmsPassword(), leaderUserPhone, content, CxConst.SMS_TEMPLATE_CODE_SUPPLIER);
-						} catch (IOException e) {
-							// TODO 自动生成的 catch 块
-							e.printStackTrace();
-						}
+//						try {
+//							SystemConfig config = systemConfigService.get("1");
+//							String send = SMSUtils.send(config.getSmsName(), config.getSmsPassword(), leaderUserPhone, content, CxConst.SMS_TEMPLATE_CODE_SUPPLIER);
+//							logger.info("发送账户和密码:"+send);
+//						} catch (IOException e) {
+//							// TODO 自动生成的 catch 块
+//							e.printStackTrace();
+//						}
 					}
 				}
 			}

@@ -41,6 +41,7 @@
 			
 			//处理状态
 			if(!$.isEmpty($("#orgState").val())){
+				console.log($("#orgState").val())
 				if($("#orgState").val() == "1"){
 					$("#title_nav2").html('<span>企业资料提交</span><label></label><span class="steps_cur">审核资料</span><label></label><span>审核通过</span>');
 				}
@@ -50,6 +51,7 @@
 				if($("#orgState").val() == "3" && !$.isEmpty($("#userId").val())){
                 	location.href = "${ctx}/sys/register/to-supplierContract?id="+ $("#userId").val();
                 }
+				//身份认证
 				if($("#orgState").val() == "-1" && !$.isEmpty($("#userId").val())){
 					location.href = "${ctx}/sys/register/to-supplierRealName?id="+ $("#userId").val();
 				}
@@ -1453,10 +1455,10 @@
 		      	</div>
 
 		      	<div class="disclose_tijiao clear" style="padding-left:450px; margin: 10px auto 25px auto;">
-		      		<c:if test="${empty supplier_user.supplierEnterpriseId.state || supplier_user.supplierEnterpriseId.state == '0' || supplier_user.supplierEnterpriseId.state == '2'}">
+		      		<c:if test="${empty supplier_user.supplierEnterpriseId.state || supplier_user.supplierEnterpriseId.state == '0' ||supplier_user.supplierEnterpriseId.state == '-1' || supplier_user.supplierEnterpriseId.state == '2'}">
 		      			<input type="button" class="financing_submit" id="btnSubmit" value="提 交" onclick="checkForm();" />
 		      		</c:if>
-		        	<c:if test="${not empty supplier_user.supplierEnterpriseId.state && supplier_user.supplierEnterpriseId.state != '0' && supplier_user.supplierEnterpriseId.state != '2'}">
+		        	<c:if test="${not empty supplier_user.supplierEnterpriseId.state && supplier_user.supplierEnterpriseId.state != '0' &&supplier_user.supplierEnterpriseId.state != '-1' && supplier_user.supplierEnterpriseId.state != '2'}">
 		      			<input type="button" disabled="disabled" style="background: #b5b5b5;" class="financing_submit" id="btnSubmit" value="资料审核中" />
 		      		</c:if>
 		      	</div>
