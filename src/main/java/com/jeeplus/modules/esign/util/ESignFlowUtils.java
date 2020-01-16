@@ -75,11 +75,11 @@ public class ESignFlowUtils {
      * @author 宫清
      * @date 2019年7月21日 下午5:59:45
      */
-    public static void downloadFlowDoc(String flowId) throws DefineException {
+    public static String downloadFlowDoc(String flowId) throws DefineException {
         JSONObject json = HttpHelper.doCommHttp(RequestType.GET, ConfigConstant.aboutDocument_URL(flowId, null), null);
 //        JSONHelper.castDataJson(json, Object.class);
         final String url = String.valueOf(json.get("data"));
-        JSONObject result = HttpHelper.doCommHttp(RequestType.GET, url, null);
+        return url;
     }
 
 

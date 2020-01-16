@@ -3,8 +3,6 @@ package com.jeeplus.modules.esign.web;
 import com.alibaba.fastjson.JSONObject;
 import com.jeeplus.common.sms.SMSUtils;
 import com.jeeplus.modules.esign.bean.signflow.ServerResponseResult;
-import com.jeeplus.modules.esign.comm.LocalCacheHelper;
-import com.jeeplus.modules.esign.constant.CacheKeyConstant;
 import com.jeeplus.modules.esign.exception.DefineException;
 import com.jeeplus.modules.esign.service.SignFlowStartService;
 import org.slf4j.Logger;
@@ -29,7 +27,7 @@ public class SignFlowCallBackController {
     /**
      * 签署流程发起
      */
-    @RequestMapping(value = {"/singStart"}, method = RequestMethod.POST)
+    @RequestMapping(value = {"/singStart"}, method = RequestMethod.GET)
     public ServerResponseResult signFlowStart(@RequestParam String flowId) {
         try {
             return signFlowStartService.signFlowStart(flowId);
@@ -56,5 +54,32 @@ public class SignFlowCallBackController {
             return ServerResponseResult.createByErrorMessage("回调失败！");
         }
     }
+
+    /**
+     * 合同文件保存
+     */
+    @RequestMapping(value = {"/saveFlowDoc"}, method = RequestMethod.GET)
+    public String saveFlowDoc(@RequestParam String flowId) {
+        try {
+            return signFlowStartService.saveFlowDoc(flowId);
+        } catch (DefineException e) {
+            return e.getMessage();
+        }
+    }
+
+    /**
+     * 获取签署地址
+     */
+    @RequestMapping(value = {"/getSignUrl"}, method = RequestMethod.GET)
+    @ResponseBody
+    public ServerResponseResult getSignUrl(@RequestBody JSONObject json) {
+        try {
+            Assert.notNull(json, "json is cannot be null !");
+            return signFlowStartService.getSignUrl((String) json.get("flowId"),(String) json.get("accountId"),(String) json.get("organizeId"));
+        } catch (Exception e) {
+            return ServerResponseResult.createByErrorMessage("回调失败！");
+        }
+    }
+
 
 }

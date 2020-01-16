@@ -121,7 +121,7 @@ public class ThyController extends BaseController {
                 signFlowStart.setConfigInfo(configInfo);
             }
             if (null == signFlowStart.getConfigInfo().getNoticeType()) {
-                signFlowStart.getConfigInfo().setNoticeType("");
+                signFlowStart.getConfigInfo().setNoticeType(""); //1-短信，2-邮件 ，“”不通知
             }
             JSONObject jsonObject = ESignFlowUtils.createSignFlow(signFlowStart);
             flowId = jsonObject.getString("flowId");
