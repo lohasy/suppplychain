@@ -144,8 +144,11 @@
                 type: "get",
                 dataType: "json",
                 success: function (data, status, xhr) {
-                    console.log(data.data);
-                    location.href = "${ctx}/signResult/singStart?flowId=" + data.data;
+                    if (data.code == 0) {
+                        location.href = data.data.shortUrl;
+                    } else {
+                        layer.msg(data.msg);
+                    }
                 },
                 error: function (xhr, status, error) {
                     layer.msg(status);
