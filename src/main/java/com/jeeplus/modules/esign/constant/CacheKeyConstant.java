@@ -7,12 +7,12 @@ package com.jeeplus.modules.esign.constant;
  * @since JDK1.7
  */
 public class CacheKeyConstant {
-	/*
+	/**
 	 * token 缓存 key
 	 */
 	public static final String TOKEN = "TOKEN";
-	
-	/*
+
+	/**
 	 * refreshtoken 缓存 key
 	 */
 	public static final String REFRESH_TOKEN = "REFRESH_TOKEN";
