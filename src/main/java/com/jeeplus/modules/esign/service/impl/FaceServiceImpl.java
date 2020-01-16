@@ -8,8 +8,11 @@ import com.jeeplus.modules.esign.bean.*;
 import com.jeeplus.modules.esign.dao.UserEsignDao;
 import com.jeeplus.modules.esign.service.FaceService;
 import com.jeeplus.modules.esign.util.EsignUtil;
+import com.jeeplus.modules.esign.util.OKHttpUtils;
 import com.jeeplus.modules.sys.utils.UserUtils;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import java.util.List;
 
 @Service
 public class FaceServiceImpl implements FaceService {
+    private static final Logger logger = LoggerFactory.getLogger(FaceServiceImpl.class);
 
     @Autowired
     private Supplier_enterpriseDao supplier_enterprisedao;
@@ -62,6 +66,11 @@ public class FaceServiceImpl implements FaceService {
 
         userEsignFaceDto.setContextInfo(contextInfo);
         userEsignFaceDto.setOrgEntity(orgEntity);
+        //直接更改状态3  演示用
+        supplierEnterprise.setState("3");
+        supplier_enterprisedao.update(supplierEnterprise);
+
+
         return EsignUtil.getFaceUrl(userEsignFaceDto);
     }
 
@@ -73,6 +82,7 @@ public class FaceServiceImpl implements FaceService {
     @Override
     @Transactional
     public Object faceResult(FaceResultDto faceResultDto) {
+        logger.info("开始回调={}",faceResultDto.toString());
         UserEsign userEsign = new UserEsign();
         UserEsign userEsignRe = userEsignDao.getUserEsignByUserIdAndType(faceResultDto.getAccountId(), "1");
         userEsignRe.setRealNameStatus("4");
@@ -83,8 +93,10 @@ public class FaceServiceImpl implements FaceService {
             Supplier_enterprise supplierEnterprise = supplier_enterprisedao.getById(userEnter.getUserId());
             supplierEnterprise.setState("3");
             supplier_enterprisedao.update(supplierEnterprise);
+            logger.info("更新企业状态={}",faceResultDto.getAccountId());
         }
         userEsignDao.upfateUserEsignByUserId(userEsignRe);
+        logger.info("更新用户信息={}",faceResultDto.getAgentAccountId());
         return "false";
     }
 
