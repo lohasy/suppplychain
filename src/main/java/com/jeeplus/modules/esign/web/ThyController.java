@@ -100,8 +100,7 @@ public class ThyController extends BaseController {
                     String splierId = UserUtils.getUser().getSupplier().getId();
                     String uesing = thyDao.getUserEsignIdByUserId(userid);
                     String spsing = thyDao.getUserEsignIdByUserId(splierId);
-//                    String uesing = thyDao.getUserEsignIdByUserId(splierId);  //暂时调换企业和个人id
-//                    String spsing = thyDao.getUserEsignIdByUserId(userid);
+
                     ServerResponseResult getSignUrlRet = signFlowStartService.getSignUrl(flowId,uesing,spsing);
                     ServerResponse getSignUrl = new ServerResponse();
                     getSignUrl.setCode(getSignUrlRet.getStatus());
@@ -109,12 +108,6 @@ public class ThyController extends BaseController {
                     getSignUrl.setData(getSignUrlRet.getData());
 
                     return getSignUrl;
-//                    else {
-//                        getAddSignerHandSignArea.setCode(serverResponseResult.getStatus());
-//                        getAddSignerHandSignArea.setMsg(serverResponseResult.getMsg());
-//                        getAddSignerHandSignArea.setData(serverResponseResult.getData());
-//                        return getAddSignerHandSignArea;
-//                    }
                 }
             }
         } catch (Exception e) {
@@ -224,8 +217,6 @@ public class ThyController extends BaseController {
             String splierId = UserUtils.getUser().getSupplier().getId();
             String uesing = thyDao.getUserEsignIdByUserId(userid);   //
             String spsing = thyDao.getUserEsignIdByUserId(splierId);
-//            String uesing = thyDao.getUserEsignIdByUserId(splierId); //暂时调换企业和个人id
-//            String spsing = thyDao.getUserEsignIdByUserId(userid);
             for (Signfield file : signfieldList) {
                 if (StringUtils.isBlank(uesing) || StringUtils.isBlank(spsing)) {
                     return ServerResponse.fail(-1, "文件或签章人id缺失");
