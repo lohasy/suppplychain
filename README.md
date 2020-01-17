@@ -140,6 +140,12 @@ Templates一般没有Tomcat选项。
 #### 1.本项目前端技术实现是jsp ，跟后端的交互依赖于servlet，具体请参考https://www.jianshu.com/p/e64a0c380d41
 
 
-
+1. 类注释、类属性注释、方法注释、方法内关键代码注释(类注释需要体现作者名称)
+2. 项目中关于返回对象不要使用JsonObject、Object、HashMap这类不明确的返回对象,
+		除非有特殊需求必须这么要使用才可以
+3. try catch,catch块中需要打印log信息方便定位问题
+4. controller对外返回json对象ServerResponse<T> 泛型中的T一定要明确,有特殊需求可特殊对待
+5. 注解@ResponseBody @RequestBody @PathVariable @RequestParam
+6. 其他代码规范根据阿里的插件规范来即可
 
 
