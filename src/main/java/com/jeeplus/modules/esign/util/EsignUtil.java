@@ -86,6 +86,7 @@ public class EsignUtil {
         headCommonMap.put("X-Tsign-Open-Token",getAccessToken());
         headCommonMap.put("Content-Type","application/json");
         logger.info(headCommonMap.toString());
+
         JSONObject result = OKHttpUtils.postJsonAddHeader(url, headCommonMap, jsonObject);
         return result;
     }
@@ -116,9 +117,9 @@ public class EsignUtil {
         headCommonMap.put("X-Tsign-Open-App-Id", APPID);
         headCommonMap.put("X-Tsign-Open-Token", getAccessToken());
         headCommonMap.put("Content-Type", "application/json");
-        logger.info(headCommonMap.toString());
-        JSONObject jsonResult = OKHttpUtils.getRestfulAddHeader(url, headCommonMap);
-        return jsonResult;
+        //// TODO: 2020/1/17 待修改
+        logger.info("todo",headCommonMap.toString());
+        return OKHttpUtils.getRestfulAddHeader(url, headCommonMap);
     }
 
     public static FaceUrlDto getFaceUrl(UserEsignFaceDto userEsignFaceDto){

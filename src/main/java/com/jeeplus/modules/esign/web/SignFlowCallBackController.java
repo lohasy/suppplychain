@@ -42,7 +42,7 @@ public class SignFlowCallBackController {
      */
     @RequestMapping(value = {"/callBackSave"}, method = RequestMethod.POST)
     @ResponseBody
-    public ServerResponseResult callBackSave(@RequestBody JSONObject json) {
+    public ServerResponseResult callBackSave(@RequestBody  JSONObject json) {
         try {
             int i = signFlowStartService.callBackSave(json);
             if (i == 1) {
@@ -74,7 +74,7 @@ public class SignFlowCallBackController {
      */
     @RequestMapping(value = {"/getSignUrl"}, method = RequestMethod.GET)
     @ResponseBody
-    public ServerResponseResult getSignUrl(@RequestBody JSONObject json) {
+    public ServerResponseResult getSignUrl( JSONObject json) {
         try {
             Assert.notNull(json, "json is cannot be null !");
             return signFlowStartService.getSignUrl((String) json.get("flowId"),(String) json.get("accountId"),(String) json.get("organizeId"));

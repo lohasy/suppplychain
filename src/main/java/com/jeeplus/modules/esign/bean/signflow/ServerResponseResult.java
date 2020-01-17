@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 
 public class ServerResponseResult<T> implements Serializable {
+
     private int status;
     private String msg;
     private T data;

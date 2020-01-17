@@ -417,9 +417,12 @@ public class GysController extends BaseController{
 			userEsign.setUserId(leaderUser.getId());
 			userEsign.setCreatedTime(new Date());
 			if(supplier_enterprise.getAgencyIdCard().equals(supplier_enterprise.getLegalIdCard())){
-				userEsign.setEsignType(2);//法人
+				//法人
+				userEsign.setEsignType(2);
+			}else{
+				//经办人
+				userEsign.setEsignType(3);
 			}
-			userEsign.setEsignType(3);//经办人
 			try{
 				Thread.sleep(2000);
 			}catch (Exception e){
@@ -435,9 +438,7 @@ public class GysController extends BaseController{
 			userEsign.setSeelId(sealId);
 			userEsign.setCreatedTime(new Date());
 			userEsignDao.insert(userEsign);
-			/**
-			 * 注册企业账户
-			 */
+			/*注册企业账户*/
 			JSONObject companyInfo = new JSONObject();
 			companyInfo.put("creator",accountId);
 			//证件类型取得是组织机构代码
@@ -472,9 +473,9 @@ public class GysController extends BaseController{
 
 	/**
 	 * 供应商合同
-	 * @param supplier_enterprise
-	 * @param model
-	 * @return
+	 * @param supplier_enterprise 供应商信息
+	 * @param model 模型对象
+	 * @return String
 	 */
 	@RequestMapping(value = "gysHeTong")
 	public String gysHeTong(Supplier_enterprise supplier_enterprise, Model model) {
