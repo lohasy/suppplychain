@@ -23,7 +23,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * @author 李坏
+ * @author 飞飞
+ * e签宝回调Service实现
  */
 @Service
 public class SignFlowStartServiceImpl implements SignFlowStartService {
@@ -59,11 +60,11 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
     public int callBackSave(JSONObject json) {
         logger.info("=======================回调开始=======================");
         Map<String, Object> resultMap = JSONObject.toJavaObject(json, Map.class);
-
+        // 获取回调参数
         String signTime = (String) resultMap.get("signTime");
         Integer signResult = (Integer) resultMap.get("signResult");
-
         String authorizedAccountId = (String) resultMap.get("authorizedAccountId");
+
 
         if (Objects.equals(signResult, CALLBACK_SUCCESS)) {
             UserEsign userEnter = getUserEsignByEsignId(authorizedAccountId);
@@ -74,9 +75,9 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
         String resultDescription = (String) resultMap.get("resultDescription");
         String accountId = (String) resultMap.get("accountId");
         String flowId = (String) resultMap.get("flowId");
-        logger.info("流程id：" + flowId);
-        logger.info("账户id：" + accountId);
-        logger.info("组织id：" + authorizedAccountId);
+        logger.info("流程id：", flowId);
+        logger.info("账户id：", accountId);
+        logger.info("组织id：", authorizedAccountId);
         return signFlowStartDao.callBackSave(signTime, signResult.toString(), resultDescription, accountId, flowId);
     }
 
@@ -91,27 +92,26 @@ public class SignFlowStartServiceImpl implements SignFlowStartService {
     }
 
     /**
-     * @description 获取签署地址
-     *
-     *              说明：
-     *              <p>
-     *              流程开启后，获取指定签署人的签署链接地址，如仅传入签署人账号id，则获取的签署任务链接仅包含本人的签署任务；如同时签署人账号id+机构id，则获取的签署任务链接包含企业与个人的签署任务
-     *
      * @param flowId     创建签署流程时返回的签署流程ID
      * @param accountId  签署人账号id, 可指定, 默认用当前登录人账号id
      * @param organizeId 机构Id，传入本参数后，获取当前操作人代签企业的签署任务,默认空
      * @return
      * @throws DefineException
-     * @author 宫清
+     * @description 获取签署地址
+     * <p>
+     * 说明：
+     * <p>
+     * 流程开启后，获取指定签署人的签署链接地址，如仅传入签署人账号id，则获取的签署任务链接仅包含本人的签署任务；如同时签署人账号id+机构id，则获取的签署任务链接包含企业与个人的签署任务
+     * @author 飞飞
      * @date 2019年7月21日 下午9:33:12
      */
     @Override
-    public ServerResponseResult getSignUrl(String flowId, String accountId, String organizeId){
+    public ServerResponseResult getSignUrl(String flowId, String accountId, String organizeId) {
         try {
             logger.info("=================开始获取url===================");
             JSONObject result = qrySignUrl(flowId, accountId, organizeId, SIGN_TYPE);
             return ServerResponseResult.createBySuccess(result);
-        } catch (DefineException e){
+        } catch (DefineException e) {
             return ServerResponseResult.createByErrorMessage("调用失败");
         }
     }

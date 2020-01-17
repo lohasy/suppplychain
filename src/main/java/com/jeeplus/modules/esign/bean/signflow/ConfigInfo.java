@@ -2,7 +2,7 @@ package com.jeeplus.modules.esign.bean.signflow;
 
 /**
  * @description 流程配置实体类
- * @author 宫清
+ * @author 飞飞
  * @date 2019年7月15日 下午2:53:00
  * @since JDK1.7
  */

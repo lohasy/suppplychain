@@ -1,12 +1,16 @@
 package com.jeeplus.modules.esign.web;
 
 import com.alibaba.fastjson.JSONObject;
+import com.jeeplus.common.sms.SMSUtils;
 import com.jeeplus.modules.esign.bean.signflow.ServerResponseResult;
 import com.jeeplus.modules.esign.exception.DefineException;
 import com.jeeplus.modules.esign.service.SignFlowStartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -22,16 +26,19 @@ public class SignFlowStartController {
 
     @Autowired
     private SignFlowStartService signFlowStartService;
+
+    protected static Logger logger = LoggerFactory.getLogger(SMSUtils.class);
+
     /**
      * 签署流程发起
      */
-    @RequestMapping("singStart")
-    @ResponseBody
+    @RequestMapping(value = {"/singStart"}, method = RequestMethod.GET)
     public ServerResponseResult signFlowStart(@RequestParam String flowId) {
         try {
             return signFlowStartService.signFlowStart(flowId);
-        } catch (Exception e) {
-            return ServerResponseResult.createByErrorMessage(e.getMessage());
+        } catch (DefineException e) {
+            logger.info("请求失败：" + e.getMessage());
+            return ServerResponseResult.createByErrorMessage("请求失败！");
         }
     }
 

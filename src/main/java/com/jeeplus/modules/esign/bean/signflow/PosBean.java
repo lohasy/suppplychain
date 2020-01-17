@@ -2,7 +2,7 @@ package com.jeeplus.modules.esign.bean.signflow;
 
 /**
  * @description 签署区位置信息
- * @author 宫清
+ * @author 飞飞
  * @date 2019年7月18日 下午3:41:47
  * @since JDK1.7
  */
